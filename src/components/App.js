@@ -26,7 +26,6 @@ class App extends React.Component {
 
   handleKeyDown = () => {
     let {waitingForKey, currentMessageIndex} = this.state;
-    console.log('in function');
     if (waitingForKey) {
       this.setState({...this.state, waitingForKey: false});
       let nextIndex = currentMessageIndex + 1;
@@ -40,7 +39,7 @@ class App extends React.Component {
           document.querySelector('.ContinueMessage').classList.add('talking-cloud-message');
           document.querySelector('.cloud').classList.add('animation-slowBob');
           this.setState({...this.state, currentMessageIndex: currentMessageIndex + 1, waitingForKey: true});
-        },3000);
+        },13000);
       }
       else if (nextIndex === 2 || nextIndex === 3 || nextIndex === 4) {
         // document.querySelector('.ContinueMessage').classList.add('animation-quickFadeOutThenIn');
