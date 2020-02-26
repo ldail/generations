@@ -1,0 +1,148 @@
+.ContinueMessage {
+  background-color: white;
+  color: black;
+  position: fixed;
+  text-align: center;
+  padding: 10px;
+  opacity: 0;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  font-family: 'IBM Plex Mono', sans-serif;
+}
+
+.talking-cloud-message {
+  max-width: 250px;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.animation-delay {
+  animation-name: delay;
+  animation-fill-mode: forwards;
+  animation-duration: .5s;
+  animation-delay: 3s;
+  -webkit-animation: delay .5s forwards;
+  -webkit-animation-delay: 3s;
+  width: 100%;
+}
+
+.animation-reverseDelay {
+  animation: reverseDelay forwards .5s;
+  -webkit-animation: reverseDelay .5s forwards;
+}
+
+.animation-normalFadeIn {
+  animation: normalFadeIn forwards .5s;
+  -webkit-animation: normalFadeIn forwards .5s;
+  opacity: 0;
+}
+
+.animation-quickFadeOutThenIn {
+  animation: quickFadeOutThenIn forwards 1s;
+  -webkit-animation: quickFadeOutThenIn forwards 1s;
+}
+
+@keyframes delay {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
+
+@-webkit-keyframes delay {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
+
+@keyframes reverseDelay {
+  0% {
+    opacity: 100;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes reverseDelay {
+  0% {
+    opacity: 100;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes normalFadeIn {
+  0% {
+    opacity: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
+  100% {
+    opacity: 100;
+    bottom: 10px;
+    left: 85px;
+    text-align: left;
+  }
+}
+
+@-webkit-keyframes normalFadeIn {
+  0% {
+    opacity: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
+  100% {
+    opacity: 100;
+    bottom: 10px;
+    left: 85px;
+    text-align: left;
+  }
+}
+
+@keyframes quickFadeOutThenIn {
+  0% {
+    opacity: 100;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
+
+@-webkit-keyframes quickFadeOutThenIn {
+  0% {
+    opacity: 100;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
+
+@media screen and (min-width: 680px) {
+  .animation-normalFadeIn {
+    max-width: 420px;
+  }
+}
+
+@media screen and (min-width: 1023px) {
+  .animation-normalFadeIn {
+    max-width: 720px;
+  }
+}
