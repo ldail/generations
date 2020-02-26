@@ -20,6 +20,7 @@ class App extends React.Component {
     document.querySelector('.ContinueMessage').classList.add('animation-delay')
     setTimeout(() => {
       window.addEventListener('keydown', this.handleKeyDown);
+      window.addEventListener('touchstart', this.handleKeyDown);
       this.setState({...this.state, waitingForKey: true})
     }, 3200);
   }
