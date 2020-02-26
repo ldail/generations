@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import './App.css';
-import messages from '../assets/messages';
-import ContinueMessage from './ContinueMessage/ContinueMessage';
-import WhiteCircle from './WhiteCircle/WhiteCircle';
-import cloud from '../assets/cloud.png';
-import boy from '../assets/smallboy.jpg';
+import Intro from '../pages/Intro/Intro';
+import FamilySetup from '../pages/FamilySetup/FamilySetup';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentPage: 0,
       currentMessageIndex: 0,
       waitingForKey: false
     }
@@ -40,7 +38,7 @@ class App extends React.Component {
           document.querySelector('.ContinueMessage').classList.add('talking-cloud-message');
           document.querySelector('.cloud').classList.add('animation-slowBob');
           this.setState({...this.state, currentMessageIndex: currentMessageIndex + 1, waitingForKey: true});
-        },13000);
+        },1000);
       }
       else if (nextIndex === 2 || nextIndex === 3 || nextIndex === 4) {
         // document.querySelector('.ContinueMessage').classList.add('animation-quickFadeOutThenIn');
@@ -59,22 +57,29 @@ class App extends React.Component {
       else if (nextIndex >= 6 && nextIndex < 12) {
         this.setState({...this.state, currentMessageIndex: currentMessageIndex + 1, waitingForKey: true});
       }
+      else if (nextIndex === 12) {
+        this.setState({...this.state, currentPage: this.state.currentPage + 1});
+      }
+    }
+  }
+
+  showPage = () => {
+    let {currentPage} = this.state;
+    if (currentPage === 0) {
+      return <Intro currentMessageIndex={this.state.currentMessageIndex} />
+    }
+    else if (currentPage === 1) {
+      return <FamilySetup />
     }
   }
 
   render() {
-  let {currentMessageIndex} = this.state;
-
-  return (
-    <div id="App">
-      <h1 className="intro-title">Generations</h1>
-      <ContinueMessage message={messages[currentMessageIndex]} />
-      <WhiteCircle />
-      <img src={cloud} className="cloud" alt="generation spirit" />
-      <img src={boy} className="boy" alt="small boy" />
-    </div>
-  );
-  }
+    return (
+      <div id="App">
+        {this.showPage()}
+      </div>
+    );
+    }
 };
 
 export default App;
