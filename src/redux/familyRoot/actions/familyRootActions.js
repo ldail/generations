@@ -5,3 +5,7 @@ export const setFamilyName = (familyName) => ({
   payload: familyName
 });
 
+export const setBoyName = (boyname) => ({
+  action: familyRootTypes.SET_BOY_NAME,
+  payload: boyname
+})

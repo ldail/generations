@@ -16,7 +16,7 @@
   text-align: center;
 }
 
-#FamilySetup span {
+#FamilySetup .familyName span {
   display: block;
   font-weight: bold;
   font-size: 1.8rem;
@@ -35,4 +35,36 @@
   height: 50px;
   text-align: center;
   color: #333333
+}
+
+#FamilySetup .familyBar {
+  position: fixed;
+  top: 0;
+  background: #cccccc;
+  border-bottom: 1px solid #444444;
+  color: black;
+  font-weight: 600;
+  font-size: .8rem;
+  width: 100%;
+  font-family: 'Share Tech Mono', serif;
+}
+
+#FamilySetup .continueButtons {
+  position: fixed;
+  bottom: 100px;
+  width: 100%;
+}
+
+#FamilySetup .continueButtons button {
+  background-color: black;
+  border: 1px solid white;
+  margin: 15px;
+  width: 150px;
+  color: white;
+}
+
+#FamilySetup .continueButtons button:hover {
+  background-color: white;
+  color: black;
+  cursor: pointer;
 }
