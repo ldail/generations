@@ -50,6 +50,12 @@
   font-family: 'Share Tech Mono', serif;
 }
 
+#FamilySetup .familyBar .primaryIcon img {
+  height: 20px;
+  width: 20px;
+  align-self: center;
+}
+
 #FamilySetup .nameBar {
   position: fixed;
   top: 25px;
@@ -69,7 +75,20 @@
   display: flex;
   width: 80%;
   flex: 1;
+}
 
+#FamilySetup .primaryAttributeValue form {
+  width: 100%;
+}
+
+#FamilySetup .primaryAttributeValue .attributeTitle {
+  display: flex;
+  width: 100%;
+}
+
+#FamilySetup .primaryAttributeValue .attributeTitle h4 {
+  flex: 1;
+  font-size: 1.7rem;
 }
 
 #FamilySetup .arrowIcon {

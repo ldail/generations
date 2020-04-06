@@ -115,8 +115,8 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute}) => {
     }
   return (
     <div id="FamilySetup">
-      <div className="familyBar">The <span className="bold">{familyNameValue}</span> Family</div>
-      <div className="nameBar">{boyNameValue} {familyNameValue}</div>
+      <div className="familyBar">The <span className="bold">{familyNameValue}</span> Family <span className="primaryIcon">{setupPageIndex > 2 ? <img src={primaryAttributes[attributeView].icon} alt={primaryAttributes[attributeView].name} /> : ''}</span></div>
+      {setupPageIndex > 0 ? <div className="nameBar">{boyNameValue} {familyNameValue}</div> : ''}
       {familySetupModal()}
       <div className="continueButtons">
         <button type="button" onClick={(e) => handleBack(e)}>Back</button>
