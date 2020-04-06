@@ -1,4 +1,6 @@
-const messages = [
+import attributeIcon from './attribute-icon.png';
+
+export const introMessages = [
   `Press any key to continue...`,
   `Huh?`,
   `Where am I?`,
@@ -13,4 +15,9 @@ const messages = [
   `!!!`,
 ]
 
-export default messages;
+export const primaryAttributes = [
+  {name: 'Agile', description: 'can move quickly', stat: '+ Speed', icon: attributeIcon},
+  {name: 'Thoughtful', description: 'problem-solving expert', stat: '+ Ability', icon: attributeIcon},
+  {name: 'Attractive', description: 'can make matches easily', stat: '+ Likeability', icon: attributeIcon},
+  {name: 'Hearty', description: 'can handle radiation well', stat: '+ Deradiate', icon: attributeIcon}
+]
