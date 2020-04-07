@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './FamilySetup.css';
 import { connect } from 'react-redux';
-import { setFamilyName, setBoyName, setPrimaryAttribute, setStarterPetChoice } from '../../redux/familyRoot/actions/familyRootActions';
+import { setFamilyName, setBoyName, setPrimaryAttribute, setStarterPetChoice, setPetName } from '../../redux/familyRoot/actions/familyRootActions';
 import messageGroupings from '../../assets/messages';
 import xss from 'xss';
 import animalStats from '../../assets/animalStats';
@@ -11,15 +11,12 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
   const {primaryAttributes, startingPet} = familySetup;
   // const {messages: primaryAttributeMessages} = primaryAttributes;
 
-  const [familyNameValue, setFamilyNameValue] = useState('_____');
+  const [familyNameValue, setFamilyNameValue] = useState('');
   const [setupPageIndex, setSetupPageIndex] = useState(0);
-  const [boyNameValue, setBoyNameValue] = useState('_____');
+  const [boyNameValue, setBoyNameValue] = useState('');
+  const [petNameValue, setPetNameValue] = useState('');
   const [currentChoice, setCurrentChoice] = useState(0);
   const [currentMessageGrouping, setCurrentMessageGrouping] = useState(0);
-
-  console.log(startingPet.messages[0])
-  console.log(animalStats.growthRates);
-  console.log(primaryAttributes.messages[0])
 
   const handleBack = e => {
     if (e) {
@@ -52,7 +49,7 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
         let safe = xss(boyNameValue);
         setBoyName(safe);
         setSetupPageIndex(setupPageIndex + 1);
-        // setCurrentMessageGrouping(primaryAttributes)
+        setCurrentMessageGrouping(primaryAttributes)
       }
     }
     //Choosing a primary attribute
@@ -60,12 +57,17 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
       setPrimaryAttribute(currentChoice);
       setCurrentChoice(0);
       setSetupPageIndex(setupPageIndex + 1);
-      // setCurrentMessageGrouping(startingPet)
+      setCurrentMessageGrouping(startingPet)
     }
     //Choosing a pet
     else if (setupPageIndex === 3) {
       setStarterPetChoice(currentChoice);
       setCurrentChoice(0);
+      setSetupPageIndex(setupPageIndex + 1);
+    }
+    //Choosing a pet name
+    else if (setupPageIndex === 4) {
+      setPetNameValue(petNameValue);
       setSetupPageIndex(setupPageIndex + 1);
     }
   }
@@ -84,98 +86,127 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
     }
   }
 
+  const displayPet = () => {
+    console.log(startingPet.messages)
+  let entries = Object.entries(startingPet.messages[currentChoice].stats)
+  console.log(entries);
+  let mapped = entries.map(statObject => {
+    console.log(statObject);
+    return (
+    <li className="statInfo" key={statObject[0]}>
+      <span className="statTitle">{statObject[0]}: </span>
+      <span className="statValue">{statObject[1].value}</span>
+      <span className="growthRate">{statObject[1].growthRate}</span>
+    </li>
+    )
+  })
+  console.log(mapped);
+  return mapped;
+  }
 
-    const familySetupModal = () => {
-      if (setupPageIndex === 0) {
-        return (
-          <>
-            <p className="familyQuestion">What is your family's name?</p>
-            <div className="familyName">
-              <span>The</span>
-              <form id="familyName" onSubmit={(e) => handleSubmit(e)}>
-                <input type="text" required value={familyNameValue} onChange={(e) => setFamilyNameValue(e.target.value)} onFocus={() => setFamilyNameValue('')} />
-              </form>
-              <span>Family</span>
-            </div>
-          </>
-        );
-      }
-      else if (setupPageIndex === 1) {
-        return (
-          <>
-            <p className="familyQuestion">And what was that boy's name? The one you held so tightly?</p>
-            <div className="familyName">
-              <form id="familyName" onSubmit={(e) => handleSubmit(e)}>
-                <input type="text" required value={boyNameValue} onChange={(e) => setBoyNameValue(e.target.value)} onFocus={() => setBoyNameValue('')} />
-              </form>
-            </div>
-          </>
-        )
-      }
-      else if (setupPageIndex === 2) {
-        return (
-          <>
-            <p className="familyQuestion">{primaryAttributes.prompt}</p>
-            <div className="rotatingMenuChoice">
-              <form id="rotatingMenuChoice" onSubmit={(e) => handleSubmit(e)}>
-                <ul>
 
-                  <li className="rotatingChoice">
-                    <div className="choiceTitle">
-                      <img src="#" alt="left" className="arrowIcon" onClick={() => rotateChoice(-1)} />
-                      <img src={primaryAttributes.messages[currentChoice].icon} alt="icon" />
-                      <h4>{primaryAttributes.messages[currentChoice].name}</h4>
-                      <img src="#" alt="right" className="arrowIcon" onClick={() => rotateChoice(1)}/>
-                    </div>
-                    <p>{primaryAttributes.messages[currentChoice].description}</p>
-                    <span className="statIncrease">{primaryAttributes.messages[currentChoice].stat}</span>  
-                  </li>
-
-                </ul>
-              </form>
-            </div>
-          </>
-        )
-      }
-      else if (setupPageIndex === 3) {
-        return (
-          <>
-            <p className="familyQuestion">{startingPet.prompt}</p>
-            <div className="rotatingMenuChoice">
-              <form id="rotatingMenuChoice" onSubmit={(e) => handleSubmit(e)}>
-                <ul>
-
-                  <li className="rotatingChoice">
-                    <div className="choiceTitle">
-                      <img src="#" alt="left" className="arrowIcon" onClick={() => rotateChoice(-1)} />
-                      <img src={startingPet.messages[currentChoice].icon} alt="icon" />
-                      <h4>{startingPet.messages[currentChoice].name}</h4>
-                      <img src="#" alt="right" className="arrowIcon" onClick={() => rotateChoice(1)}/>
-                    </div>
-                    <h5>Level 10</h5>
-                    <ul>
-                        {Object.entries(startingPet.messages[currentChoice].stats).map(statObject => {
-                          return (
-                          <li className="statInfo">
-                            <span className="statTitle">{statObject[0]}: </span>
-                            <span className="statValue">{statObject[1].value}</span>
-                            <span className="growthRate">{statObject[1].abbreviation}</span>
-                          </li>
-                          )
-                        })}
-                    </ul>
-                  </li>
-                </ul>
-              </form>
-            </div>
-          </>
-        )
-      }
+  const familySetupModal = () => {
+    if (setupPageIndex === 0) {
+      return (
+        <>
+          <p className="familyQuestion">What is your family's name?</p>
+          <div className="familyName">
+            <span>The</span>
+            <form id="familyName" onSubmit={(e) => handleSubmit(e)}>
+              <input type="text" required value={familyNameValue} onChange={(e) => setFamilyNameValue(e.target.value)} onFocus={() => setFamilyNameValue('')} />
+            </form>
+            <span>Family</span>
+          </div>
+        </>
+      );
     }
+    else if (setupPageIndex === 1) {
+      return (
+        <>
+          <p className="familyQuestion">And what was that boy's name? The one you held so tightly?</p>
+          <div className="familyName">
+            <form id="familyName" onSubmit={(e) => handleSubmit(e)}>
+              <input type="text" required value={boyNameValue} onChange={(e) => setBoyNameValue(e.target.value)} onFocus={() => setBoyNameValue('')} />
+            </form>
+          </div>
+        </>
+      )
+    }
+    else if (setupPageIndex === 2) {
+      return (
+        <>
+          <p className="familyQuestion">{primaryAttributes.prompt}</p>
+          <div className="rotatingMenuChoice">
+            <form id="rotatingMenuChoice" onSubmit={(e) => handleSubmit(e)}>
+              <ul>
+
+                <li className="rotatingChoice">
+                  <div className="choiceTitle">
+                    <img src="#" alt="left" className="arrowIcon" onClick={() => rotateChoice(-1)} />
+                    <img src={primaryAttributes.messages[currentChoice].icon} alt="icon" />
+                    <h4>{primaryAttributes.messages[currentChoice].name}</h4>
+                    <img src="#" alt="right" className="arrowIcon" onClick={() => rotateChoice(1)}/>
+                  </div>
+                  <p>{primaryAttributes.messages[currentChoice].description}</p>
+                  <span className="statIncrease">{primaryAttributes.messages[currentChoice].stat}</span>  
+                </li>
+
+              </ul>
+            </form>
+          </div>
+        </>
+      )
+    }
+    else if (setupPageIndex === 3) {
+      return (
+        <>
+          <p className="familyQuestion">{startingPet.prompt}</p>
+          <div className="rotatingMenuChoice">
+            <form id="rotatingMenuChoice" onSubmit={(e) => handleSubmit(e)}>
+              <ul>
+
+                <li className="rotatingChoice">
+                  <div className="choiceTitle">
+                    <img src="#" alt="left" className="arrowIcon" onClick={() => rotateChoice(-1)} />
+                    <img src={startingPet.messages[currentChoice].icon? '##' : '#'} alt="icon" />
+                    <h4>{startingPet.messages[currentChoice].name}</h4>
+                    <img src="#" alt="right" className="arrowIcon" onClick={() => rotateChoice(1)}/>
+                  </div>
+                  <h5>Level 10</h5>
+                  <ul>
+                    {displayPet()}
+
+                  </ul>
+                </li>
+              </ul>
+            </form>
+          </div>
+        </>
+      )
+    }
+    else if (setupPageIndex === 4) {
+      return (
+        <>
+          <p className="familyQuestion">And what was that pet's name?</p>
+          <div className="familyName">
+            <form id="familyName" onSubmit={(e) => handleSubmit(e)}>
+              <input type="text" required value={petNameValue} onChange={(e) => setPetNameValue(e.target.value)} onFocus={() => setPetNameValue('')} />
+            </form>
+          </div>
+        </>
+      )
+    }
+  }
   return (
     <div id="FamilySetup">
-      <div className="familyBar">The <span className="bold">{familyNameValue}</span> Family <span className="primaryIcon">{setupPageIndex > 2 ? <img src={familySetup.primaryAttributes.messages[family.primaryAttribute].icon} alt={familySetup.primaryAttributes.messages[family.primaryAttribute].name} /> : ''}</span></div>
+      <div className="familyBar">The <span className="bold">{familyNameValue}</span> Family <span className="topIcon">{setupPageIndex > 2 ? <img src={familySetup.primaryAttributes.messages[family.primaryAttribute].icon} alt={familySetup.primaryAttributes.messages[family.primaryAttribute].name} /> : ''}</span></div>
       {setupPageIndex > 0 ? <div className="nameBar">{boyNameValue} {familyNameValue}</div> : ''}
+      {setupPageIndex > 3 ? <div className="petBar">{petNameValue} - Level 10 - <span className="topIcon"><img src={() => {
+        for (let [key,value] of animalStats.types) {
+          if (value.id === family.starterPet)
+            return animalStats.types[key].icon;
+        }
+      }} alt="animal" /></span></div> : ''}
       {familySetupModal()}
       <div className="continueButtons">
         <button type="button" onClick={(e) => handleBack(e)}>Back</button>
@@ -193,7 +224,8 @@ const mapDispatchToProps = dispatch => ({
   setFamilyName: (familyName) => dispatch(setFamilyName(familyName)),
   setBoyName: (boyName) => dispatch(setBoyName(boyName)),
   setPrimaryAttribute: (primaryAttribute) => dispatch(setPrimaryAttribute(primaryAttribute)),
-  setStarterPetChoice: (starterPet) => dispatch(setStarterPetChoice(starterPet))
+  setStarterPetChoice: (starterPet) => dispatch(setStarterPetChoice(starterPet)),
+  setPetNameValue: (petNameValue) => dispatch(setPetName(petNameValue))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(FamilySetup);

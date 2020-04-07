@@ -31,20 +31,17 @@ const messageGroupings = {
       },
     startingPet:
     {
-      messages: [
+      messages:
         //Example: {name: 'dog', icon: '../../', stats: {attack: {value: 10, abbreviation: 'H'}, defense: ...}}
         Object.keys(animalStats.types).map(animalType => {
           const statCategories = Object.entries(animalStats.growthRates[animalType]);
-          console.log(statCategories);
           const animalObject = {name: animalType, stats: {}};
           for (let [key, value] of statCategories) {
-            console.log(key,value);
             animalObject.stats[key] = {value: value.value, growthRate: value.abbreviation}
             animalObject['icon'] = animalType.icon;
           }
           return animalObject;
-          })
-        ],
+          }),
         prompt: 'What kind of pet does he have? Choose wisely.'
       }
   }

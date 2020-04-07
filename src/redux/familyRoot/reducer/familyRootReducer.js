@@ -24,6 +24,11 @@ const familyRootReducer = (state=INITIAL_STATE, action) => {
         ...state,
         starterPet: action.payload
       }
+    case familyRootTypes.SET_PET_NAME:
+      return {
+        ...state,
+        petName: action.payload
+      }
     default:
       return state;
   }

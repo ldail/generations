@@ -19,3 +19,8 @@ export const setStarterPetChoice = (starterPetChoice) => ({
   type: familyRootTypes.SET_STARTER_PET,
   payload: starterPetChoice
 })
+
+export const setPetName = (petName) => ({
+  type: familyRootTypes.SET_PET_NAME,
+  payload: petName
+})

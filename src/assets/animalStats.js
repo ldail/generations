@@ -7,12 +7,12 @@ import birdIcon from './bird-icon.png';
 
 const animalStats = {
   types: {
-    dog: {name: 'dog', icon: dogIcon},
-    cat: {name: 'cat', icon: catIcon},
-    rabbit: {name: 'rabbit', icon: rabbitIcon},
-    lizard: {name: 'lizard', icon: lizardIcon},
-    bird: {name: 'bird', icon: birdIcon},
-    pig: {name: 'pig', icon: pigIcon}
+    dog: {name: 'dog', icon: dogIcon, id: 0},
+    cat: {name: 'cat', icon: catIcon, id: 1},
+    rabbit: {name: 'rabbit', icon: rabbitIcon, id: 2},
+    lizard: {name: 'lizard', icon: lizardIcon, id: 3},
+    bird: {name: 'bird', icon: birdIcon, id: 4},
+    pig: {name: 'pig', icon: pigIcon, id: 5}
   },
   startingStats: {
     H: {abbreviation: 'H', value: 22},
