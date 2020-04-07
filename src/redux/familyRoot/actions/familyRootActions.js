@@ -14,3 +14,8 @@ export const setPrimaryAttribute = (primaryAttribute) => ({
   type: familyRootTypes.SET_PRIMARY_ATTRIBUTE,
   payload: primaryAttribute
 })
+
+export const setStarterPetChoice = (starterPetChoice) => ({
+  type: familyRootTypes.SET_STARTER_PET,
+  payload: starterPetChoice
+})

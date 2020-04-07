@@ -69,7 +69,7 @@
   border-bottom: 1px solid #444444;
 }
 
-#FamilySetup .primaryAttributeValue {
+#FamilySetup .rotatingMenuChoice {
   margin: 0 auto;
   background-color: #333333;
   display: flex;
@@ -77,16 +77,16 @@
   flex: 1;
 }
 
-#FamilySetup .primaryAttributeValue form {
+#FamilySetup .rotatingMenuChoice form {
   width: 100%;
 }
 
-#FamilySetup .primaryAttributeValue .attributeTitle {
+#FamilySetup .rotatingMenuChoice .choiceTitle {
   display: flex;
   width: 100%;
 }
 
-#FamilySetup .primaryAttributeValue .attributeTitle h4 {
+#FamilySetup .rotatingMenuChoice .choiceTitle h4 {
   flex: 1;
   font-size: 1.7rem;
 }
@@ -101,25 +101,25 @@
   cursor: pointer;
 }
 
-#FamilySetup .primaryAttributeChoice {
+#FamilySetup .rotatingChoice {
   width: 80%;
   font-size: 1rem;
   display: flex;
   flex-direction: column;
 }
 
-#FamilySetup .primaryAttributeChoice .attributeDescription {
+#FamilySetup .rotatingChoice .attributeDescription {
   flex: 1;
   display: flex;
   justify-content: flex-start;
 }
 
-#FamilySetup .primaryAttributeChoice h4 {
+#FamilySetup .rotatingChoice h4 {
   font-size: 1.4rem;
   font-weight: 500;
 }
 
-#FamilySetup .primaryAttributeChoice span {
+#FamilySetup .rotatingChoice span {
 
 }
 
