@@ -24,3 +24,8 @@ export const setPetName = (petName) => ({
   type: familyRootTypes.SET_PET_NAME,
   payload: petName
 })
+
+export const setPetType = (petType) => ({
+  type: familyRootTypes.SET_PET_TYPE,
+  payload: petType
+})

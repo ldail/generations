@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import './FamilySetup.css';
 import { connect } from 'react-redux';
-import { setFamilyName, setBoyName, setPrimaryAttribute, setStarterPetChoice, setPetName } from '../../redux/familyRoot/actions/familyRootActions';
+import { setFamilyName, setBoyName, setPrimaryAttribute, setStarterPetChoice, setPetName, setPetType } from '../../redux/familyRoot/actions/familyRootActions';
 import messageGroupings from '../../assets/messages';
 import xss from 'xss';
 import animalStats from '../../assets/animalStats';
+import smallBoy from '../../assets/smallboy.jpg';
 
-const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarterPetChoice, family}) => {
+const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarterPetChoice, family, setStarterPetChoiceType, setPetName}) => {
   const {familySetup} = messageGroupings;
   const {primaryAttributes, startingPet} = familySetup;
   // const {messages: primaryAttributeMessages} = primaryAttributes;
@@ -62,12 +63,19 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
     //Choosing a pet
     else if (setupPageIndex === 3) {
       setStarterPetChoice(currentChoice);
+      let starterPetType = '';
+      for (let [key, value] of Object.entries(animalStats.types)) {
+        if (value.id === currentChoice) {
+          starterPetType = value.name;
+        }
+      }
+      setStarterPetChoiceType(starterPetType)
       setCurrentChoice(0);
       setSetupPageIndex(setupPageIndex + 1);
     }
     //Choosing a pet name
     else if (setupPageIndex === 4) {
-      setPetNameValue(petNameValue);
+      setPetName(petNameValue);
       setSetupPageIndex(setupPageIndex + 1);
     }
   }
@@ -196,6 +204,38 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
         </>
       )
     }
+    else if (setupPageIndex === 5) {
+      return (
+        <>
+          <p className="familyQuestion">Okay. Does everything look right?</p>
+          <div className="familyName">
+            <div className="person">
+              <img src={smallBoy} alt="boy" />
+              <div className="familyInfo">
+                <h4>{family.boyName}</h4>
+                <img src={primaryAttributes.messages[family.primaryAttribute].icon} alt={primaryAttributes.messages[family.primaryAttribute].name} />
+                <span>{primaryAttributes.messages[family.primaryAttribute].name}</span>
+              </div>
+            </div>
+            <div className="pet">
+              <img src={() => {
+                for (let [key,value] of animalStats.types) {
+                  if (value.id === family.starterPet)
+                  console.log('found it');
+                  console.log(animalStats.types[key].icon)
+                    return animalStats.types[key].icon;
+                }
+                console.log('could not find');
+              }} alt="animal" />
+              <div className="familyInfo">
+                <h4>{family.petName}</h4>
+                <span>{family.petType}</span>
+              </div>
+            </div>
+          </div>
+        </>
+      )
+    }
   }
   return (
     <div id="FamilySetup">
@@ -204,8 +244,11 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
       {setupPageIndex > 3 ? <div className="petBar">{petNameValue} - Level 10 - <span className="topIcon"><img src={() => {
         for (let [key,value] of animalStats.types) {
           if (value.id === family.starterPet)
+          console.log('found it');
+          console.log(animalStats.types[key].icon)
             return animalStats.types[key].icon;
         }
+        console.log('could not find');
       }} alt="animal" /></span></div> : ''}
       {familySetupModal()}
       <div className="continueButtons">
@@ -225,7 +268,8 @@ const mapDispatchToProps = dispatch => ({
   setBoyName: (boyName) => dispatch(setBoyName(boyName)),
   setPrimaryAttribute: (primaryAttribute) => dispatch(setPrimaryAttribute(primaryAttribute)),
   setStarterPetChoice: (starterPet) => dispatch(setStarterPetChoice(starterPet)),
-  setPetNameValue: (petNameValue) => dispatch(setPetName(petNameValue))
+  setPetName: (petNameValue) => dispatch(setPetName(petNameValue)),
+  setStarterPetChoiceType: (starterPetType) => dispatch(setPetType(starterPetType))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(FamilySetup);
