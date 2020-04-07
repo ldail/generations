@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/generations-client/static/css/main.71471504.chunk.css",
+    "main.js": "/generations-client/static/js/main.6c7488bd.chunk.js",
+    "main.js.map": "/generations-client/static/js/main.6c7488bd.chunk.js.map",
+    "runtime-main.js": "/generations-client/static/js/runtime-main.7dabf9cd.js",
+    "runtime-main.js.map": "/generations-client/static/js/runtime-main.7dabf9cd.js.map",
+    "static/js/2.333c60c0.chunk.js": "/generations-client/static/js/2.333c60c0.chunk.js",
+    "static/js/2.333c60c0.chunk.js.map": "/generations-client/static/js/2.333c60c0.chunk.js.map",
+    "index.html": "/generations-client/index.html",
+    "precache-manifest.ad8adc6b21bc9476904a6de42af2b2a5.js": "/generations-client/precache-manifest.ad8adc6b21bc9476904a6de42af2b2a5.js",
+    "service-worker.js": "/generations-client/service-worker.js",
+    "static/css/main.71471504.chunk.css.map": "/generations-client/static/css/main.71471504.chunk.css.map",
+    "static/js/2.333c60c0.chunk.js.LICENSE.txt": "/generations-client/static/js/2.333c60c0.chunk.js.LICENSE.txt",
+    "static/media/cloud.png": "/generations-client/static/media/cloud.c66e1bc5.png",
+    "static/media/smallboy.jpg": "/generations-client/static/media/smallboy.19a950d8.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7dabf9cd.js",
+    "static/js/2.333c60c0.chunk.js",
+    "static/css/main.71471504.chunk.css",
+    "static/js/main.6c7488bd.chunk.js"
+  ]
+}
