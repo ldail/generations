@@ -1,4 +1,5 @@
 import React from 'react';
+import './reset.css';
 import './App.css';
 import Intro from '../pages/Intro/Intro';
 import FamilySetup from '../pages/FamilySetup/FamilySetup';

@@ -1,9 +1,10 @@
-import dogIcon from '../assets/dog-icon.png';
+import dogIcon from './dog-icon.png';
 import catIcon from './cat-icon.png';
 import rabbitIcon from './rabbit-icon.png';
 import lizardIcon from './lizard-icon.png';
 import pigIcon from './pig-icon.png';
 import birdIcon from './bird-icon.png';
+
 
 const animalStats = {
   types: {

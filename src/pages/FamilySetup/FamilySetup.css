@@ -48,12 +48,14 @@
   width: 100%;
   height: 25px;
   font-family: 'Share Tech Mono', serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#FamilySetup .familyBar .topIcon img {
+#FamilySetup .topIcon {
   height: 20px;
   width: 20px;
-  align-self: center;
 }
 
 #FamilySetup .nameBar {
@@ -69,6 +71,11 @@
   border-bottom: 1px solid #444444;
 }
 
+#FamilySetup .familyBar * {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 #FamilySetup .petBar {
   position: fixed;
   top: 45px;
@@ -80,6 +87,9 @@
   font-weight: 500;
   color: black;
   border-bottom: 1px solid #444444;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #FamilySetup .rotatingMenuChoice {
@@ -87,7 +97,7 @@
   background-color: #333333;
   display: flex;
   width: 80%;
-  flex: 1;
+  text-align: center;
 }
 
 #FamilySetup .rotatingMenuChoice form {
@@ -97,11 +107,24 @@
 #FamilySetup .rotatingMenuChoice .choiceTitle {
   display: flex;
   width: 100%;
+  justify-content: center;
 }
 
 #FamilySetup .rotatingMenuChoice .choiceTitle h4 {
-  flex: 1;
   font-size: 1.7rem;
+  display: inline;
+}
+
+#FamilySetup .rotatingMenuChoice .choiceTitle img {
+  height: 40px;
+  width: 40px;
+}
+
+#FamilySetup .rotatingMenuChoice .choiceTitle .choiceTitleTitle {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  align-content: center;
 }
 
 #FamilySetup .arrowIcon {
@@ -115,10 +138,12 @@
 }
 
 #FamilySetup .rotatingChoice {
-  width: 80%;
+  width: 100%;
   font-size: 1rem;
   display: flex;
   flex-direction: column;
+  min-height: 200px;
+  justify-content: space-evenly;
 }
 
 #FamilySetup .rotatingChoice .attributeDescription {
@@ -127,18 +152,27 @@
   justify-content: flex-start;
 }
 
+#FamilySetup .rotatingChoice .statIncrease {
+  font-weight: bold;
+}
+
 #FamilySetup .rotatingChoice h4 {
   font-size: 1.4rem;
   font-weight: 500;
 }
 
 #FamilySetup .rotatingChoice span {
+}
 
+#FamilySetup .rotatingChoice h5 {
+  text-decoration: underline;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 #FamilySetup .continueButtons {
   position: fixed;
-  bottom: 100px;
+  bottom: 50px;
   width: 100%;
 }
 
@@ -154,4 +188,75 @@
   background-color: white;
   color: black;
   cursor: pointer;
+}
+
+#FamilySetup .statInfo {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+#FamilySetup .statInfoData {
+  display: flex;
+  justify-content: flex-start;
+}
+
+#FamilySetup .statTitle {
+  font-weight: bold; 
+  margin-right: 10px;
+}
+
+#FamilySetup .tableCategories {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+#FamilySetup .growthRate {
+  margin-right: 30px;
+}
+
+#FamilySetup .greenBox {
+  background-color: #456e44;
+}
+
+#FamilySetup .yellowBox {
+  background-color: #646e44;
+}
+
+#FamilySetup .orangeBox {
+  background-color: #6e6443;
+}
+
+#FamilySetup .finalSelection {
+  margin: 0 auto;
+}
+
+#FamilySetup .finalSelection .selectionInfo {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 auto;
+}
+
+#FamilySetup .finalSelection .selectionInfo > * {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}
+
+#FamilySetup .finalSelection .selectionInfo img {
+  max-width: 200px;
+}
+
+#FamilySetup .finalSelection .finalAttribute {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+#FamilySetup .finalSelection .finalAttribute img {
+  max-width: 30px;
 }

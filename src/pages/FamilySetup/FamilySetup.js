@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import './FamilySetup.css';
 import { connect } from 'react-redux';
 import { setFamilyName, setBoyName, setPrimaryAttribute, setStarterPetChoice, setPetName, setPetType } from '../../redux/familyRoot/actions/familyRootActions';
+import animalStats from '../../assets/animalStats';
 import messageGroupings from '../../assets/messages';
 import xss from 'xss';
-import animalStats from '../../assets/animalStats';
 import smallBoy from '../../assets/smallboy.jpg';
 
 const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarterPetChoice, family, setStarterPetChoiceType, setPetName}) => {
@@ -24,6 +24,7 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
       e.preventDefault();
     }
     if (setupPageIndex > 0) {
+      setCurrentChoice(0);
       setSetupPageIndex(setupPageIndex - 1);
     }
     else {
@@ -77,6 +78,7 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
     else if (setupPageIndex === 4) {
       setPetName(petNameValue);
       setSetupPageIndex(setupPageIndex + 1);
+      setCurrentChoice(0);
     }
   }
   
@@ -95,20 +97,29 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
   }
 
   const displayPet = () => {
-    console.log(startingPet.messages)
   let entries = Object.entries(startingPet.messages[currentChoice].stats)
-  console.log(entries);
   let mapped = entries.map(statObject => {
-    console.log(statObject);
+    let backgroundColor = '';
+    let growthRate = statObject[1].growthRate;
+    if (growthRate === 'H') {
+      backgroundColor = 'greenBox';
+    }
+    else if (growthRate === 'M') {
+      backgroundColor = 'yellowBox';
+    }
+    else if (growthRate === 'L') {
+      backgroundColor = 'orangeBox'
+    }
     return (
-    <li className="statInfo" key={statObject[0]}>
-      <span className="statTitle">{statObject[0]}: </span>
-      <span className="statValue">{statObject[1].value}</span>
-      <span className="growthRate">{statObject[1].growthRate}</span>
+    <li className={`statInfo ${backgroundColor}`} key={statObject[0]}>
+      <div className="statInfoData">
+        <span className="statTitle">{statObject[0]}: </span>
+        <span className="statValue">{statObject[1].value}</span>
+      </div>
+      <span className="growthRate">{growthRate}</span>
     </li>
     )
   })
-  console.log(mapped);
   return mapped;
   }
 
@@ -150,10 +161,12 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
 
                 <li className="rotatingChoice">
                   <div className="choiceTitle">
-                    <img src="#" alt="left" className="arrowIcon" onClick={() => rotateChoice(-1)} />
-                    <img src={primaryAttributes.messages[currentChoice].icon} alt="icon" />
-                    <h4>{primaryAttributes.messages[currentChoice].name}</h4>
-                    <img src="#" alt="right" className="arrowIcon" onClick={() => rotateChoice(1)}/>
+                    <span className="arrowIcon" onClick={() => rotateChoice(-1)}>🡄</span>
+                    <div className="choiceTitleTitle">
+                      <img src={primaryAttributes.messages[currentChoice].icon} alt="icon" />
+                      <h4>{primaryAttributes.messages[currentChoice].name}</h4>
+                    </div>
+                    <span className="arrowIcon" onClick={() => rotateChoice(1)}>🡆</span>
                   </div>
                   <p>{primaryAttributes.messages[currentChoice].description}</p>
                   <span className="statIncrease">{primaryAttributes.messages[currentChoice].stat}</span>  
@@ -175,12 +188,18 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
 
                 <li className="rotatingChoice">
                   <div className="choiceTitle">
-                    <img src="#" alt="left" className="arrowIcon" onClick={() => rotateChoice(-1)} />
-                    <img src={startingPet.messages[currentChoice].icon? '##' : '#'} alt="icon" />
-                    <h4>{startingPet.messages[currentChoice].name}</h4>
-                    <img src="#" alt="right" className="arrowIcon" onClick={() => rotateChoice(1)}/>
+                    <span className="arrowIcon" onClick={() => rotateChoice(-1)}>🡄</span>
+                    <div className="choiceTitleTitle">
+                      <img src={startingPet.messages[currentChoice].icon ? startingPet.messages[currentChoice].icon : '#'} alt="icon" />
+                      <h4>{startingPet.messages[currentChoice].name}</h4>
+                    </div>
+                    <span className="arrowIcon" onClick={() => rotateChoice(1)}>🡆</span>
                   </div>
                   <h5>Level 10</h5>
+                  <div className="tableCategories">
+                    <span>Stat</span>
+                    <span>Growth Rate</span>
+                  </div>
                   <ul>
                     {displayPet()}
 
@@ -206,50 +225,52 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
     }
     else if (setupPageIndex === 5) {
       return (
-        <>
+        <div className="finalSelection">
           <p className="familyQuestion">Okay. Does everything look right?</p>
-          <div className="familyName">
-            <div className="person">
+            <div className="selectionInfo">
               <img src={smallBoy} alt="boy" />
               <div className="familyInfo">
                 <h4>{family.boyName}</h4>
-                <img src={primaryAttributes.messages[family.primaryAttribute].icon} alt={primaryAttributes.messages[family.primaryAttribute].name} />
-                <span>{primaryAttributes.messages[family.primaryAttribute].name}</span>
+                <h4>{family.familyName}</h4>
+                <div className="finalAttribute">
+                  <img src={primaryAttributes.messages[family.primaryAttribute].icon} alt={primaryAttributes.messages[family.primaryAttribute].name} />
+                  <span>{primaryAttributes.messages[family.primaryAttribute].name}</span>
+                </div>
               </div>
             </div>
-            <div className="pet">
-              <img src={() => {
-                for (let [key,value] of animalStats.types) {
-                  if (value.id === family.starterPet)
-                  console.log('found it');
-                  console.log(animalStats.types[key].icon)
-                    return animalStats.types[key].icon;
-                }
-                console.log('could not find');
-              }} alt="animal" />
+            <div className="selectionInfo">
+            <img src={animalStats.types[family.petType].icon} alt={family.petType}/>
               <div className="familyInfo">
                 <h4>{family.petName}</h4>
                 <span>{family.petType}</span>
+                <span>Level 10</span>
               </div>
             </div>
-          </div>
-        </>
+        </div>
       )
     }
   }
   return (
     <div id="FamilySetup">
-      <div className="familyBar">The <span className="bold">{familyNameValue}</span> Family <span className="topIcon">{setupPageIndex > 2 ? <img src={familySetup.primaryAttributes.messages[family.primaryAttribute].icon} alt={familySetup.primaryAttributes.messages[family.primaryAttribute].name} /> : ''}</span></div>
+      <div className="familyBar">
+        The <span className="bold">{familyNameValue}</span> Family 
+        <span className="topIcon">
+          {setupPageIndex > 2 ? 
+            <img src={familySetup.primaryAttributes.messages[family.primaryAttribute].icon} alt={familySetup.primaryAttributes.messages[family.primaryAttribute].name} /> 
+            : ''
+          }
+        </span>
+      </div>
       {setupPageIndex > 0 ? <div className="nameBar">{boyNameValue} {familyNameValue}</div> : ''}
-      {setupPageIndex > 3 ? <div className="petBar">{petNameValue} - Level 10 - <span className="topIcon"><img src={() => {
-        for (let [key,value] of animalStats.types) {
-          if (value.id === family.starterPet)
-          console.log('found it');
-          console.log(animalStats.types[key].icon)
-            return animalStats.types[key].icon;
-        }
-        console.log('could not find');
-      }} alt="animal" /></span></div> : ''}
+      {setupPageIndex > 3 ? 
+        <div className="petBar">
+          {petNameValue} - Level 10 - 
+          <span className="topIcon">
+            <img src={animalStats.types[family.petType].icon} alt={family.petType}/>
+          </span>
+        </div> 
+        : ''
+      }
       {familySetupModal()}
       <div className="continueButtons">
         <button type="button" onClick={(e) => handleBack(e)}>Back</button>
