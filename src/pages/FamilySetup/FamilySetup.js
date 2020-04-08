@@ -80,6 +80,9 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
       setSetupPageIndex(setupPageIndex + 1);
       setCurrentChoice(0);
     }
+    else if (setupPageIndex === 5) {
+      setSetupPageIndex(setupPageIndex + 1);
+    }
   }
   
   const rotateChoice = (value) => {
@@ -248,6 +251,14 @@ const FamilySetup = ({setFamilyName, setBoyName, setPrimaryAttribute, setStarter
             </div>
         </div>
       )
+    }
+    else if (setupPageIndex === 6) {
+      return (
+        <>
+          <p className="familyQuestion">Great! It's time to go and help out.</p>
+          <h4 className="finalMessage">Let's go to {family.boyName}!</h4>
+        </>
+      );
     }
   }
   return (

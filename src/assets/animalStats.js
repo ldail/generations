@@ -16,7 +16,7 @@ const animalStats = {
     pig: {name: 'pig', icon: pigIcon, id: 5}
   },
   startingStats: {
-    H: {abbreviation: 'H', value: 22},
+    H: {abbreviation: 'H', name: 'high', value: 22},
     M: {abbreviation: 'M', name: 'medium', value: 16},
     L: {abbreviation: 'L', name: 'low', value: 16}
   },
