@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/generations-client/static/css/main.d04a8e4f.chunk.css",
-    "main.js": "/generations-client/static/js/main.59322e6b.chunk.js",
-    "main.js.map": "/generations-client/static/js/main.59322e6b.chunk.js.map",
-    "runtime-main.js": "/generations-client/static/js/runtime-main.7dabf9cd.js",
-    "runtime-main.js.map": "/generations-client/static/js/runtime-main.7dabf9cd.js.map",
-    "static/js/2.f24f5617.chunk.js": "/generations-client/static/js/2.f24f5617.chunk.js",
-    "static/js/2.f24f5617.chunk.js.map": "/generations-client/static/js/2.f24f5617.chunk.js.map",
-    "index.html": "/generations-client/index.html",
-    "precache-manifest.ec1ea1128c87166f093d22a4f52e5fc2.js": "/generations-client/precache-manifest.ec1ea1128c87166f093d22a4f52e5fc2.js",
-    "service-worker.js": "/generations-client/service-worker.js",
-    "static/css/main.d04a8e4f.chunk.css.map": "/generations-client/static/css/main.d04a8e4f.chunk.css.map",
-    "static/js/2.f24f5617.chunk.js.LICENSE.txt": "/generations-client/static/js/2.f24f5617.chunk.js.LICENSE.txt",
-    "static/media/cloud.png": "/generations-client/static/media/cloud.c66e1bc5.png",
-    "static/media/smallboy.jpg": "/generations-client/static/media/smallboy.19a950d8.jpg"
+    "main.css": "/generations/static/css/main.d04a8e4f.chunk.css",
+    "main.js": "/generations/static/js/main.facc744b.chunk.js",
+    "main.js.map": "/generations/static/js/main.facc744b.chunk.js.map",
+    "runtime-main.js": "/generations/static/js/runtime-main.2c3dd7b9.js",
+    "runtime-main.js.map": "/generations/static/js/runtime-main.2c3dd7b9.js.map",
+    "static/js/2.f24f5617.chunk.js": "/generations/static/js/2.f24f5617.chunk.js",
+    "static/js/2.f24f5617.chunk.js.map": "/generations/static/js/2.f24f5617.chunk.js.map",
+    "index.html": "/generations/index.html",
+    "precache-manifest.9fdfb12d5e2f1c098ebd8c69ce931f00.js": "/generations/precache-manifest.9fdfb12d5e2f1c098ebd8c69ce931f00.js",
+    "service-worker.js": "/generations/service-worker.js",
+    "static/css/main.d04a8e4f.chunk.css.map": "/generations/static/css/main.d04a8e4f.chunk.css.map",
+    "static/js/2.f24f5617.chunk.js.LICENSE.txt": "/generations/static/js/2.f24f5617.chunk.js.LICENSE.txt",
+    "static/media/cloud.png": "/generations/static/media/cloud.c66e1bc5.png",
+    "static/media/smallboy.jpg": "/generations/static/media/smallboy.19a950d8.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.7dabf9cd.js",
+    "static/js/runtime-main.2c3dd7b9.js",
     "static/js/2.f24f5617.chunk.js",
     "static/css/main.d04a8e4f.chunk.css",
-    "static/js/main.59322e6b.chunk.js"
+    "static/js/main.facc744b.chunk.js"
   ]
 }
