@@ -9,20 +9,25 @@ const familyRootReducer = (state=INITIAL_STATE, action) => {
         ...state,
         familyName: action.payload
       }
-    case familyRootTypes.SET_BOY_NAME:
-      return {
-        ...state,
-        boyName: action.payload
-      }
     case familyRootTypes.SET_PRIMARY_ATTRIBUTE:
       return {
         ...state,
         primaryAttribute: action.payload
       }
+    case familyRootTypes.ADD_NEW_CHARACTER:
+      return {
+        ...state,
+        characters: [...state.characters, action.payload]
+      }
+    case familyRootTypes.SET_CHARACTER_PROPERTY:
+      return {
+        ...state,
+        characters: action.payload
+      }
     case familyRootTypes.SET_STARTER_PET:
       return {
         ...state,
-        starterPet: action.payload
+        petId: action.payload
       }
     case familyRootTypes.SET_PET_NAME:
       return {
@@ -40,3 +45,21 @@ const familyRootReducer = (state=INITIAL_STATE, action) => {
 }
 
 export default familyRootReducer;
+
+
+
+/*
+
+Example Redux State:
+
+
+family: 
+  familyName: 'xxx',
+  attribute: 0,
+  characters: [{name: 'john', gender: appConstants.m, partnerId: null, petId: 0, id: 0, level: 0}]
+pet:
+  pets: [{name: 'whipper', type: appConstants.petType, ownerId: 0, }]
+game:
+  lastCompleted: [appConstants.familySetup, 3, 5]
+
+  */
