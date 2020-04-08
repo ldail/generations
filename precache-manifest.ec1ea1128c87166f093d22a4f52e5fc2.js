@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "146204d379d6eeed27bfaa4e16185ac6",
+    "revision": "13024c31b64fdd29bf6daaad94850e81",
     "url": "/generations-client/index.html"
   },
   {
-    "revision": "054416f6e87ad85ff913",
-    "url": "/generations-client/static/css/main.71471504.chunk.css"
+    "revision": "caea9cb0fd6abff8cba3",
+    "url": "/generations-client/static/css/main.d04a8e4f.chunk.css"
   },
   {
-    "revision": "3928094708cc04daa713",
-    "url": "/generations-client/static/js/2.333c60c0.chunk.js"
+    "revision": "857951beb685646e9b57",
+    "url": "/generations-client/static/js/2.f24f5617.chunk.js"
   },
   {
-    "revision": "99bd0487192ec9e7d9ee8fbbd91ee444",
-    "url": "/generations-client/static/js/2.333c60c0.chunk.js.LICENSE.txt"
+    "revision": "928d7b5eb39d16fe9a880722c974b51e",
+    "url": "/generations-client/static/js/2.f24f5617.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "054416f6e87ad85ff913",
-    "url": "/generations-client/static/js/main.6c7488bd.chunk.js"
+    "revision": "caea9cb0fd6abff8cba3",
+    "url": "/generations-client/static/js/main.59322e6b.chunk.js"
   },
   {
     "revision": "ea0b39098104796687d9",
