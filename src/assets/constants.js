@@ -27,23 +27,27 @@ export const promptMessages = {
       `What is your family's name?`,
       `And what was that boy's name? The one you held so tightly?`,
       `What is your family's primary attribute?`,
-      
+      `What kind of pet does he have? Choose wisely.`,
+      `And what was that pet's name?`,
+      `Okay. Does everything look right?`,
+      `Great! It's time to go help out!`,
+      `Let's go to`
     ]
   }
 };
 
 export const primaryAttributes = [
-  {name: 'Agile', description: 'can move quickly', stat: '+ Speed', icon: agileAttributeIcon},
-  {name: 'Thoughtful', description: 'problem-solving expert', stat: '+ Ability', icon: thoughtfulAttributeIcon},
-  {name: 'Attractive', description: 'can make matches easily', stat: '+ Likeability', icon: attractiveAttributeIcon},
-  {name: 'Hearty', description: 'can handle radiation well', stat: '+ Deradiate', icon: heartyAttributeIcon}
+  {name: 'Agile', description: 'can move quickly', stat: 'Speed', icon: agileAttributeIcon},
+  {name: 'Thoughtful', description: 'problem-solving expert', stat: 'Ability', icon: thoughtfulAttributeIcon},
+  {name: 'Attractive', description: 'can make matches easily', stat: 'Likeability', icon: attractiveAttributeIcon},
+  {name: 'Hearty', description: 'can handle radiation well', stat: 'Deradiate', icon: heartyAttributeIcon}
 ];
 
 export const petData = [
   //Example: {name: 'dog', icon: '../../', stats: {attack: {value: 10, abbreviation: 'H'}, defense: {...}}}
   animalStats.starterTypeChoices.map(animal => {
     const stats = {};
-    for (let [key,value] of animalStats.growthRates[animal.name]) {
+    for (let [key,value] of Object.entries(animalStats.growthRates[animal.name])) {
       stats[key] = {value: value.initialValue, growthRate: value.abbreviation};
     }
     const animalObject = {name: animal.name, icon: animal.icon, stats};
