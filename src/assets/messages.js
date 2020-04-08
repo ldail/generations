@@ -26,6 +26,7 @@ export const promptMessages = {
     messages: [
       `What is your family's name?`,
       `And what was that boy's name? The one you held so tightly?`,
+      `What is your family's primary attribute?`,
       
     ]
   }
