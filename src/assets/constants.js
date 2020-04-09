@@ -1,4 +1,3 @@
-import animalStats from './animalStats';
 import heartyAttributeIcon from './hearty-attribute-icon.png';
 import thoughtfulAttributeIcon from './brain-attribute-icon.png';
 import attractiveAttributeIcon from './attractive-attribute-icon.png';
@@ -43,14 +42,8 @@ export const primaryAttributes = [
   {name: 'Hearty', description: 'can handle radiation well', stat: 'Deradiate', icon: heartyAttributeIcon}
 ];
 
-export const petData = [
-  //Example: {name: 'dog', icon: '../../', stats: {attack: {value: 10, abbreviation: 'H'}, defense: {...}}}
-  animalStats.starterTypeChoices.map(animal => {
-    const stats = {};
-    for (let [key,value] of Object.entries(animalStats.growthRates[animal.name])) {
-      stats[key] = {value: value.initialValue, growthRate: value.abbreviation};
-    }
-    const animalObject = {name: animal.name, icon: animal.icon, stats};
-    return animalObject;
-  })
-];
+export const gender = {
+  male: 'male',
+  female: 'female',
+  other: 'other'
+}

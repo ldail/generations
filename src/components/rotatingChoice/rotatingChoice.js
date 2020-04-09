@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const RotatingChoice = ({title, icon, choice, rotateChoice, dataSetLength}) => {
-  const [currentChoice, setCurrentChoice] = useState(0);
 
   return (
     <ul>

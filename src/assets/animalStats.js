@@ -7,13 +7,15 @@ import birdIcon from './bird-icon.png';
 
 
 const animalStats = {
-  types: {
-    dog: {name: 'dog', icon: dogIcon, id: 0},
-    cat: {name: 'cat', icon: catIcon, id: 1},
-    rabbit: {name: 'rabbit', icon: rabbitIcon, id: 2},
-    lizard: {name: 'lizard', icon: lizardIcon, id: 3},
-    bird: {name: 'bird', icon: birdIcon, id: 4},
-    pig: {name: 'pig', icon: pigIcon, id: 5}
+  get types() {
+    return {
+    dog: {name: 'dog', icon: dogIcon, id: 0, stats: this.growthRates.dog},
+    cat: {name: 'cat', icon: catIcon, id: 1, stats: this.growthRates.cat},
+    rabbit: {name: 'rabbit', icon: rabbitIcon, id: 2, stats: this.growthRates.rabbit},
+    lizard: {name: 'lizard', icon: lizardIcon, id: 3, stats: this.growthRates.lizard},
+    bird: {name: 'bird', icon: birdIcon, id: 4, stats: this.growthRates.bird},
+    pig: {name: 'pig', icon: pigIcon, id: 5, stats: this.growthRates.pig}
+    }
   },
   get starterTypeChoices() {
     return [this.types.dog, this.types.cat, this.types.rabbit,this.types.lizard,this.types.bird,this.types.pig]

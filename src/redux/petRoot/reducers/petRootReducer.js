@@ -1,6 +1,8 @@
 import petRootTypes from "../types/petRootTypes";
 
-const INITIAL_STATE = {};
+const INITIAL_STATE = {
+  pets: []
+};
 
 const petRootReducer = (state=INITIAL_STATE, action) => {
   switch (action.type) {
@@ -17,19 +19,8 @@ const petRootReducer = (state=INITIAL_STATE, action) => {
 export default petRootReducer;
 
 
+/*Example Store:
 
-/*
+  pets: [{name: 'whipper', type: pets.id, ownerId: 0, }]
 
-Example Redux State:
-
-
-family: 
-  familyName: 'xxx',
-  attribute: 0,
-  characters: [{name: 'john', gender: appConstants.m, partnerId: null, petId: 0, id: 0, level: 0}]
-pet:
-  pets: [{name: 'whipper', type: appConstants.petType, ownerId: 0, }]
-game:
-  lastCompleted: [appConstants.familySetup, 3, 5]
-
-  */
+*/

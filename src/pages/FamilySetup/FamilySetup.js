@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import './FamilySetup.css';
 import { connect } from 'react-redux';
-import {promptMessages, primaryAttributes, petData} from '../../assets/constants';
+import {promptMessages, primaryAttributes, gender} from '../../assets/constants';
+import animalStats from '../../assets/animalStats';
 import xss from 'xss';
 import smallBoy from '../../assets/smallboy.jpg';
 import RotatingChoice from '../../components/rotatingChoice/rotatingChoice';
+import { addNewCharacter, setFamilyName, setPrimaryAttribute } from '../../redux/familyRoot/actions/familyRootActions';
+import { addNewPet } from '../../redux/petRoot/actions/petRootActions';
 
-const FamilySetup = () => {
+const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttributeDispatch, setFamilyNameDispatch}) => {
 
   const [currentPrompt, setCurrentPrompt] = useState(0);
   const [currentRotateChoice, setCurrentRotateChoice] = useState(0);
 
   const [familyName, setFamilyName] = useState('');
   const [boyName, setBoyName] = useState('');
+  const [petTypeId, setPetTypeId] = useState(0);
   const [petName, setPetName] = useState('');
-  const [petType, setPetType] = useState('');
   const [primaryAttribute, setPrimaryAttribute] = useState(0);
 
   const handleBack = e => {
@@ -37,27 +40,43 @@ const FamilySetup = () => {
     }
     setCurrentPrompt(currentPrompt + 1);
     setCurrentRotateChoice(0);
+    if (currentPrompt === 5) {
+      setFamilyNameDispatch(familyName);
+      setPrimaryAttributeDispatch(primaryAttribute);
+      addNewPetDispatch({name: petName, typeId: petTypeId, ownerId: 0})
+      addNewCharacterDispatch({name: boyName, gender: gender.male, id: 0, partnerId: null, petId: 0, level: 10 })
+    }
   }
   
   const rotateChoice = (dataSetLength, value) => {
+    let stateAlter = () => {};
+    if (currentPrompt === 2) {
+      stateAlter = setPrimaryAttribute;
+    }
+    else if (currentPrompt === 3) {
+      stateAlter = setPetTypeId;
+    }
     //If they move through past the last item
     if (currentRotateChoice === dataSetLength - 1 && value === 1) {
       setCurrentRotateChoice(0);
+      stateAlter(0);
     }
     //If they go backwards before the first item
     else if (currentRotateChoice === 0 && value === -1) {
       setCurrentRotateChoice(dataSetLength - 1)
+      stateAlter(dataSetLength - 1);
     }
     else {
       setCurrentRotateChoice(currentRotateChoice + value);
+      stateAlter(currentRotateChoice + value)
     }
   }
 
   const displayStartingPetStatsChart = () => {
-  let stats = Object.entries(petData.stats)
-  let mapped = stats.map((stat, index) => {
+  let stats = getPetDataObjectByProperty('id',petTypeId).stats;
+  let mapped = Object.entries(stats).map(([key, value], index) => {
     let backgroundColor = '';
-    let growthRate = stat.abbreviation;
+    let growthRate = value.abbreviation;
     if (growthRate === 'H') {
       backgroundColor = 'greenBox';
     }
@@ -68,12 +87,12 @@ const FamilySetup = () => {
       backgroundColor = 'orangeBox'
     }
     return (
-    <li className={`statInfo ${backgroundColor}`} key={Object.keys(stats)[index]}>
+    <li className={`statInfo ${backgroundColor}`} key={key}>
       <div className="statInfoData">
-        <span className="statTitle">{Object.keys(stats)[index]}: </span>
-        <span className="statValue">{stat.value}</span>
+        <span className="statTitle">{key}: </span>
+        <span className="statValue">{value.initialValue}</span>
       </div>
-      <span className="growthRate">{growthRate}</span>
+      <span className="growthRate">{value.abbreviation}</span>
     </li>
     )
   })
@@ -85,14 +104,14 @@ const FamilySetup = () => {
       return(
         <>
           <p>The</p>
-          <input type="text" value={familyName} onChange={(e) => setFamilyName(xss(e.target.value))} autofocus required />
+          <input type="text" value={familyName} onChange={(e) => setFamilyName(xss(e.target.value))} autoFocus required />
           <p>Family</p>
         </>
       );
     }
     else if (currentPrompt === 1) {
       return (
-        <input type="text" value={boyName} onChange={(e) => setBoyName(xss(e.target.value))} required autofocus/>
+        <input type="text" value={boyName} onChange={(e) => setBoyName(xss(e.target.value))} required autoFocus/>
       );
     }
     else if (currentPrompt === 2) {
@@ -128,16 +147,16 @@ const FamilySetup = () => {
       return (
         <RotatingChoice
           rotateChoice={rotateChoice}
-          dataSetLength={petData.length}
-          title={petData[currentRotateChoice].name}
-          icon={petData[currentRotateChoice].icon}
+          dataSetLength={Object.keys(animalStats.starterTypeChoices).length}
+          title={getPetDataObjectByProperty('id',currentRotateChoice).name}
+          icon={getPetDataObjectByProperty('id', currentRotateChoice).icon}
           choice={choice}
           />
       );
     }
     else if (currentPrompt === 4) {
       return (
-        <input type="text" value={petName} onChange={(e) => setPetName(xss(e.target.value))} required autofocus/>
+        <input type="text" value={petName} onChange={(e) => setPetName(xss(e.target.value))} required autoFocus/>
       );
     }
     else if (currentPrompt === 5) {
@@ -155,10 +174,10 @@ const FamilySetup = () => {
             </div>
           </div>
           <div className="selectionInfo">
-          <img src={petData[petType].icon} alt={petType}/>
+          <img src={getPetDataObjectByProperty('id', petTypeId).icon} alt={getPetDataObjectByProperty('id',petTypeId).name}/>
             <div className="familyInfo">
               <h4>{petName}</h4>
-              <span>{petType}</span>
+              <span>{getPetDataObjectByProperty('id', petTypeId).name}</span>
               <span>Level 10</span>
             </div>
           </div>
@@ -174,13 +193,24 @@ const FamilySetup = () => {
   const renderFamilySetup = () => {
     return (
       <form className="familyPrompt" onSubmit={(e) => handleSubmit(e)}>
-        <h2 className="promptHeader">{promptMessages[currentPrompt]}</h2>
+        <h2 className="promptHeader">{promptMessages.familySetup.messages[currentPrompt]}</h2>
         <div className="promptAnswer">
           {displayPromptAnswer()}
         </div>
       </form>
     );
   };
+
+  const getPetDataObjectByProperty = (property, value) => {
+    console.log(property, value);
+    for (let [animalType,animalValues] of Object.entries(animalStats.types)) {
+      console.log(animalType);
+      console.log(animalValues);
+      if (animalStats.types[animalType][property] === value) {
+        return animalValues;
+      }
+    }
+  }
 
 
   return (
@@ -199,7 +229,7 @@ const FamilySetup = () => {
       {currentPrompt > 3 
       ? <div className="topBar" id="petBar">
           {petName} - Level 10 - 
-            <img src={petData[petType].icon} alt={petType}/>
+            <img src={getPetDataObjectByProperty('id', petTypeId).icon} alt={getPetDataObjectByProperty('id',petTypeId).name}/>
         </div> 
         : ''
       }
@@ -213,16 +243,16 @@ const FamilySetup = () => {
 };
 
 const mapStateToProps = state => ({
-  family: state.family
+  family: state.family,
+  pet: state.pet
 });
 
 const mapDispatchToProps = dispatch => ({
-  // setFamilyName: (familyName) => dispatch(setFamilyName(familyName)),
-  // setBoyName: (boyName) => dispatch(setBoyName(boyName)),
-  // setPrimaryAttribute: (primaryAttribute) => dispatch(setPrimaryAttribute(primaryAttribute)),
-  // setStarterPetChoice: (starterPet) => dispatch(setStarterPetChoice(starterPet)),
-  // setPetName: (petName) => dispatch(setPetName(petName)),
-  // setStarterPetChoiceType: (starterPetType) => dispatch(setPetType(starterPetType))
+
+  setFamilyNameDispatch: (familyName) => dispatch(setFamilyName (familyName)),
+  setPrimaryAttributeDispatch: (primaryAttribute) => dispatch(setPrimaryAttribute(primaryAttribute)),
+  addNewCharacterDispatch: (newCharacter) => dispatch(addNewCharacter(newCharacter)),
+  addNewPetDispatch: (newPet) => dispatch(addNewPet(newPet))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(FamilySetup);
