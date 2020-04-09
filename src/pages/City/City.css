@@ -1,0 +1,31 @@
+body, #root {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+
+#City {
+  background-image: url('../../assets/tile_background.jpg');
+  background-repeat: repeat;
+  width: 6000px;
+  height: 6000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-position-x: 1px;
+  background-position-y: 1px;
+}
+
+.character {
+  background: url('../../assets/personsprite.jpg') no-repeat;
+  width: 60px;
+  height: 89px;
+  background-position-x: 0px;
+  background-position-y: 0px;
+  object-fit: contain;
+  background-size: 237px 355px;
+  z-index: 2;
+}
