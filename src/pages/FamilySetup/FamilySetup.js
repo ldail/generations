@@ -185,7 +185,7 @@ const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttr
       );
     }
     else if (currentPrompt === 6) {
-      return <p>{promptMessages[currentPrompt + 1]}</p>
+      return <p>{promptMessages.familySetup.messages[currentPrompt + 1]} {boyName}!</p>
     }
   }
 
