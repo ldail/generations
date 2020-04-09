@@ -28,4 +28,8 @@ body, #root {
   object-fit: contain;
   background-size: 237px 355px;
   z-index: 2;
+  flex: 1;
+  position: fixed;
+  top: 49vh;
+  left: 49vw;
 }
