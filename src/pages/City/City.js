@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import './City.css';
 
 class City extends Component {
@@ -101,8 +101,11 @@ class City extends Component {
   }
   
   componentDidMount() {
-    this.city.current.style['background-position-x'] = `-${(6000 - window.screen.width) / 2}px`;
-    this.city.current.style['background-position-y'] = `-${(6000 - window.screen.height) / 2}px`;
+    // center
+    // this.city.current.style['background-position-x'] = `-${(6000 - window.screen.width) / 2}px`;
+    // this.city.current.style['background-position-y'] = `-${(4500 - window.screen.height) / 2}px`;
+    this.city.current.style['background-position-x'] = `-3725px`;
+    this.city.current.style['background-position-y'] = `-2600px`;
   }
 
 
