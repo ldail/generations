@@ -7,112 +7,126 @@ class City extends Component {
     this.state = {
 
     }
-    this.city = React.createRef()
-    this.character = React.createRef()
+    this.outsideCity = React.createRef();
+    this.character = React.createRef();
+    this.city = React.createRef();
   }
 
   findCurrentPositions = () => {
-    let background = {};
-    let character = {};
+    const background = {x: 0, y:0};
+    const cityBackground = {x: 1000, y: 1000};
+    const character = {x:0, y:0};
   
     //background
-    let backgroundPositionX = this.city.current.style['background-position-x'] || `-${(6000 - window.screen.width) / 2}px`;
-    let backgroundPositionY = this.city.current.style['background-position-y'] || `-${(6000 - window.screen.height) / 2}px`;
-    let backgroundX = parseInt(backgroundPositionX.slice(0,backgroundPositionX.length-1));
-    let backgroundY = parseInt(backgroundPositionY.slice(0,backgroundPositionY.length-1));
+    const backgroundPositionX = this.city.current.style['backgroundPositionX'];
+    const backgroundPositionY = this.city.current.style['backgroundPositionY'];
+    background.x = parseInt(backgroundPositionX.slice(0,backgroundPositionX.length-1));
+    background.y = parseInt(backgroundPositionY.slice(0,backgroundPositionY.length-1));
+    cityBackground.x = background.x + 1000;
+    cityBackground.y = background.x + 1000;
   
     //character
-    let characterPositionX = this.character.current.style['background-position-x'] || '0px';
-    let characterPositionY = this.character.current.style['background-position-y'] || '0px';
-    let characterX = parseInt(characterPositionX.slice(0,characterPositionX.length-1));
-    let characterY = parseInt(characterPositionY.slice(0,characterPositionY.length-1));
+    const characterPositionX = this.character.current.style['backgroundPositionX']
+    const characterPositionY = this.character.current.style['backgroundPositionY']
+    character.x = parseInt(characterPositionX.slice(0,characterPositionX.length-1));
+    character.y = parseInt(characterPositionY.slice(0,characterPositionY.length-1));
   
-    background['X'] = backgroundX;
-    background['Y'] = backgroundY;
-    character['X'] = characterX;
-    character['Y'] = characterY;
-    return {background, character};
+    return {background, cityBackground, character};
   }
   
   checkKey(e) {
-    console.log('finding key');
-    let {character, background} = this.findCurrentPositions();
-    console.log(e.keyCode);
+    const {character, cityBackground, background} = this.findCurrentPositions();
   
     //defaults - character
-    let characterYDown = 0;
-    let characterYUp = -89;
-    let characterYLeft = -178;
-    let characterYRight = -267;  
+    const characterYDown = 0;
+    const characterYUp = -89;
+    const characterYLeft = -178;
+    const characterYRight = -267;  
+    const characterHeight = 89;
+    const characterWidth = 75;
   
-    let stepPixels = 7;
+    const stepPixels = 14;
   
     //defaults - background
-    let leftmostX = 1;
-    let rightmostX = 6000 - window.screen.width;
-    let topmostY = 1;
-    let bottommostY = 6000 - window.screen.height;
+
+    const leftmostX = 1000;
+    const rightmostX = -1 * (7000 - (window.screen.width / 2) - (characterWidth / 2) - 1);
+    const topmostY = 1000;
+    const bottommostY = -1 * (5500 - (window.screen.height / 2) - (characterHeight / 2) - 1);
     
   
     //up
     if (e.keyCode === 38) {
-      if (character.Y !== characterYUp) {
-        this.character.current.style.backgroundPosition = `${character.X}px ${characterYUp}px`;
+      if (character.y !== characterYUp) {
+        this.character.current.style.backgroundPosition = `${character.x}px ${characterYUp}px`;
       }
   
-      if (background.Y + stepPixels < ~topmostY) {
-        this.city.current.style.backgroundPosition = `${background.X}px ${background.Y + stepPixels}px`;
+      if (background.y + stepPixels < topmostY) {
+        this.city.current.style['backgroundPositionY'] = `${background.y + stepPixels}px`;
+        this.outsideCity.current.style['backgroundPositionY'] = `${background.y + stepPixels}px`;
       }
     }
   
     //down
     if (e.keyCode === 40) {
-      if (character.Y !== characterYDown) {
-        this.character.current.style.backgroundPosition = `${character.X}px ${characterYDown}px`;
+      if (character.y !== characterYDown) {
+        this.character.current.style.backgroundPosition = `${character.x}px ${characterYDown}px`;
       }
-  
-      if (background.Y + stepPixels > ~bottommostY) {
-        this.city.current.style.backgroundPosition = `${background.X}px ${background.Y - stepPixels}px`;
+
+      if (background.y - stepPixels > bottommostY) {
+        this.city.current.style['backgroundPositionY'] = `${background.y - stepPixels}px`;
+        this.outsideCity.current.style['backgroundPositionY'] = `${background.y - stepPixels}px`;
       }
     }
   
     //left
     if (e.keyCode === 37) {
-      if (character.Y !== characterYLeft) {
-        this.character.current.style.backgroundPosition = `${character.X}px ${characterYLeft}px`;
+      if (character.y !== characterYLeft) {
+        this.character.current.style.backgroundPosition = `${character.x}px ${characterYLeft}px`;
       }
   
-      if (background.X + stepPixels < ~leftmostX) {
-        this.city.current.style.backgroundPosition = `${background.X + stepPixels}px ${background.Y}px`;
+      if (background.x + stepPixels < leftmostX) {
+        this.city.current.style['backgroundPositionX'] = `${background.x + stepPixels}px`;
+        this.outsideCity.current.style['backgroundPositionX'] = `${background.x + stepPixels}px`;
+
       }
     }
   
     //right
     if (e.keyCode === 39) {
-      if (character.Y !== characterYRight) {
-        this.character.current.style.backgroundPosition = `${character.X}px ${characterYRight}px`;
+      if (character.y !== characterYRight) {
+        this.character.current.style.backgroundPosition = `${character.x}px ${characterYRight}px`;
       }
   
-      if (background.X - stepPixels > ~rightmostX) {
-        this.city.current.style.backgroundPosition = `${background.X - stepPixels}px ${background.Y}px`;
+      if (background.x - stepPixels > rightmostX) {
+        this.city.current.style['backgroundPositionX'] = `${background.x - stepPixels}px`;
+        this.outsideCity.current.style['backgroundPositionX'] = `${background.x - stepPixels}px`;
+
       }
     }
   
   }
   
   componentDidMount() {
-    // center
-    // this.city.current.style['background-position-x'] = `-${(6000 - window.screen.width) / 2}px`;
-    // this.city.current.style['background-position-y'] = `-${(4500 - window.screen.height) / 2}px`;
-    this.city.current.style['background-position-x'] = `-3725px`;
-    this.city.current.style['background-position-y'] = `-2600px`;
+    this.city.current.style['backgroundPositionX'] = '0px';
+    this.city.current.style['backgroundPositionY'] = '0px';
+    this.character.current.style['backgroundPositionX'] = '0px';
+    this.character.current.style['backgroundPositionY'] = '0px';
+    this.character.current.style['width'] = '60px';
+    this.character.current.style['height'] = '89px';
+    this.character.current.style['top'] = `${(window.screen.height / 2) - 89}px`
+    this.character.current.style['left'] = `${(window.screen.width / 2) - 60}px`
+    this.city.current.style['top'] = `1000px`;
+    this.city.current.style['left'] = `1000px`;
   }
 
 
   render() {
     return (
-      <div id="City" ref={this.city} onKeyDown={(e) => this.checkKey(e)} tabIndex="0">
-        <div className="character" ref={this.character} />
+      <div id="OutsideCity" ref={this.outsideCity} onKeyDown={(e) => this.checkKey(e)} tabIndex="0">
+        <div id="City" ref={this.city}>
+          <div className="character" ref={this.character} />
+        </div>
       </div>
     );
   }

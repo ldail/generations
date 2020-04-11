@@ -4,6 +4,19 @@ body, #root {
   display: flex;
   overflow: hidden;
   max-width: 100%;
+  position: relative;
+  background-color: red;
+}
+
+#OutsideCity {
+  background: linear-gradient(#000, #FFF);
+  width: 8000px;
+  height: 6500px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex: 1;
+  position: relative;
 }
 
 
@@ -14,22 +27,18 @@ body, #root {
   height: 4500px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-position-x: 1px;
-  background-position-y: 1px;
+  align-content: center;
+  flex: 1;
+  position: absolute;
 }
 
 .character {
   background: url('../../assets/personsprite.jpg') no-repeat;
   width: 60px;
   height: 89px;
-  background-position-x: 0px;
-  background-position-y: 0px;
   object-fit: contain;
   background-size: 237px 355px;
   z-index: 2;
   flex: 1;
   position: fixed;
-  top: 49vh;
-  left: 49vw;
 }
