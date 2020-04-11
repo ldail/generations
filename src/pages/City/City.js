@@ -49,10 +49,10 @@ class City extends Component {
   
     //defaults - background
 
-    const leftmostX = 1000;
-    const rightmostX = -1 * (7000 - (window.screen.width / 2) - (characterWidth / 2) - 1);
-    const topmostY = 1000;
-    const bottommostY = -1 * (5500 - (window.screen.height / 2) - (characterHeight / 2) - 1);
+    const leftmostX = (window.screen.width / 2) - stepPixels - (characterWidth / 2) + 1;
+    const rightmostX = -1 * (6000 - (window.screen.width / 2) + stepPixels - (characterWidth / 2) + 1);
+    const topmostY =  (window.screen.height / 2) - stepPixels - (characterHeight / 2) + 1;
+    const bottommostY = -1 * (4500 - (window.screen.height / 2) + stepPixels - (characterHeight / 2) + 1);
     
   
     //up
@@ -116,8 +116,8 @@ class City extends Component {
     this.character.current.style['height'] = '89px';
     this.character.current.style['top'] = `${(window.screen.height / 2) - 89}px`
     this.character.current.style['left'] = `${(window.screen.width / 2) - 60}px`
-    this.city.current.style['top'] = `1000px`;
-    this.city.current.style['left'] = `1000px`;
+    this.city.current.style['top'] = `0px`;
+    this.city.current.style['left'] = `0px`;
   }
 
 
