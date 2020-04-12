@@ -5,18 +5,20 @@ body, #root {
   overflow: hidden;
   max-width: 100%;
   position: relative;
-  background-color: red;
+  background-color: black;
 }
 
 #OutsideCity {
-  background: linear-gradient(#000, #FFF);
+  background-color: red;
   width: 8000px;
   height: 6500px;
   display: flex;
   justify-content: center;
   align-content: center;
   flex: 1;
-  position: relative;
+  position: fixed;
+  top: -1000px;
+  left: -1000px;
 }
 
 
@@ -29,7 +31,9 @@ body, #root {
   justify-content: center;
   align-content: center;
   flex: 1;
-  position: absolute;
+  position: fixed;
+  top: 0px;
+  left: 0px;
 }
 
 .character {
