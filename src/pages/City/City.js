@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './City.css';
+import PixelWriter from '../../development/PixelWriter/PixelWriter';
 
 class City extends Component {
   constructor(props) {
@@ -18,14 +19,17 @@ class City extends Component {
     const character = {x:0, y:0};
   
     //background
-    const cityBackgroundTop = this.city.current.style['top'];
-    const cityBackgroundLeft = this.city.current.style['left'];
-    cityPosition.top = parseInt(cityBackgroundTop.slice(0,cityBackgroundTop.length-1));
-    cityPosition.left = parseInt(cityBackgroundLeft.slice(0,cityBackgroundLeft.length-1));
-    const outsideCityPositionTop = this.city.current.style['top'];
-    const outsideCityPositionLeft = this.city.current.style['left'];
-    cityPosition.top = parseInt(outsideCityPositionTop.slice(0,outsideCityPositionTop.length-1));
-    cityPosition.left = parseInt(outsideCityPositionLeft.slice(0,outsideCityPositionLeft.length-1));
+    const cityPositionTop = this.city.current.style['top'];
+    const cityPositionLeft = this.city.current.style['left'];
+    cityPosition.top = parseInt(cityPositionTop.slice(0,cityPositionTop.length-1));
+    cityPosition.left = parseInt(cityPositionLeft.slice(0,cityPositionLeft.length-1));
+    const outsideCityPositionTop = this.outsideCity.current.style['top'];
+    console.log(this.outsideCity.current.style['top']);
+    const outsideCityPositionLeft = this.outsideCity.current.style['left'];
+    console.log(outsideCityPositionTop);
+    console.log(outsideCityPositionLeft);
+    outsideCityPosition.top = parseInt(outsideCityPositionTop.slice(0,outsideCityPositionTop.length-1));
+    outsideCityPosition.left = parseInt(outsideCityPositionLeft.slice(0,outsideCityPositionLeft.length-1));
   
     //character
     const characterPositionX = this.character.current.style['backgroundPositionX'];
@@ -33,6 +37,7 @@ class City extends Component {
     character.x = parseInt(characterPositionX.slice(0,characterPositionX.length-1));
     character.y = parseInt(characterPositionY.slice(0,characterPositionY.length-1));
   
+    console.log(outsideCityPosition);
     return {cityPosition, outsideCityPosition, character};
   }
   
@@ -58,9 +63,6 @@ class City extends Component {
     const rightmostXPx = -1 * (mapWidth - (window.screen.width / 2));
     const topmostYPx = 0 - characterHeight + (window.screen.height / 2);
     const bottommostYPx = -1 * (mapHeight - (window.screen.height / 2));
-
-    console.log(mapHeight);
-    console.log(bottommostYPx);
 
     const newCityPosition = {top: cityPosition.top, left: cityPosition.left};
     const newOutsideCityPosition = {top: outsideCityPosition.top, left: outsideCityPosition.left};
@@ -97,7 +99,7 @@ class City extends Component {
   
       if (cityPosition.left + stepPixels <= leftmostXPx) {
         newCityPosition.left = cityPosition.left + stepPixels;
-        outsideCityPosition.left = outsideCityPosition.left + stepPixels;
+        newOutsideCityPosition.left = outsideCityPosition.left + stepPixels;
 
       }
     }
@@ -110,10 +112,12 @@ class City extends Component {
   
       if (cityPosition.left - stepPixels >= rightmostXPx) {
         newCityPosition.left = cityPosition.left -  stepPixels;
-        outsideCityPosition.left = outsideCityPosition.left -  stepPixels;
+        newOutsideCityPosition.left = outsideCityPosition.left -  stepPixels;
 
       }
     }
+
+    console.log(newOutsideCityPosition);
 
     this.city.current.style['top'] = `${newCityPosition['top']}px`;
     this.city.current.style['left'] = `${newCityPosition['left']}px`;
@@ -129,8 +133,8 @@ class City extends Component {
   }
   
   componentDidMount() {
-    const cityCurrentTop = 0;
-    const cityCurrentLeft = 0;
+    const cityCurrentTop = -3038;
+    const cityCurrentLeft = 252;
     const mapHeight = 4500;
     const mapWidth = 6000;
 
@@ -145,8 +149,8 @@ class City extends Component {
     this.city.current.style['height'] = `${mapHeight}px`;
     this.city.current.style['top'] = `${cityCurrentTop}px`;
     this.city.current.style['left'] = `${cityCurrentLeft}px`;
-    this.outsideCity.current.style['top'] = `-${window.screen.height / 2}px`;
-    this.outsideCity.current.style['left'] = `-${window.screen.width / 2}px`;
+    this.outsideCity.current.style['top'] = `${cityCurrentTop - (window.screen.height / 2)}px`;
+    this.outsideCity.current.style['left'] = `${cityCurrentLeft - (window.screen.width / 2)}px`;
     this.outsideCity.current.style['width'] = `${mapWidth + window.screen.width}px`;
     this.outsideCity.current.style['height'] = `${mapHeight + window.screen.height}px`;
   }
@@ -156,7 +160,8 @@ class City extends Component {
     return (
       <div id="OutsideCity" ref={this.outsideCity} onKeyDown={(e) => this.checkKey(e)} tabIndex="0">
         <div id="City" ref={this.city}>
-          <div className="character" ref={this.character} />
+          <PixelWriter active={true} city={this.city}/>
+          <div className="character" ref={this.character} tabIndex="0"/>
         </div>
       </div>
     );

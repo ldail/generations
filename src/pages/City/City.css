@@ -9,7 +9,7 @@ body, #root {
 }
 
 #OutsideCity {
-  background-color: red;
+  background: radial-gradient(#FFF,#9f9,#aa3,#c88,#f99,#2ff,#000);
   width: 8000px;
   height: 6500px;
   display: flex;

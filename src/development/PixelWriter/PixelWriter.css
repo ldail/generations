@@ -1,0 +1,12 @@
+#PixelWriter {
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.blockedOff {
+  background-color: yellow;
+  height: 1px;
+  width: 1px;
+  z-index: 10;
+}
