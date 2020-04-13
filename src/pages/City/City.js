@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import './City.css';
+import {cityOne} from '../../assets/pages';
 import PixelWriter from '../../development/PixelWriter/PixelWriter';
 
 class City extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      cityTop: 0,
+      cityLeft: 0
     }
     this.outsideCity = React.createRef();
     this.character = React.createRef();
@@ -24,10 +26,7 @@ class City extends Component {
     cityPosition.top = parseInt(cityPositionTop.slice(0,cityPositionTop.length-1));
     cityPosition.left = parseInt(cityPositionLeft.slice(0,cityPositionLeft.length-1));
     const outsideCityPositionTop = this.outsideCity.current.style['top'];
-    console.log(this.outsideCity.current.style['top']);
     const outsideCityPositionLeft = this.outsideCity.current.style['left'];
-    console.log(outsideCityPositionTop);
-    console.log(outsideCityPositionLeft);
     outsideCityPosition.top = parseInt(outsideCityPositionTop.slice(0,outsideCityPositionTop.length-1));
     outsideCityPosition.left = parseInt(outsideCityPositionLeft.slice(0,outsideCityPositionLeft.length-1));
   
@@ -37,7 +36,6 @@ class City extends Component {
     character.x = parseInt(characterPositionX.slice(0,characterPositionX.length-1));
     character.y = parseInt(characterPositionY.slice(0,characterPositionY.length-1));
   
-    console.log(outsideCityPosition);
     return {cityPosition, outsideCityPosition, character};
   }
   
@@ -117,24 +115,25 @@ class City extends Component {
       }
     }
 
-    console.log(newOutsideCityPosition);
-
     this.city.current.style['top'] = `${newCityPosition['top']}px`;
     this.city.current.style['left'] = `${newCityPosition['left']}px`;
+    this.setState({cityTop: newCityPosition['top'], cityLeft: newCityPosition['left']});
     this.outsideCity.current.style['top'] = `${newOutsideCityPosition['top']}px`;
     this.outsideCity.current.style['left'] = `${newOutsideCityPosition['left']}px`;
-
-
-  
   }
 
-  calculateCityVsOutsideCityPixels = () => {
-    return 0;
+  checkIfBlocked = (potentialStepIntoPixel) => {
+
   }
+
   
   componentDidMount() {
+    if (cityOne && cityOne.blockedOffPixels) {
+      console.log(cityOne.blockedOffPixels.areasBlockedCalculation);
+    }
     const cityCurrentTop = -3038;
     const cityCurrentLeft = 252;
+    this.setState({cityTop: cityCurrentTop, cityLeft: cityCurrentLeft});
     const mapHeight = 4500;
     const mapWidth = 6000;
 
@@ -160,7 +159,7 @@ class City extends Component {
     return (
       <div id="OutsideCity" ref={this.outsideCity} onKeyDown={(e) => this.checkKey(e)} tabIndex="0">
         <div id="City" ref={this.city}>
-          <PixelWriter active={true} city={this.city}/>
+          {/* <PixelWriter active={true} city={this.city} cityTop={this.state.cityTop} cityLeft={this.state.cityLeft}/> */}
           <div className="character" ref={this.character} tabIndex="0"/>
         </div>
       </div>
