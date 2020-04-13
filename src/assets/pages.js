@@ -5,6 +5,7 @@ const pages = [
 ]
 
 export const cityOne = {
+  startingPoint: {x: 2300, y: 4440},
   blockedOffPixels: {
     assignments: {
       plants: {
@@ -25,6 +26,70 @@ export const cityOne = {
         size: [100,1200],
         assignmentPosition: {
           rightWall: [1900,3300]
+        }
+      },
+      verticalArcadeGame: {
+        size: [120,225],
+        assignmentPosition: {
+          leftGame: [0, 3900],
+          topRightGame: [1750,3600],
+          bottomRightGame: [1750,4150],
+        }
+      },
+      horizontalArcadeGame: {
+        size: [225,120],
+        assignmentPosition: {
+          game: [480,4380]
+        }
+      },
+      topLeftTrainingRingWall: {
+        size: [1200,150],
+        assignmentPosition: {
+          wall: [2650,3300]
+        }
+      },
+      topRightTrainingRingWall: {
+        size: [1600,150],
+        assignmentPosition: {
+          wall: [4400,3300]
+        }
+      },
+      leftTrainingRingWall: {
+        size: [100,1200],
+        assignmentPosition: {
+          wall: [2550,3300]
+        }
+      },
+      townCenterVerticalWall: {
+        size: [20,1660],
+        assignmentPosition: {
+          leftWall: [1000,1150],
+          rightWall: [4880,1150]
+        }
+      },
+      townCenterHorizontalLeftWall: {
+        size: [1150,20],
+        assignmentPosition: {
+          wall: [1000, 2780]
+        }
+      },
+      townCenterHorizontalRightWall: {
+        size: [1665, 20],
+        assignmentPosition: {
+          wall: [2400,2780]
+        }
+      },
+      townCenterHorizontalTopWall: {
+        size: [4000, 20],
+        assignmentPosition: {
+          wall: [1000, 1150]
+        }
+      },
+      eldersChamberDividerWall: {
+        size: [20,580],
+        assignmentPosition: {
+          topWall: [4150,1150],
+          bottomWall: [4150,2200]
         }
       }
     },

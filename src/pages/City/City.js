@@ -177,8 +177,9 @@ class City extends Component {
 
 
     //Map
-    const convertedStartPoint = this.convertMapPixelToScreenPixelPosition({x: 2300, y: 4430}, 'none');
-    console.log(convertedStartPoint);
+    const currentMap = cityOne;
+    const {x: startingPointX, y: startingPointY} = currentMap.startingPoint
+    const convertedStartPoint = this.convertMapPixelToScreenPixelPosition({x: startingPointX, y: startingPointY}, 'none');
     const cityCurrentTop = convertedStartPoint.y;
     const cityCurrentLeft = convertedStartPoint.x;
     this.setState({cityTop: cityCurrentTop, cityLeft: cityCurrentLeft});
