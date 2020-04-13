@@ -31,12 +31,10 @@ export const cityOne = {
     get areasBlockedCalculation() {
       const blockedAreas = [];
       for (let assignment in this.assignments) {
-        console.log(Object.values(this.assignments[assignment].assignmentPosition));
           for (let assignmentInstance of Object.values(this.assignments[assignment].assignmentPosition)) {
             blockedAreas.push([{x: assignmentInstance[0], y: assignmentInstance[1]},{x: assignmentInstance[0] + this.assignments[assignment].size[0], y: assignmentInstance[1] + this.assignments[assignment].size[1]}]);
           }
         }
-        console.log(blockedAreas);
       return blockedAreas;
     }
   },

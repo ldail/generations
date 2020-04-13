@@ -38,8 +38,47 @@ class City extends Component {
   
     return {cityPosition, outsideCityPosition, character};
   }
+
+  convertMapPixelToScreenPixelPosition = (points,direction) => {
+    console.log(points);
+    const {x,y} = points;
+    console.log(direction);
+    const characterHeight = parseInt(this.character.current.style['height'].slice(0,this.character.current.style['height'].length - 1));
+    const characterWidth = parseInt(this.character.current.style['width'].slice(0,this.character.current.style['height'].length - 1));
+    let characterVariable = 0;
+    if (direction === 'left') {
+      characterVariable = characterWidth;
+    }
+    else if (direction === 'up') {
+      characterVariable = characterHeight
+    }
+    else if (direction === 'none' || direction === 'down' || direction === 'right') {
+      characterVariable = 0;
+    }
+    const leftmostXPx = 0 - characterVariable + (window.screen.width / 2);
+    const topmostYPx = 0 - characterVariable + (window.screen.height / 2);
+
+    return {x: leftmostXPx - x, y: topmostYPx - y};
+
+
+  }
+
+  checkIfBlocked = (pointSet, direction) => {
+    console.log(cityOne.blockedOffPixels.areasBlockedCalculation);
+    const convertedSet = this.convertMapPixelToScreenPixelPosition(pointSet, direction)
+    const {x,y} = convertedSet;
+    console.log(x, y);
+    const blockedOffPixels = cityOne.blockedOffPixels.areasBlockedCalculation;
+    const isBlocked = blockedOffPixels.find(set => {
+      if (x > set[0].x && x < set[1].x 
+            && y > set[0].y && y < set[1].y) {
+              return true;
+            }
+    })
+    return !!isBlocked;
+  }
   
-  checkKey(e) {
+  checkKey = e => {
     const {character, cityPosition, outsideCityPosition} = this.findCurrentPositions();
 
   
@@ -71,9 +110,11 @@ class City extends Component {
         this.character.current.style.backgroundPosition = `${character.x}px ${characterYUp}px`;
       }
 
-      if (cityPosition.top + stepPixels <= topmostYPx) {
-        newCityPosition.top = cityPosition.top + stepPixels;
-        newOutsideCityPosition.top = outsideCityPosition.top + stepPixels
+      const potentialNewCityPosition = cityPosition.top + stepPixels
+      const potentialNewOutsideCityPosition = outsideCityPosition.top + stepPixels;
+      if (potentialNewCityPosition <= topmostYPx && !this.checkIfBlocked({x: cityPosition.left, y: potentialNewCityPosition}, 'up')) {
+        newCityPosition.top = potentialNewCityPosition;
+        newOutsideCityPosition.top = potentialNewOutsideCityPosition
       }
     }
   
@@ -83,9 +124,11 @@ class City extends Component {
         this.character.current.style.backgroundPosition = `${character.x}px ${characterYDown}px`;
       }
 
-      if (cityPosition.top - stepPixels >= bottommostYPx) {
-        newCityPosition.top = cityPosition.top - stepPixels;
-        newOutsideCityPosition.top = outsideCityPosition.top - stepPixels
+      const potentialNewCityPosition = cityPosition.top - stepPixels
+      const potentialNewOutsideCityPosition = outsideCityPosition.top - stepPixels;
+      if (potentialNewCityPosition >= bottommostYPx && !this.checkIfBlocked({x: cityPosition.left, y: potentialNewCityPosition},'down')) {
+        newCityPosition.top = potentialNewCityPosition;
+        newOutsideCityPosition.top = potentialNewOutsideCityPosition;
       }
     }
   
@@ -95,9 +138,11 @@ class City extends Component {
         this.character.current.style.backgroundPosition = `${character.x}px ${characterYLeft}px`;
       }
   
-      if (cityPosition.left + stepPixels <= leftmostXPx) {
-        newCityPosition.left = cityPosition.left + stepPixels;
-        newOutsideCityPosition.left = outsideCityPosition.left + stepPixels;
+      const potentialNewCityPosition = cityPosition.left + stepPixels
+      const potentialNewOutsideCityPosition = outsideCityPosition.left + stepPixels;
+      if (potentialNewCityPosition <= leftmostXPx && !this.checkIfBlocked({x: potentialNewCityPosition, y: cityPosition.top},'left')) {
+        newCityPosition.left = potentialNewCityPosition;
+        newOutsideCityPosition.left = potentialNewOutsideCityPosition;
 
       }
     }
@@ -108,9 +153,11 @@ class City extends Component {
         this.character.current.style.backgroundPosition = `${character.x}px ${characterYRight}px`;
       }
   
-      if (cityPosition.left - stepPixels >= rightmostXPx) {
-        newCityPosition.left = cityPosition.left -  stepPixels;
-        newOutsideCityPosition.left = outsideCityPosition.left -  stepPixels;
+      const potentialNewCityPosition = cityPosition.left - stepPixels
+      const potentialNewOutsideCityPosition = outsideCityPosition.left - stepPixels;
+      if (potentialNewCityPosition >= rightmostXPx && !this.checkIfBlocked({x: potentialNewCityPosition, y: cityPosition.top},'right')) {
+        newCityPosition.left = potentialNewCityPosition;
+        newOutsideCityPosition.left = potentialNewOutsideCityPosition;
 
       }
     }
@@ -121,28 +168,26 @@ class City extends Component {
     this.outsideCity.current.style['top'] = `${newOutsideCityPosition['top']}px`;
     this.outsideCity.current.style['left'] = `${newOutsideCityPosition['left']}px`;
   }
-
-  checkIfBlocked = (potentialStepIntoPixel) => {
-
-  }
-
   
   componentDidMount() {
-    if (cityOne && cityOne.blockedOffPixels) {
-      console.log(cityOne.blockedOffPixels.areasBlockedCalculation);
-    }
-    const cityCurrentTop = -3038;
-    const cityCurrentLeft = 252;
-    this.setState({cityTop: cityCurrentTop, cityLeft: cityCurrentLeft});
-    const mapHeight = 4500;
-    const mapWidth = 6000;
 
+    //Character
     this.character.current.style['backgroundPositionX'] = '0px';
     this.character.current.style['backgroundPositionY'] = '0px';
     this.character.current.style['width'] = '60px';
     this.character.current.style['height'] = '89px';
     this.character.current.style['top'] = `${(window.screen.height / 2) - 89}px`
     this.character.current.style['left'] = `${(window.screen.width / 2) - 60}px`
+
+
+    //Map
+    const convertedStartPoint = this.convertMapPixelToScreenPixelPosition({x: 2300, y: 4400}, 'none');
+    const cityCurrentTop = convertedStartPoint.x;
+    const cityCurrentLeft = convertedStartPoint.y;
+    this.setState({cityTop: cityCurrentTop, cityLeft: cityCurrentLeft});
+
+    const mapHeight = 4500;
+    const mapWidth = 6000;
     
     this.city.current.style['width'] = `${mapWidth}px`;
     this.city.current.style['height'] = `${mapHeight}px`;
