@@ -3,6 +3,7 @@ import './reset.css';
 import './App.css';
 import Intro from '../pages/Intro/Intro';
 import FamilySetup from '../pages/FamilySetup/FamilySetup';
+import City from '../pages/City/City';
 
 class App extends React.Component {
   constructor(props) {
@@ -70,7 +71,10 @@ class App extends React.Component {
       return <Intro currentMessageIndex={this.state.currentMessageIndex} />
     }
     else if (currentPage === 1) {
-      return <FamilySetup />
+      return <FamilySetup changePage={() => this.setState({currentPage: 2})} />
+    }
+    else if (currentPage === 2) {
+      return <City />
     }
   }
 

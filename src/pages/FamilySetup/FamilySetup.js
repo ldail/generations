@@ -9,7 +9,7 @@ import RotatingChoice from '../../components/rotatingChoice/rotatingChoice';
 import { addNewCharacter, setFamilyName, setPrimaryAttribute } from '../../redux/familyRoot/actions/familyRootActions';
 import { addNewPet } from '../../redux/petRoot/actions/petRootActions';
 
-const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttributeDispatch, setFamilyNameDispatch}) => {
+const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttributeDispatch, setFamilyNameDispatch, changePage}) => {
 
   const [currentPrompt, setCurrentPrompt] = useState(0);
   const [currentRotateChoice, setCurrentRotateChoice] = useState(0);
@@ -45,6 +45,9 @@ const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttr
       setPrimaryAttributeDispatch(primaryAttribute);
       addNewPetDispatch({name: petName, typeId: petTypeId, ownerId: 0})
       addNewCharacterDispatch({name: boyName, gender: gender.male, id: 0, partnerId: null, petId: 0, level: 10 })
+    }
+    else if (currentPrompt === 6) {
+      changePage();
     }
   }
   

@@ -40,9 +40,7 @@ class City extends Component {
   }
 
   convertMapPixelToScreenPixelPosition = (points,direction) => {
-    console.log(points);
     const {x,y} = points;
-    console.log(direction);
     const characterHeight = parseInt(this.character.current.style['height'].slice(0,this.character.current.style['height'].length - 1));
     const characterWidth = parseInt(this.character.current.style['width'].slice(0,this.character.current.style['height'].length - 1));
     let characterVariable = 0;
@@ -64,10 +62,8 @@ class City extends Component {
   }
 
   checkIfBlocked = (pointSet, direction) => {
-    console.log(cityOne.blockedOffPixels.areasBlockedCalculation);
     const convertedSet = this.convertMapPixelToScreenPixelPosition(pointSet, direction)
     const {x,y} = convertedSet;
-    console.log(x, y);
     const blockedOffPixels = cityOne.blockedOffPixels.areasBlockedCalculation;
     const isBlocked = blockedOffPixels.find(set => {
       if (x > set[0].x && x < set[1].x 
@@ -181,9 +177,10 @@ class City extends Component {
 
 
     //Map
-    const convertedStartPoint = this.convertMapPixelToScreenPixelPosition({x: 2300, y: 4400}, 'none');
-    const cityCurrentTop = convertedStartPoint.x;
-    const cityCurrentLeft = convertedStartPoint.y;
+    const convertedStartPoint = this.convertMapPixelToScreenPixelPosition({x: 2300, y: 4430}, 'none');
+    console.log(convertedStartPoint);
+    const cityCurrentTop = convertedStartPoint.y;
+    const cityCurrentLeft = convertedStartPoint.x;
     this.setState({cityTop: cityCurrentTop, cityLeft: cityCurrentLeft});
 
     const mapHeight = 4500;
