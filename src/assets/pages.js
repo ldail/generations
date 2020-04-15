@@ -91,6 +91,34 @@ export const cityOne = {
           topWall: [4150,1150],
           bottomWall: [4150,2200]
         }
+      },
+      townCenterEntranceHallLeftWall: {
+        size: [1,1200],
+        assignmentPosition: {
+          wall: [2150, 2800]
+        }
+      },
+      townCenterEntranceHallRightWall: {
+        size: [1,1200],
+        assignmentPosition: {
+          wall: [2299, 2800]
+        }
+      },
+      foodCart: {
+        size: [400, 400],
+        assignmentPosition: {
+          leftCart: [1000,130],
+          middleCart: [2800,530],
+          rightCart: [4500,200]
+        }
+      },
+      shoppingStand: {
+        size: [500,200],
+        assignmentPosition: {
+          leftStand: [1400,800],
+          middleStand: [2500,0],
+          rightStand: [3850,800] 
+        }
       }
     },
     get areasBlockedCalculation() {
