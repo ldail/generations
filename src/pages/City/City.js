@@ -73,6 +73,30 @@ class City extends Component {
     })
     return !!isBlocked;
   }
+
+  checkTouch = (e) => {
+    console.log(window.screen.height);
+    console.log(window.screen.width);
+    const verticalTouchPoint = e.touches[0].pageY;
+    const horizontalTouchPoint = e.touches[0].pageX;
+    const screenHeight = window.screen.height;
+    const screenWidth = window.screen.width;
+    const middlePortion = [(screenHeight / 3), (screenHeight / 3) * 2];
+    if (verticalTouchPoint < middlePortion[0]) {
+      this.checkKey({keyCode: 38});
+    }
+    else if (verticalTouchPoint > middlePortion[1]) {
+      this.checkKey({keyCode: 40});
+    }
+    else {
+      if (horizontalTouchPoint <= screenWidth / 2) {
+        this.checkKey({keyCode: 37});
+      }
+      else {
+        this.checkKey({keyCode: 39});
+      }
+    }
+  }
   
   checkKey = e => {
     const {character, cityPosition, outsideCityPosition} = this.findCurrentPositions();
@@ -200,7 +224,7 @@ class City extends Component {
 
   render() {
     return (
-      <div id="OutsideCity" ref={this.outsideCity} onKeyDown={(e) => this.checkKey(e)} tabIndex="0">
+      <div id="OutsideCity" ref={this.outsideCity} onKeyDown={(e) => this.checkKey(e)} tabIndex="0" onTouchStart={(e) => this.checkTouch(e)}>
         <div id="City" ref={this.city}>
           {/* <PixelWriter active={true} city={this.city} cityTop={this.state.cityTop} cityLeft={this.state.cityLeft}/> */}
           <div className="character" ref={this.character} tabIndex="0"/>
