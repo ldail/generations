@@ -8,11 +8,13 @@ class City extends Component {
     super(props);
     this.state = {
       cityTop: 0,
-      cityLeft: 0
+      cityLeft: 0,
+      pressing: false,
     }
     this.outsideCity = React.createRef();
     this.character = React.createRef();
     this.city = React.createRef();
+    this.pressInterval = null;
   }
 
   findCurrentPositions = () => {
@@ -74,9 +76,24 @@ class City extends Component {
     return !!isBlocked;
   }
 
+  continuePress = () => {
+    const {pressing} = this.state;
+
+    if (pressing) {
+      this.pressInterval = setInterval(() => this.checkKey({keyCode: pressing}), 100)
+    }
+  }
+
+  clearPressInterval = () => {
+    clearInterval(this.pressInterval)
+  }
+
+  checkTouchMove = (e) => {
+    this.clearPressInterval();
+    this.checkTouch(e);
+  }
+
   checkTouch = (e) => {
-    console.log(window.screen.height);
-    console.log(window.screen.width);
     const verticalTouchPoint = e.touches[0].pageY;
     const horizontalTouchPoint = e.touches[0].pageX;
     const screenHeight = window.screen.height;
@@ -84,16 +101,20 @@ class City extends Component {
     const middlePortion = [(screenHeight / 3), (screenHeight / 3) * 2];
     if (verticalTouchPoint < middlePortion[0]) {
       this.checkKey({keyCode: 38});
+      this.setState({pressing: 38}, () => this.continuePress())
     }
     else if (verticalTouchPoint > middlePortion[1]) {
       this.checkKey({keyCode: 40});
+      this.setState({pressing: 40}, () => this.continuePress())
     }
     else {
       if (horizontalTouchPoint <= screenWidth / 2) {
         this.checkKey({keyCode: 37});
+        this.setState({pressing: 37}, () => this.continuePress())
       }
       else {
         this.checkKey({keyCode: 39});
+        this.setState({pressing: 39}, () => this.continuePress())
       }
     }
   }
@@ -224,7 +245,7 @@ class City extends Component {
 
   render() {
     return (
-      <div id="OutsideCity" ref={this.outsideCity} onKeyDown={(e) => this.checkKey(e)} tabIndex="0" onTouchStart={(e) => this.checkTouch(e)}>
+      <div id="OutsideCity" ref={this.outsideCity} onKeyDown={(e) => this.checkKey(e)} tabIndex="0" onTouchStart={(e) => this.checkTouch(e)} onTouchEnd={() => this.clearPressInterval()} onTouchMove={(e) => this.checkTouchMove(e)}>
         <div id="City" ref={this.city}>
           {/* <PixelWriter active={true} city={this.city} cityTop={this.state.cityTop} cityLeft={this.state.cityLeft}/> */}
           <div className="character" ref={this.character} tabIndex="0"/>
