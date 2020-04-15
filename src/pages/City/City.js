@@ -9,7 +9,7 @@ class City extends Component {
     this.state = {
       cityTop: 0,
       cityLeft: 0,
-      pressing: false,
+      pressing: false
     }
     this.outsideCity = React.createRef();
     this.character = React.createRef();
@@ -76,50 +76,59 @@ class City extends Component {
     return !!isBlocked;
   }
 
-  continuePress = () => {
-    const {pressing} = this.state;
-
-    if (pressing) {
-      this.pressInterval = setInterval(() => this.checkKey({keyCode: pressing}), 100)
-    }
-  }
-
   clearPressInterval = () => {
     clearInterval(this.pressInterval)
+    this.setState({pressing: false});
+    this.pressInterval = null;
   }
 
   checkTouchMove = (e) => {
-    this.clearPressInterval();
-    this.checkTouch(e);
+    const {pressing} = this.state;
+    const moveDirection = this.checkDirectionUserTouched(e);
+    if (moveDirection !== pressing) {
+      this.setState({pressing: moveDirection})
+    }
   }
 
-  checkTouch = (e) => {
-    const verticalTouchPoint = e.touches[0].pageY;
-    const horizontalTouchPoint = e.touches[0].pageX;
+  checkDirectionUserPressedWithArrow = (arrowEvent) => {
+    this.moveCharacter(arrowEvent.keyCode);
+  }
+
+  checkDirectionUserTouched = (clickEvent) => {
+    const verticalTouchPoint = clickEvent.touches[0].pageY;
+    const horizontalTouchPoint = clickEvent.touches[0].pageX;
     const screenHeight = window.screen.height;
     const screenWidth = window.screen.width;
     const middlePortion = [(screenHeight / 3), (screenHeight / 3) * 2];
     if (verticalTouchPoint < middlePortion[0]) {
-      this.checkKey({keyCode: 38});
-      this.setState({pressing: 38}, () => this.continuePress())
+      return 38;
     }
     else if (verticalTouchPoint > middlePortion[1]) {
-      this.checkKey({keyCode: 40});
-      this.setState({pressing: 40}, () => this.continuePress())
+      return 40;
     }
-    else {
+    else{
       if (horizontalTouchPoint <= screenWidth / 2) {
-        this.checkKey({keyCode: 37});
-        this.setState({pressing: 37}, () => this.continuePress())
+        return 37;
       }
       else {
-        this.checkKey({keyCode: 39});
-        this.setState({pressing: 39}, () => this.continuePress())
+        return 39;
       }
     }
   }
-  
-  checkKey = e => {
+
+  checkTouch = (e) => {
+    const direction = this.checkDirectionUserTouched(e);
+    this.setState({pressing: direction});
+    this.pressInterval = setInterval(() => this.moveTouchCharacter(),50);
+  }
+
+  moveTouchCharacter = () => {
+    const {pressing} = this.state;
+    this.moveCharacter(pressing);
+  }
+
+
+  moveCharacter = direction => {
     const {character, cityPosition, outsideCityPosition} = this.findCurrentPositions();
 
   
@@ -146,7 +155,7 @@ class City extends Component {
     const newOutsideCityPosition = {top: outsideCityPosition.top, left: outsideCityPosition.left};
     
     //up = +stepPixels
-    if (e.keyCode === 38) {
+    if (direction === 38) {
       if (character.y !== characterYUp) {
         this.character.current.style.backgroundPosition = `${character.x}px ${characterYUp}px`;
       }
@@ -160,7 +169,7 @@ class City extends Component {
     }
   
     //down = -stepPixels
-    else if (e.keyCode === 40) {
+    else if (direction === 40) {
       if (character.y !== characterYDown) {
         this.character.current.style.backgroundPosition = `${character.x}px ${characterYDown}px`;
       }
@@ -174,7 +183,7 @@ class City extends Component {
     }
   
     //left = +stepPixels
-    else if (e.keyCode === 37) {
+    else if (direction === 37) {
       if (character.y !== characterYLeft) {
         this.character.current.style.backgroundPosition = `${character.x}px ${characterYLeft}px`;
       }
@@ -189,7 +198,7 @@ class City extends Component {
     }
   
     //right = -stepPixels
-    else if (e.keyCode === 39) {
+    else if (direction === 39) {
       if (character.y !== characterYRight) {
         this.character.current.style.backgroundPosition = `${character.x}px ${characterYRight}px`;
       }
@@ -217,8 +226,8 @@ class City extends Component {
     this.character.current.style['backgroundPositionY'] = '0px';
     this.character.current.style['width'] = '60px';
     this.character.current.style['height'] = '89px';
-    this.character.current.style['top'] = `${(window.screen.height / 2) - 89}px`
-    this.character.current.style['left'] = `${(window.screen.width / 2) - 60}px`
+    this.character.current.style['top'] = `${(window.screen.height / 2) - ( 89 / 2)}px`
+    this.character.current.style['left'] = `${(window.screen.width / 2) - ( 60 / 2)}px`
 
 
     //Map
@@ -245,7 +254,7 @@ class City extends Component {
 
   render() {
     return (
-      <div id="OutsideCity" ref={this.outsideCity} onKeyDown={(e) => this.checkKey(e)} tabIndex="0" onTouchStart={(e) => this.checkTouch(e)} onTouchEnd={() => this.clearPressInterval()} onTouchMove={(e) => this.checkTouchMove(e)}>
+      <div id="OutsideCity" ref={this.outsideCity} onKeyDown={(e) => this.checkDirectionUserPressedWithArrow(e)} tabIndex="0" onTouchStart={(e) => this.checkTouch(e)} onTouchEnd={() => this.clearPressInterval()} onTouchMove={(e) => this.checkTouchMove(e)}>
         <div id="City" ref={this.city}>
           {/* <PixelWriter active={true} city={this.city} cityTop={this.state.cityTop} cityLeft={this.state.cityLeft}/> */}
           <div className="character" ref={this.character} tabIndex="0"/>
