@@ -8,8 +8,9 @@ import smallBoy from '../../assets/smallboy.jpg';
 import RotatingChoice from '../../components/rotatingChoice/rotatingChoice';
 import { addNewCharacter, setFamilyName, setPrimaryAttribute } from '../../redux/familyRoot/actions/familyRootActions';
 import { addNewPet } from '../../redux/petRoot/actions/petRootActions';
+import {setCurrentCharacter} from '../../redux/gameRoot/actions/gameRootActions';
 
-const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttributeDispatch, setFamilyNameDispatch, changePage}) => {
+const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttributeDispatch, setFamilyNameDispatch, changePage, setCurrentCharacter}) => {
 
   const [currentPrompt, setCurrentPrompt] = useState(0);
   const [currentRotateChoice, setCurrentRotateChoice] = useState(0);
@@ -255,7 +256,8 @@ const mapDispatchToProps = dispatch => ({
   setFamilyNameDispatch: (familyName) => dispatch(setFamilyName (familyName)),
   setPrimaryAttributeDispatch: (primaryAttribute) => dispatch(setPrimaryAttribute(primaryAttribute)),
   addNewCharacterDispatch: (newCharacter) => dispatch(addNewCharacter(newCharacter)),
-  addNewPetDispatch: (newPet) => dispatch(addNewPet(newPet))
+  addNewPetDispatch: (newPet) => dispatch(addNewPet(newPet)),
+  setCurrentCharacter: (characterId) => dispatch(setCurrentCharacter(characterId))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(FamilySetup);
