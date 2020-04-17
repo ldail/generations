@@ -1,21 +1,20 @@
 import React from 'react';
+import './PersonInfo.css';
 
 const PersonInfo = ({characterName, characterAge, characterPetName, characterPetTypeIcon}) => {
   return (
-    <div className="personInfo">
-      <ul className="headerRow">
+      <ul className="personInfo">
         <li>
           <div className="characterHeaderInfo">
             <span>{characterName}</span>
-            <span>{characterAge}</span>
+            <span>Age: {characterAge}</span>
           </div>
           <div className="petHeaderInfo">
             <span>{characterPetName}</span>
-            <span>{characterPetTypeIcon}</span>
+            <span><img src={characterPetTypeIcon} alt="pet icon" /></span>
           </div>
         </li>
       </ul>
-    </div>
   );
 };
 

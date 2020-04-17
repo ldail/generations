@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PersonInfo from './PersonInfo/PersonInfo';
 import animalStats from '../../../assets/animalStats';
+import './PersonInfoHeader.css';
 
 const PersonInfoHeader = ({familyCharacters, pets, currentCharacters}) => {
 
@@ -11,8 +12,14 @@ const PersonInfoHeader = ({familyCharacters, pets, currentCharacters}) => {
     const characterAge = characterInfo.age;
     const characterPetInfo = pets.find(pet => pet.ownerId === characterId);
     const characterPetName = characterPetInfo.name;
-    const characterPetType = characterPetInfo.type;
-    const characterPetTypeIcon = animalStats.types[characterPetType].icon
+    const characterPetTypeId = characterPetInfo.typeId;
+    let petTypeInfo = '';
+    for (let type in animalStats.types) {
+      if (animalStats.types[type].id === characterPetTypeId) {
+        petTypeInfo = animalStats.types[type];
+      }
+    }
+    const characterPetTypeIcon = petTypeInfo.icon
 
     return (
       <PersonInfo
@@ -37,7 +44,7 @@ const PersonInfoHeader = ({familyCharacters, pets, currentCharacters}) => {
 
 const mapStateToProps = state => ({
   familyCharacters: state.family.characters,
-  pets: state.pets,
+  pets: state.pet.pets,
   currentCharacters: state.game.currentCharacters
 })
 

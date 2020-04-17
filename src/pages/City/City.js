@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './City.css';
-import {cityOne} from '../../assets/pages';
-import PixelWriter from '../../development/PixelWriter/PixelWriter';
+import {cityOne} from '../../assets/pages';import PersonInfoHeader from '../../components/View/PersonInfoHeader/PersonInfoHeader';
+;
 
 class City extends Component {
   constructor(props) {
@@ -255,6 +255,7 @@ class City extends Component {
   render() {
     return (
       <div id="OutsideCity" ref={this.outsideCity} onKeyDown={(e) => this.checkDirectionUserPressedWithArrow(e)} tabIndex="0" onTouchStart={(e) => this.checkTouch(e)} onTouchEnd={() => this.clearPressInterval()} onTouchMove={(e) => this.checkTouchMove(e)}>
+        <PersonInfoHeader />
         <div id="City" ref={this.city}>
           {/* <PixelWriter active={true} city={this.city} cityTop={this.state.cityTop} cityLeft={this.state.cityLeft}/> */}
           <div className="character" ref={this.character} tabIndex="0"/>

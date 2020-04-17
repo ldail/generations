@@ -7,7 +7,7 @@ const gameRootReducer = (state=INITIAL_STATE,action) => {
     case SET_CURRENT_CHARACTER:
       return {
         ...state,
-        currentCharacter: action.payload
+        currentCharacters: action.payload
       }
     default:
       return state;

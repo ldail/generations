@@ -10,7 +10,7 @@ import { addNewCharacter, setFamilyName, setPrimaryAttribute } from '../../redux
 import { addNewPet } from '../../redux/petRoot/actions/petRootActions';
 import {setCurrentCharacter} from '../../redux/gameRoot/actions/gameRootActions';
 
-const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttributeDispatch, setFamilyNameDispatch, changePage, setCurrentCharacter}) => {
+const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttributeDispatch, setFamilyNameDispatch, changePage, setCurrentCharacterDispatch}) => {
 
   const [currentPrompt, setCurrentPrompt] = useState(0);
   const [currentRotateChoice, setCurrentRotateChoice] = useState(0);
@@ -45,9 +45,10 @@ const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttr
       setFamilyNameDispatch(familyName);
       setPrimaryAttributeDispatch(primaryAttribute);
       addNewPetDispatch({name: petName, typeId: petTypeId, ownerId: 0})
-      addNewCharacterDispatch({name: boyName, gender: gender.male, id: 0, partnerId: null, petId: 0, level: 10 })
+      addNewCharacterDispatch({name: boyName, gender: gender.male, id: 0, partnerId: null, petId: 0, age: 10 })
     }
     else if (currentPrompt === 6) {
+      setCurrentCharacterDispatch(0);
       changePage();
     }
   }
@@ -206,10 +207,7 @@ const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttr
   };
 
   const getPetDataObjectByProperty = (property, value) => {
-    console.log(property, value);
     for (let [animalType,animalValues] of Object.entries(animalStats.types)) {
-      console.log(animalType);
-      console.log(animalValues);
       if (animalStats.types[animalType][property] === value) {
         return animalValues;
       }
@@ -257,7 +255,7 @@ const mapDispatchToProps = dispatch => ({
   setPrimaryAttributeDispatch: (primaryAttribute) => dispatch(setPrimaryAttribute(primaryAttribute)),
   addNewCharacterDispatch: (newCharacter) => dispatch(addNewCharacter(newCharacter)),
   addNewPetDispatch: (newPet) => dispatch(addNewPet(newPet)),
-  setCurrentCharacter: (characterId) => dispatch(setCurrentCharacter(characterId))
+  setCurrentCharacterDispatch: (characterId) => dispatch(setCurrentCharacter(characterId))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(FamilySetup);
