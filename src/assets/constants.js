@@ -47,3 +47,7 @@ export const gender = {
   female: 'female',
   other: 'other'
 }
+
+
+export const INITIAL_GAME_TIME = 0; //Year 5000, January 1 12:00AM
+export const INCREMENT_GAME_TIME_AMOUNT = 1 //One month

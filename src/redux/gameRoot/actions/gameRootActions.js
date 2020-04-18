@@ -1,5 +1,6 @@
-import { SET_CURRENT_CHARACTER } from "../types/gameRootTypes";
+import { SET_CURRENT_CHARACTER, START_GAME_TIMER, INCREMENT_GAME_MONTH } from "../types/gameRootTypes";
 import { getAllFamilyData } from "../../helpers/helpers";
+import { INITIAL_GAME_TIME } from "../../../assets/constants";
 
 export const setCurrentCharacter = characterId => {
   const characters = getAllFamilyData().characters;
@@ -31,3 +32,12 @@ export const setCurrentCharacterAsync = characterId => {
     });
   }
 };
+
+export const startGameTimer = () => ({
+    type: START_GAME_TIMER,
+    payload: INITIAL_GAME_TIME
+});
+
+export const incrementGameTime = () => ({
+  type: INCREMENT_GAME_MONTH
+})

@@ -10,7 +10,7 @@ import { addNewCharacter, setFamilyName, setPrimaryAttribute } from '../../redux
 import { addNewPet } from '../../redux/petRoot/actions/petRootActions';
 import {setCurrentCharacter} from '../../redux/gameRoot/actions/gameRootActions';
 
-const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttributeDispatch, setFamilyNameDispatch, changePage, setCurrentCharacterDispatch}) => {
+const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttributeDispatch, setFamilyNameDispatch, changePage, setCurrentCharacterDispatch, startGameTimer}) => {
 
   const [currentPrompt, setCurrentPrompt] = useState(0);
   const [currentRotateChoice, setCurrentRotateChoice] = useState(0);
@@ -49,6 +49,7 @@ const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttr
     }
     else if (currentPrompt === 6) {
       setCurrentCharacterDispatch(0);
+      startGameTimer();
       changePage();
     }
   }
@@ -255,7 +256,7 @@ const mapDispatchToProps = dispatch => ({
   setPrimaryAttributeDispatch: (primaryAttribute) => dispatch(setPrimaryAttribute(primaryAttribute)),
   addNewCharacterDispatch: (newCharacter) => dispatch(addNewCharacter(newCharacter)),
   addNewPetDispatch: (newPet) => dispatch(addNewPet(newPet)),
-  setCurrentCharacterDispatch: (characterId) => dispatch(setCurrentCharacter(characterId))
+  setCurrentCharacterDispatch: (characterId) => dispatch(setCurrentCharacter(characterId)),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(FamilySetup);

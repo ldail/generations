@@ -4,6 +4,8 @@ import './App.css';
 import Intro from '../pages/Intro/Intro';
 import FamilySetup from '../pages/FamilySetup/FamilySetup';
 import City from '../pages/City/City';
+import { connect } from 'react-redux';
+import { startGameTimer, incrementGameTime } from '../redux/gameRoot/actions/gameRootActions';
 
 class App extends React.Component {
   constructor(props) {
@@ -13,6 +15,7 @@ class App extends React.Component {
       currentMessageIndex: 0,
       waitingForKey: false
     }
+    this.gameTimer = null;
   }
 
   componentDidMount() {
@@ -23,6 +26,13 @@ class App extends React.Component {
       window.addEventListener('touchstart', this.handleKeyDown);
       this.setState({...this.state, waitingForKey: true})
     }, 3200);
+  }
+
+  startGameTimer = () => {
+    this.props.startGameTimerDispatch();
+    this.gameTimer = setInterval(() => {
+      this.props.incrementGameTimerDispatch();
+    },60000)
   }
 
   handleKeyDown = () => {
@@ -71,7 +81,10 @@ class App extends React.Component {
       return <Intro currentMessageIndex={this.state.currentMessageIndex} />
     }
     else if (currentPage === 1) {
-      return <FamilySetup changePage={() => this.setState({currentPage: 2})} />
+      return <FamilySetup 
+                  changePage={() => this.setState({currentPage: 2})} 
+                  startGameTimer={this.startGameTimer}
+                />
     }
     else if (currentPage === 2) {
       return <City />
@@ -87,4 +100,13 @@ class App extends React.Component {
     }
 };
 
-export default App;
+const mapStateToProps = state => ({
+  gameTime: state.game.gameTime
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  startGameTimerDispatch: () => dispatch(startGameTimer()),
+  incrementGameTimerDispatch: () => dispatch(incrementGameTime())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
