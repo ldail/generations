@@ -6,7 +6,9 @@ import FamilySetup from '../pages/FamilySetup/FamilySetup';
 import City from '../pages/City/City';
 import { connect } from 'react-redux';
 import { startGameTimer, incrementGameTime, setCurrentPage } from '../redux/gameRoot/actions/gameRootActions';
-import { pages } from '../assets/pages';
+import { pages, VIEW } from '../assets/pages';
+import Map from '../views/Map/Map';
+import Tree from '../views/Tree/Tree';
 
 class App extends React.Component {
   constructor(props) {
@@ -77,17 +79,25 @@ class App extends React.Component {
   }
 
   showPage = () => {
-    let {currentPage} = this.props;
-    if (currentPage === pages.PAGE_INTRO) {
-      return <Intro currentMessageIndex={this.state.currentMessageIndex} />
+    let {currentPage, currentView} = this.props;
+    if (currentView === VIEW.HOME) {
+      if (currentPage === pages.PAGE_INTRO) {
+        return <Intro currentMessageIndex={this.state.currentMessageIndex} />
+      }
+      else if (currentPage === pages.PAGE_FAMILY_SETUP) {
+        return <FamilySetup 
+                    startGameTimer={this.startGameTimer}
+                  />
+      }
+      else if (currentPage === pages.PAGE_CITY_ONE) {
+        return <City />
+      }
     }
-    else if (currentPage === pages.PAGE_FAMILY_SETUP) {
-      return <FamilySetup 
-                  startGameTimer={this.startGameTimer}
-                />
+    else if (currentView === VIEW.MAP) {
+      return <Map />
     }
-    else if (currentPage === pages.PAGE_CITY_ONE) {
-      return <City />
+    else if (currentView === VIEW.TREE) {
+      return <Tree />
     }
   }
 
@@ -102,7 +112,8 @@ class App extends React.Component {
 
 const mapStateToProps = state => ({
   gameTime: state.game.gameTime,
-  currentPage: state.game.currentPage
+  currentPage: state.game.currentPage,
+  currentView: state.game.currentView
 })
 
 const mapDispatchToProps = (dispatch) => ({

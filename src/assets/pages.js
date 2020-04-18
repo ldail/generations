@@ -4,6 +4,12 @@ export const pages = {
   PAGE_CITY_ONE: 'PAGE_CITY_ONE'
 }
 
+export const VIEW = {
+  HOME: 'HOME',
+  MAP: 'MAP',
+  TREE: 'TREE'
+}
+
 export const pageInfo = {
   PAGE_CITY_ONE: {
     mapHeight: 4500,

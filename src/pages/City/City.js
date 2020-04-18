@@ -271,6 +271,10 @@ class City extends Component {
     },30000)
   }
 
+  componentWillUnmount() {
+    clearInterval(this.mapPositionInterval);
+  }
+
 
   render() {
     return (

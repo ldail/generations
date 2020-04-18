@@ -2,8 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './NavInfoFooter.css';
 import { convertUnixToFriendlyTime } from '../../../utils/formatter';
+import { setCurrentView } from '../../../redux/gameRoot/actions/gameRootActions';
+import { pages, VIEW } from '../../../assets/pages';
 
-const NavInfoFooter = ({gameTime, familyName}) => {
+const NavInfoFooter = ({gameTime, familyName, setCurrentView}) => {
   return (
     <div id="NavInfoFooter">
       <span className="familyNameInfo">
@@ -13,9 +15,9 @@ const NavInfoFooter = ({gameTime, familyName}) => {
         {convertUnixToFriendlyTime(gameTime)}
       </span>
       <ul>
-        <li>(Tree)</li>
-        <li>(Map)</li>
-        <li>(Home)</li>
+        <li onClick={() => setCurrentView(VIEW.TREE)}>(Tree)</li>
+        <li onClick={() => setCurrentView(VIEW.MAP)}>(Map)</li>
+        <li onClick={() => setCurrentView(VIEW.HOME)}>(Home)</li>
       </ul>
     </div>
   );
@@ -25,4 +27,8 @@ const mapStateToProps = state => ({
   gameTime: state.game.gameTime,
   familyName: state.family.familyName
 })
-export default connect(mapStateToProps,null)(NavInfoFooter);
+
+const mapDispatchToProps = dispatch => ({
+  setCurrentView: (page) => dispatch(setCurrentView(page))
+})
+export default connect(mapStateToProps,mapDispatchToProps)(NavInfoFooter);
