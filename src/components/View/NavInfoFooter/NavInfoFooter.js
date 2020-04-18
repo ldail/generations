@@ -13,9 +13,9 @@ const NavInfoFooter = ({gameTime, familyName}) => {
         {convertUnixToFriendlyTime(gameTime)}
       </span>
       <ul>
-        <li>Icon 1</li>
-        <li>Icon 2</li>
-        <li>Icon 3</li>
+        <li>(Tree)</li>
+        <li>(Map)</li>
+        <li>(Home)</li>
       </ul>
     </div>
   );

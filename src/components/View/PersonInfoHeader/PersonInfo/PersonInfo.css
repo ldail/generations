@@ -1,4 +1,9 @@
 .personInfo {
   display: flex;
+  justify-content: space-evenly;
   
+}
+
+.petHeaderInfo {
+  display: flex;
 }

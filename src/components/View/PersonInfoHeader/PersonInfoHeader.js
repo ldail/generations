@@ -32,13 +32,13 @@ const PersonInfoHeader = ({familyCharacters, pets, currentCharacters}) => {
   }
 
   return (
-    <div id="PersonInfoHeader">
+    <ul id="PersonInfoHeader">
       {renderPersonInfo(currentCharacters[0])}
       {currentCharacters[1]
         ? renderPersonInfo(currentCharacters[1])
         : null
       }
-    </div>
+    </ul>
   );
 };
 

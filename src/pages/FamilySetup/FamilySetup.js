@@ -39,6 +39,21 @@ const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttr
     if (e) {
       e.preventDefault();
     }
+    if (currentPrompt === 0) {
+      if (familyName === null || familyName === undefined || familyName === '') {
+        return;
+      }
+    }
+    if (currentPrompt === 1) {
+      if (boyName === null || boyName === undefined || boyName === '') {
+        return;
+      }
+    }
+    if (currentPrompt === 4) {
+      if (petName === null || petName === undefined || petName === '') {
+        return;
+      }
+    }
     setCurrentPrompt(currentPrompt + 1);
     setCurrentRotateChoice(0);
     if (currentPrompt === 5) {

@@ -3,8 +3,7 @@ import './PersonInfo.css';
 
 const PersonInfo = ({characterName, characterAge, characterPetName, characterPetTypeIcon}) => {
   return (
-      <ul className="personInfo">
-        <li>
+        <li className="personInfo">
           <div className="characterHeaderInfo">
             <span>{characterName}</span>
             <span>Age: {characterAge}</span>
@@ -14,7 +13,6 @@ const PersonInfo = ({characterName, characterAge, characterPetName, characterPet
             <span><img src={characterPetTypeIcon} alt="pet icon" /></span>
           </div>
         </li>
-      </ul>
   );
 };
 
