@@ -8,9 +8,10 @@ import smallBoy from '../../assets/smallboy.jpg';
 import RotatingChoice from '../../components/rotatingChoice/rotatingChoice';
 import { addNewCharacter, setFamilyName, setPrimaryAttribute } from '../../redux/familyRoot/actions/familyRootActions';
 import { addNewPet } from '../../redux/petRoot/actions/petRootActions';
-import {setCurrentCharacter} from '../../redux/gameRoot/actions/gameRootActions';
+import {setCurrentCharacter, setCurrentPage} from '../../redux/gameRoot/actions/gameRootActions';
+import { pages } from '../../assets/pages';
 
-const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttributeDispatch, setFamilyNameDispatch, changePage, setCurrentCharacterDispatch, startGameTimer}) => {
+const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttributeDispatch, setFamilyNameDispatch, setCurrentPageDispatch, setCurrentCharacterDispatch, startGameTimer, currentPage}) => {
 
   const [currentPrompt, setCurrentPrompt] = useState(0);
   const [currentRotateChoice, setCurrentRotateChoice] = useState(0);
@@ -65,7 +66,7 @@ const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttr
     else if (currentPrompt === 6) {
       setCurrentCharacterDispatch(0);
       startGameTimer();
-      changePage();
+      setCurrentPageDispatch(pages.PAGE_CITY_ONE);
     }
   }
   
@@ -262,7 +263,8 @@ const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttr
 
 const mapStateToProps = state => ({
   family: state.family,
-  pet: state.pet
+  pet: state.pet,
+  currentPage: state.game.currentPage
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -272,6 +274,7 @@ const mapDispatchToProps = dispatch => ({
   addNewCharacterDispatch: (newCharacter) => dispatch(addNewCharacter(newCharacter)),
   addNewPetDispatch: (newPet) => dispatch(addNewPet(newPet)),
   setCurrentCharacterDispatch: (characterId) => dispatch(setCurrentCharacter(characterId)),
+  setCurrentPageDispatch: (newPageId) => dispatch(setCurrentPage(newPageId))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(FamilySetup);

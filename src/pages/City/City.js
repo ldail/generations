@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import './City.css';
-import {cityOne} from '../../assets/pages';import PersonInfoHeader from '../../components/View/PersonInfoHeader/PersonInfoHeader';
+import {pages, pageInfo} from '../../assets/pages';
+import PersonInfoHeader from '../../components/View/PersonInfoHeader/PersonInfoHeader';
 import NavInfoFooter from '../../components/View/NavInfoFooter/NavInfoFooter';
+import { connect } from 'react-redux';
+import { setLastMapPosition } from '../../redux/gameRoot/actions/gameRootActions';
 ;
 
 class City extends Component {
@@ -16,6 +19,7 @@ class City extends Component {
     this.character = React.createRef();
     this.city = React.createRef();
     this.pressInterval = null;
+    this.mapPositionInterval = null;
   }
 
   findCurrentPositions = () => {
@@ -60,14 +64,24 @@ class City extends Component {
     const topmostYPx = 0 - characterVariable + (window.screen.height / 2);
 
     return {x: leftmostXPx - x, y: topmostYPx - y};
+  }
 
+  findActualXandYValueOfMap = () => {
+    const currentX = parseInt(this.city.current.style['left'].slice(0,this.city.current.style['left'].length - 1));
+    const currentY = parseInt(this.city.current.style['top'].slice(0,this.city.current.style['top'].length - 1));
+    const leftmostXPx = window.screen.width / 2;
+    const topmostYPx = window.screen.height / 2;
+    console.log(leftmostXPx - currentX);
+    console.log(topmostYPx - currentY);
+    return {x: leftmostXPx - currentX, y: topmostYPx - currentY}
 
   }
 
   checkIfBlocked = (pointSet, direction) => {
     const convertedSet = this.convertMapPixelToScreenPixelPosition(pointSet, direction)
     const {x,y} = convertedSet;
-    const blockedOffPixels = cityOne.blockedOffPixels.areasBlockedCalculation;
+    const currentMap = pages[this.props.currentPage];
+    const blockedOffPixels = pageInfo[currentMap].blockedOffPixels.areasBlockedCalculation;
     const isBlocked = blockedOffPixels.find(set => {
       if (x > set[0].x && x < set[1].x 
             && y > set[0].y && y < set[1].y) {
@@ -232,15 +246,15 @@ class City extends Component {
 
 
     //Map
-    const currentMap = cityOne;
-    const {x: startingPointX, y: startingPointY} = currentMap.startingPoint
+    const currentMap = pages[this.props.currentPage];
+    const {x: startingPointX, y: startingPointY} = pageInfo[currentMap].startingPoint;
     const convertedStartPoint = this.convertMapPixelToScreenPixelPosition({x: startingPointX, y: startingPointY}, 'none');
     const cityCurrentTop = convertedStartPoint.y;
     const cityCurrentLeft = convertedStartPoint.x;
     this.setState({cityTop: cityCurrentTop, cityLeft: cityCurrentLeft});
 
-    const mapHeight = 4500;
-    const mapWidth = 6000;
+    const mapHeight = pageInfo[currentMap].mapHeight;
+    const mapWidth = pageInfo[currentMap].mapWidth;
     
     this.city.current.style['width'] = `${mapWidth}px`;
     this.city.current.style['height'] = `${mapHeight}px`;
@@ -250,6 +264,11 @@ class City extends Component {
     this.outsideCity.current.style['left'] = `${cityCurrentLeft - (window.screen.width / 2)}px`;
     this.outsideCity.current.style['width'] = `${mapWidth + window.screen.width}px`;
     this.outsideCity.current.style['height'] = `${mapHeight + window.screen.height}px`;
+
+    this.props.setLastMapPosition({x: startingPointX, y: startingPointY});
+    this.mapPositionInterval = setInterval(() => {
+      this.props.setLastMapPosition(this.findActualXandYValueOfMap())
+    },30000)
   }
 
 
@@ -266,4 +285,12 @@ class City extends Component {
   }
 }
 
-export default City;
+const mapStateToProps = state => ({
+  currentPage: state.game.currentPage
+})
+
+const mapDispatchToProps = dispatch => ({
+  setLastMapPosition: (mapPosition) => dispatch(setLastMapPosition(mapPosition))
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(City);

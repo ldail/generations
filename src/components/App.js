@@ -5,7 +5,8 @@ import Intro from '../pages/Intro/Intro';
 import FamilySetup from '../pages/FamilySetup/FamilySetup';
 import City from '../pages/City/City';
 import { connect } from 'react-redux';
-import { startGameTimer, incrementGameTime } from '../redux/gameRoot/actions/gameRootActions';
+import { startGameTimer, incrementGameTime, setCurrentPage } from '../redux/gameRoot/actions/gameRootActions';
+import { pages } from '../assets/pages';
 
 class App extends React.Component {
   constructor(props) {
@@ -70,23 +71,22 @@ class App extends React.Component {
         this.setState({...this.state, currentMessageIndex: currentMessageIndex + 1, waitingForKey: true});
       }
       else if (nextIndex === 12) {
-        this.setState({...this.state, currentPage: this.state.currentPage + 1});
+        this.props.setCurrentPageDispatch(pages.PAGE_FAMILY_SETUP)
       }
     }
   }
 
   showPage = () => {
-    let {currentPage} = this.state;
-    if (currentPage === 0) {
+    let {currentPage} = this.props;
+    if (currentPage === pages.PAGE_INTRO) {
       return <Intro currentMessageIndex={this.state.currentMessageIndex} />
     }
-    else if (currentPage === 1) {
+    else if (currentPage === pages.PAGE_FAMILY_SETUP) {
       return <FamilySetup 
-                  changePage={() => this.setState({currentPage: 2})} 
                   startGameTimer={this.startGameTimer}
                 />
     }
-    else if (currentPage === 2) {
+    else if (currentPage === pages.PAGE_CITY_ONE) {
       return <City />
     }
   }
@@ -101,12 +101,14 @@ class App extends React.Component {
 };
 
 const mapStateToProps = state => ({
-  gameTime: state.game.gameTime
+  gameTime: state.game.gameTime,
+  currentPage: state.game.currentPage
 })
 
 const mapDispatchToProps = (dispatch) => ({
   startGameTimerDispatch: () => dispatch(startGameTimer()),
-  incrementGameTimerDispatch: () => dispatch(incrementGameTime())
+  incrementGameTimerDispatch: () => dispatch(incrementGameTime()),
+  setCurrentPageDispatch: (newPageId) => dispatch(setCurrentPage(newPageId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
