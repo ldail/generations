@@ -29,7 +29,7 @@ const familyRootReducer = (state=INITIAL_STATE, action) => {
     case familyRootTypes.SET_LAST_MAP_POSITION:
       return {
         ...state,
-        lastMapPosition: action.payload
+        characters: action.payload
       }
     case familyRootTypes.DEV_ONLY_SET_FAMILY_SEEDED_INFO:
       return {...action.payload}

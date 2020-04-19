@@ -5,7 +5,6 @@ import PersonInfoHeader from '../../components/View/PersonInfoHeader/PersonInfoH
 import NavInfoFooter from '../../components/View/NavInfoFooter/NavInfoFooter';
 import { connect } from 'react-redux';
 import { setLastMapPosition } from '../../redux/familyRoot/actions/familyRootActions';
-;
 
 class City extends Component {
   constructor(props) {
@@ -235,6 +234,7 @@ class City extends Component {
   }
   
   componentDidMount() {
+    const {characters, currentCharacters} = this.props;
 
     //Character
     this.character.current.style['backgroundPositionX'] = '0px';
@@ -247,7 +247,17 @@ class City extends Component {
 
     //Map
     const currentMap = pages[this.props.currentPage];
-    const {x: startingPointX, y: startingPointY} = pageInfo[currentMap].startingPoint;
+    let startingPointX = 0;
+    let startingPointY = 0;
+    const currentCharacterInfo = characters.find(character => character.id === currentCharacters[0]);
+    if (currentCharacterInfo.lastMapPosition && currentCharacterInfo.lastMapPosition.location === currentMap) {
+      startingPointX = currentCharacterInfo.lastMapPosition.x;
+      startingPointY = currentCharacterInfo.lastMapPosition.y;
+    }
+    else {
+      startingPointX = pageInfo[currentMap].startingPoint.x;
+      startingPointY = pageInfo[currentMap].startingPoint.y;
+    }
     const convertedStartPoint = this.convertMapPixelToScreenPixelPosition({x: startingPointX, y: startingPointY}, 'none');
     const cityCurrentTop = convertedStartPoint.y;
     const cityCurrentLeft = convertedStartPoint.x;
@@ -292,7 +302,9 @@ class City extends Component {
 }
 
 const mapStateToProps = state => ({
-  currentPage: state.game.currentPage
+  currentPage: state.game.currentPage,
+  currentCharacters: state.game.currentCharacters,
+  characters: state.family.characters
 })
 
 const mapDispatchToProps = dispatch => ({

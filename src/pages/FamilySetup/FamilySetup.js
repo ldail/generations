@@ -60,8 +60,8 @@ const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttr
     if (currentPrompt === 5) {
       setFamilyNameDispatch(familyName);
       setPrimaryAttributeDispatch(primaryAttribute);
-      addNewPetDispatch({name: petName, typeId: petTypeId, ownerId: 0})
-      addNewCharacterDispatch({name: boyName, gender: gender.male, id: 0, partnerId: null, petId: 0, age: 10 })
+      addNewPetDispatch({name: petName, id: 0, type: petTypeId, ownerId: 0})
+      addNewCharacterDispatch({name: boyName, gender: gender.male, id: 0, parentId: null, partnerId: null, petId: 0, age: 10 })
     }
     else if (currentPrompt === 6) {
       setCurrentCharacterDispatch(0);

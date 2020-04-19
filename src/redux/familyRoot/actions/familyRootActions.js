@@ -1,7 +1,8 @@
 import familyRootTypes from "../types/familyRootTypes";
 import { getAllFamilyData } from "../../helpers/helpers";
-import { seededPetData, seedCharacterData } from "../../../assets/constants";
-import { pages } from "../../../assets/pages";
+import {seedCharacterData } from "../../../assets/constants";
+import store from '../../store';
+
 
 export const setFamilyName = (familyName) => ({
   type: familyRootTypes.SET_FAMILY_NAME,
@@ -37,10 +38,18 @@ export const setCharacterProperty = (characterId, newPropertyName, newPropertyVa
   }
 }
 
-export const setLastMapPosition = (mapPosition) => ({
-  type: familyRootTypes.SET_LAST_MAP_POSITION,
-  payload: mapPosition
-});
+export const setLastMapPosition = (mapPosition) => {
+  const currentCharacter = store.getState().game.currentCharacters[0];
+  const {characters} = getAllFamilyData();
+  const currentCharacterInfo = characters.find(character => character.id === currentCharacter);
+  const currentCharacterIndex = characters.indexOf(character => character.id === currentCharacter);
+  currentCharacterInfo.lastMapPosition = mapPosition;
+  characters[currentCharacterIndex] = currentCharacterInfo;
+  return {
+    type: familyRootTypes.SET_LAST_MAP_POSITION,
+    payload: characters
+  }
+};
 
 
 

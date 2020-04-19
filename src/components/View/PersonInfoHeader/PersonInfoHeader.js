@@ -12,7 +12,7 @@ const PersonInfoHeader = ({familyCharacters, pets, currentCharacters}) => {
     const characterAge = characterInfo.age;
     const characterPetInfo = pets.find(pet => pet.ownerId === characterId);
     const characterPetName = characterPetInfo.name;
-    const characterPetTypeId = characterPetInfo.typeId;
+    const characterPetTypeId = characterPetInfo.type;
     let petTypeInfo = '';
     for (let type in animalStats.types) {
       if (animalStats.types[type].id === characterPetTypeId) {
