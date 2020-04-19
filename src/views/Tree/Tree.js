@@ -6,11 +6,11 @@ const Tree = () => {
   return (
     <div className="tree">
       <PersonInfoHeader />
-      <div>This is a map!!!</div>
-      <div>This is a map!!!</div>
-      <div>This is a map!!!</div>
-      <div>This is a map!!!</div>
-      <div>This is a map!!!</div>
+      <div>This is a tree!!!</div>
+      <div>This is a tree!!!</div>
+      <div>This is a tree!!!</div>
+      <div>This is a tree!!!</div>
+      <div>This is a tree!!!</div>
       <NavInfoFooter />
     </div>
   );

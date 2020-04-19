@@ -1,4 +1,4 @@
-import { SET_CURRENT_CHARACTER, START_GAME_TIMER, INCREMENT_GAME_MONTH, SET_CURRENT_PAGE, SET_LAST_MAP_POSITION, SET_CURRENT_VIEW } from "../types/gameRootTypes"
+import { SET_CURRENT_CHARACTER, START_GAME_TIMER, INCREMENT_GAME_MONTH, SET_CURRENT_PAGE, SET_CURRENT_VIEW } from "../types/gameRootTypes"
 import { INCREMENT_GAME_TIME_AMOUNT } from "../../../assets/constants";
 import { pages, VIEW } from "../../../assets/pages";
 
@@ -29,11 +29,6 @@ const gameRootReducer = (state=INITIAL_STATE,action) => {
           ...state,
           currentPage: action.payload
         }
-      case SET_LAST_MAP_POSITION:
-        return {
-          ...state,
-          lastMapPosition: action.payload
-        }
       case SET_CURRENT_VIEW:
         return {
           ...state,
@@ -53,5 +48,4 @@ game:
   gameTime: 95617584000
   currentPage: pages.PAGE_INTRO,
   currentView: VIEWS.HOME
-  lastSavedMapPosition: {x: a, y: b}
   */

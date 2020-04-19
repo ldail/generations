@@ -9,6 +9,7 @@ import { startGameTimer, incrementGameTime, setCurrentPage } from '../redux/game
 import { pages, VIEW } from '../assets/pages';
 import Map from '../views/Map/Map';
 import Tree from '../views/Tree/Tree';
+import CharacterDetails from '../views/CharacterDetails/CharacterDetails';
 
 class App extends React.Component {
   constructor(props) {
@@ -98,6 +99,9 @@ class App extends React.Component {
     }
     else if (currentView === VIEW.TREE) {
       return <Tree />
+    }
+    else if (currentView === VIEW.CHARACTER_INFO) {
+      return <CharacterDetails />
     }
   }
 

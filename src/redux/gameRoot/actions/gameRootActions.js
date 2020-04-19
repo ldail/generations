@@ -1,4 +1,4 @@
-import { SET_CURRENT_CHARACTER, START_GAME_TIMER, INCREMENT_GAME_MONTH, SET_CURRENT_PAGE, SET_LAST_MAP_POSITION, SET_CURRENT_VIEW } from "../types/gameRootTypes";
+import { SET_CURRENT_CHARACTER, START_GAME_TIMER, INCREMENT_GAME_MONTH, SET_CURRENT_PAGE, SET_CURRENT_VIEW } from "../types/gameRootTypes";
 import { getAllFamilyData } from "../../helpers/helpers";
 import { INITIAL_GAME_TIME } from "../../../assets/constants";
 
@@ -28,11 +28,6 @@ export const incrementGameTime = () => ({
 export const setCurrentPage = (pageId) => ({
   type: SET_CURRENT_PAGE,
   payload: pageId
-});
-
-export const setLastMapPosition = (mapPosition) => ({
-  type: SET_LAST_MAP_POSITION,
-  payload: mapPosition
 });
 
 export const setCurrentView = (view) => ({

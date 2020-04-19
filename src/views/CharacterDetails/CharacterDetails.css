@@ -1,0 +1,95 @@
+.characterDetails {
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  padding-top: 50px;
+  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.characterDetails .parentBar, .characterDetails .currentCharacterInfo, .characterDetails .childrenInfo {
+  padding: 3px 50px;
+}
+
+.characterDetails .parentBar {
+  background-color: lightgray;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.characterDetails .parentBar ul {
+  display: flex;
+}
+
+.characterDetails .currentCharacterInfo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.currentCharacterInfo .currentCharacter {
+  display: flex;
+}
+
+.currentCharacter .icons {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+}
+
+.currentCharacter .icons * {
+  margin: 10px;
+}
+
+.currentCharacterInfo .currentPet {
+  display: flex;
+  flex-direction: column;
+}
+
+.currentCharacterInfo .currentPet .petInfo {
+  display: flex;
+}
+
+.petInfo .petDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.currentCharacter .characterDetails {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.characterDetails .childrenInfo {
+  height: 100px;
+  width: 100%;
+  background-color: lightgray;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.childrenInfo ul {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.childrenInfo li {
+  display: flex;
+  flex-direction: column;
+}
+
+.turnToTree {
+  position: fixed;
+  left: 0;
+  height: 80vh;
+  top: 10vh;
+  width: 30px;
+  background-color: lightgreen;
+  display: flex;
+  align-items: center;
+}

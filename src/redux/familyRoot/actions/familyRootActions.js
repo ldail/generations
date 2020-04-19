@@ -34,3 +34,8 @@ export const setCharacterProperty = (characterId, newPropertyName, newPropertyVa
     throw new Error(err);
   }
 }
+
+export const setLastMapPosition = (mapPosition) => ({
+  type: familyRootTypes.SET_LAST_MAP_POSITION,
+  payload: mapPosition
+});

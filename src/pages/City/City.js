@@ -4,7 +4,7 @@ import {pages, pageInfo} from '../../assets/pages';
 import PersonInfoHeader from '../../components/View/PersonInfoHeader/PersonInfoHeader';
 import NavInfoFooter from '../../components/View/NavInfoFooter/NavInfoFooter';
 import { connect } from 'react-redux';
-import { setLastMapPosition } from '../../redux/gameRoot/actions/gameRootActions';
+import { setLastMapPosition } from '../../redux/familyRoot/actions/familyRootActions';
 ;
 
 class City extends Component {
@@ -265,14 +265,16 @@ class City extends Component {
     this.outsideCity.current.style['width'] = `${mapWidth + window.screen.width}px`;
     this.outsideCity.current.style['height'] = `${mapHeight + window.screen.height}px`;
 
-    this.props.setLastMapPosition({x: startingPointX, y: startingPointY});
+    this.props.setLastMapPosition({x: startingPointX, y: startingPointY, location: currentMap});
     this.mapPositionInterval = setInterval(() => {
-      this.props.setLastMapPosition(this.findActualXandYValueOfMap())
+      this.props.setLastMapPosition({...this.findActualXandYValueOfMap(), location: currentMap})
     },30000)
   }
 
   componentWillUnmount() {
     clearInterval(this.mapPositionInterval);
+    const currentMap = pages[this.props.currentPage];
+    this.props.setLastMapPosition({...this.findActualXandYValueOfMap(), location: currentMap});
   }
 
 

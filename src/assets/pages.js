@@ -7,7 +7,8 @@ export const pages = {
 export const VIEW = {
   HOME: 'HOME',
   MAP: 'MAP',
-  TREE: 'TREE'
+  TREE: 'TREE',
+  CHARACTER_INFO: 'CHARACTER_INFO'
 }
 
 export const pageInfo = {

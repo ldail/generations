@@ -26,6 +26,11 @@ const familyRootReducer = (state=INITIAL_STATE, action) => {
         ...state,
         characters: action.payload
       }
+    case familyRootTypes.SET_LAST_MAP_POSITION:
+      return {
+        ...state,
+        lastMapPosition: action.payload
+      }
     default:
       return state;
   }
@@ -39,6 +44,6 @@ export default familyRootReducer;
 
 familyName: 'xxx',
 attribute: 0,
-characters: [{name: 'john', gender: appConstants.m, partnerId: null, petId: 0, id: 0, age: 0}]
+characters: [{name: 'john', gender: appConstants.m, partnerId: null, petId: 0, id: 0, age: 0, lastMapPosition: {x, y, location}}]
 
 */
