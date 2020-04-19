@@ -380,7 +380,7 @@ export const seededPetData = [
   },
   {
     name: 'Kooky',
-    type: 6,
+    type: 2,
     ownerId: 10,
     id: 10
   },

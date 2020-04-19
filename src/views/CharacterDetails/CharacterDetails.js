@@ -2,8 +2,37 @@ import React from 'react';
 import PersonInfoHeader from '../../components/View/PersonInfoHeader/PersonInfoHeader';
 import NavInfoFooter from '../../components/View/NavInfoFooter/NavInfoFooter';
 import './CharacterDetails.css';
+import { connect } from 'react-redux';
+import animalStats from '../../assets/animalStats';
+import { setCurrentCharacter } from '../../redux/gameRoot/actions/gameRootActions';
 
-const CharacterDetails = () => {
+const CharacterDetails = ({currentCharacters,characters, pets, switchToCharacter}) => {
+  const currentCharacterInfo = characters.find(character => character.id === currentCharacters[0]);
+  const currentPetInfo = pets.find(pet => pet.id === currentCharacterInfo.petId);
+  let currentPetSprite = null;
+  let currentPetTypeText = null;
+  for (let animalType in animalStats.types) {
+    console.log(animalType);
+    if (animalStats.types[animalType].id === currentPetInfo.type) {
+      currentPetSprite = animalStats.types[animalType].icon
+      currentPetTypeText = animalStats.types[animalType].name
+    }
+  }
+  let spouseCharacterInfo = null;
+  let spousePetInfo = null;
+  let spousePetSprite = null;
+  let spousePetTypeText = null;
+  if (currentCharacters[1]) {
+    spouseCharacterInfo = characters.find(character => character.id === currentCharacters[1])
+    spousePetInfo = pets.find(pet => pet.id === spouseCharacterInfo.petId);
+    for (let animalType in animalStats.types) {
+      if (animalStats.types[animalType].id === spousePetInfo.type) {
+        spousePetSprite = animalStats.types[animalType].icon
+        spousePetTypeText = animalStats.types[animalType].name
+      }
+    }
+  }
+
   return (
     <div className="characterDetails">
       <PersonInfoHeader />
@@ -32,7 +61,7 @@ const CharacterDetails = () => {
         <div className="currentCharacter">
           <div className="icons">
               <div className="characterColor">
-                {`{red}`}
+                {currentCharacterInfo.color}
               </div>
               <div className="smallDivider">
                 -----
@@ -40,23 +69,27 @@ const CharacterDetails = () => {
               <div className="seeCharOnMap">
                 {`{seeOnMap}`}
               </div>
-              <div className="switchToChar">
+              <div className="switchToChar" onClick={() => switchToCharacter(currentCharacterInfo.id)}>
                 {`{switchToChar}`}
               </div>
           </div>
           <div className="characterDetails">
             <span className="currentCharacterName">
-              {`{CharName}`}
+              {currentCharacterInfo.name}
             </span>
             <span className="currentCharacterAge">
-              {`{Age 10}`}
+              {currentCharacterInfo.age}
             </span>
-            <span className="currentCharacterName">
-              {`{CharName}`}
-            </span>
-            <span className="currentCharacterAge">
-              {`{Age 10}`}
-            </span>
+            {spouseCharacterInfo 
+            ? <>
+                <span className="currentCharacterName">
+                    {spouseCharacterInfo.name}
+                </span>
+                <span className="currentCharacterAge">
+                  {spouseCharacterInfo.age}
+                </span>
+              </>
+            : null }
           </div>
         </div>
         <div className="divider">
@@ -65,36 +98,38 @@ const CharacterDetails = () => {
         <div className="currentPet">
           <div className="petInfo">
             <div className="petSprite">
-              {`{sprite}`}
+              <img src={currentPetSprite} alt="pet" />
             </div>
             <div className="petStats">
               {`{stats}`}
             </div>
             <div className="petDetails">
               <span className="PetName">
-                {`{petName}`}
+                {currentPetInfo.name}
               </span>
               <span className="petType">
-                {`{petType}`}
+                {currentPetTypeText}
               </span>
             </div>
           </div>
-          <div className="petInfo">
-            <div className="petSprite">
-              {`{sprite}`}
+          {spousePetInfo
+          ? <div className="petInfo">
+              <div className="petSprite">
+                <img src={spousePetSprite} alt="pet" />
+              </div>
+              <div className="petStats">
+                {`{stats}`}
+              </div>
+              <div className="petDetails">
+                <span className="PetName">
+                  {spousePetInfo.name}
+                </span>
+                <span className="petType">
+                  {spousePetTypeText}
+                </span>
+              </div>
             </div>
-            <div className="petStats">
-              {`{stats}`}
-            </div>
-            <div className="petDetails">
-              <span className="PetName">
-                {`{petName}`}
-              </span>
-              <span className="petType">
-                {`{petType}`}
-              </span>
-            </div>
-          </div>
+          : null }
         </div>
       </div>
 
@@ -145,4 +180,13 @@ const CharacterDetails = () => {
   );
 };
 
-export default CharacterDetails;
+const mapStateToProps = state => ({
+  currentCharacters: state.game.currentCharacters,
+  characters: state.family.characters,
+  pets: state.pet.pets
+})
+
+const mapDispatchToProps = dispatch => ({
+  switchToCharacter: (characterId) => dispatch(setCurrentCharacter(characterId))
+})
+export default connect(mapStateToProps,mapDispatchToProps)(CharacterDetails);

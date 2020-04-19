@@ -41,7 +41,7 @@ export const setCurrentView = (view) => ({
 //Only to be used for development
 export const devOnlySetSeededGameInfo = () => {
   const payload = {};
-  payload.currentCharacters = [0,null];
+  payload.currentCharacters = [8,10];
   payload.gameTime = INITIAL_GAME_TIME;
   payload.currentView = VIEW.HOME;
   payload.currentPage = pages.PAGE_CITY_ONE;

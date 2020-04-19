@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './FamilySetup.css';
 import { connect } from 'react-redux';
-import {promptMessages, primaryAttributes, gender} from '../../assets/constants';
+import {promptMessages, primaryAttributes, gender, characterColors} from '../../assets/constants';
 import animalStats from '../../assets/animalStats';
 import xss from 'xss';
 import smallBoy from '../../assets/smallboy.jpg';
@@ -10,6 +10,8 @@ import { addNewCharacter, setFamilyName, setPrimaryAttribute } from '../../redux
 import { addNewPet } from '../../redux/petRoot/actions/petRootActions';
 import {setCurrentCharacter, setCurrentPage} from '../../redux/gameRoot/actions/gameRootActions';
 import { pages } from '../../assets/pages';
+
+//TODO: Add prompt for color
 
 const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttributeDispatch, setFamilyNameDispatch, setCurrentPageDispatch, setCurrentCharacterDispatch, startGameTimer, currentPage}) => {
 
@@ -61,7 +63,7 @@ const FamilySetup = ({addNewCharacterDispatch, addNewPetDispatch, setPrimaryAttr
       setFamilyNameDispatch(familyName);
       setPrimaryAttributeDispatch(primaryAttribute);
       addNewPetDispatch({name: petName, id: 0, type: petTypeId, ownerId: 0})
-      addNewCharacterDispatch({name: boyName, gender: gender.male, id: 0, parentId: null, partnerId: null, petId: 0, age: 10 })
+      addNewCharacterDispatch({name: boyName, gender: gender.male, id: 0, parentId: null, partnerId: null, petId: 0, age: 10, color: characterColors.RED })
     }
     else if (currentPrompt === 6) {
       setCurrentCharacterDispatch(0);
