@@ -1,5 +1,7 @@
 import familyRootTypes from "../types/familyRootTypes";
 import { getAllFamilyData } from "../../helpers/helpers";
+import { seededPetData, seedCharacterData } from "../../../assets/constants";
+import { pages } from "../../../assets/pages";
 
 export const setFamilyName = (familyName) => ({
   type: familyRootTypes.SET_FAMILY_NAME,
@@ -39,3 +41,18 @@ export const setLastMapPosition = (mapPosition) => ({
   type: familyRootTypes.SET_LAST_MAP_POSITION,
   payload: mapPosition
 });
+
+
+
+//To be used only for development
+export const devOnlySetSeededFamilyInfo = () => {
+  const payload = {};
+  payload.familyName = 'Johnson';
+  payload.attribute = 0;
+  payload.characters = seedCharacterData;
+
+  return ({
+    type: familyRootTypes.DEV_ONLY_SET_FAMILY_SEEDED_INFO,
+    payload
+  })
+}

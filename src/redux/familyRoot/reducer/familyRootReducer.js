@@ -31,6 +31,8 @@ const familyRootReducer = (state=INITIAL_STATE, action) => {
         ...state,
         lastMapPosition: action.payload
       }
+    case familyRootTypes.DEV_ONLY_SET_FAMILY_SEEDED_INFO:
+      return {...action.payload}
     default:
       return state;
   }
@@ -44,6 +46,17 @@ export default familyRootReducer;
 
 familyName: 'xxx',
 attribute: 0,
-characters: [{name: 'john', gender: appConstants.m, partnerId: null, petId: 0, id: 0, age: 0, lastMapPosition: {x, y, location}}]
+characters: [{
+  name: 'john', 
+  gender: appConstants.m, 
+  parentId: ROOT, 
+  partnerId: null, 
+  petId: 0, 
+  id: 0, 
+  age: 0, 
+  lastMapPosition: {x, y, location}, 
+  partnerLeader: true, 
+  color: constnats.RED, 
+}]
 
 */

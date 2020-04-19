@@ -11,6 +11,8 @@ const petRootReducer = (state=INITIAL_STATE, action) => {
         ...state,
         pets: [...state.pets, action.payload]
       }
+    case petRootTypes.DEV_ONLY_SET_PET_SEEDED_INFO:
+      return {...action.payload}
     default:
       return state;
   }

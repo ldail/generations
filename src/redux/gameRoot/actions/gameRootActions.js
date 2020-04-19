@@ -1,6 +1,7 @@
-import { SET_CURRENT_CHARACTER, START_GAME_TIMER, INCREMENT_GAME_MONTH, SET_CURRENT_PAGE, SET_CURRENT_VIEW } from "../types/gameRootTypes";
+import { SET_CURRENT_CHARACTER, START_GAME_TIMER, INCREMENT_GAME_MONTH, SET_CURRENT_PAGE, SET_CURRENT_VIEW, DEV_ONLY_SET_GAME_SEEDED_INFO } from "../types/gameRootTypes";
 import { getAllFamilyData } from "../../helpers/helpers";
 import { INITIAL_GAME_TIME } from "../../../assets/constants";
+import { pages, VIEW } from "../../../assets/pages";
 
 export const setCurrentCharacter = characterId => {
   const characters = getAllFamilyData().characters;
@@ -34,3 +35,18 @@ export const setCurrentView = (view) => ({
   type: SET_CURRENT_VIEW,
   payload: view
 })
+
+
+
+//Only to be used for development
+export const devOnlySetSeededGameInfo = () => {
+  const payload = {};
+  payload.currentCharacters = [0,null];
+  payload.gameTime = INITIAL_GAME_TIME;
+  payload.currentView = VIEW.HOME;
+  payload.currentPage = pages.PAGE_CITY_ONE;
+  return( {
+    type: DEV_ONLY_SET_GAME_SEEDED_INFO,
+    payload
+  })
+}

@@ -1,0 +1,230 @@
+.clickPanel {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+}
+
+.boy {
+  max-width: 50vw;
+}
+
+/* Continue Message */
+
+.ContinueMessage {
+  background-color: white;
+  color: black;
+  position: fixed;
+  text-align: center;
+  padding: 10px;
+  opacity: 0;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  font-family: 'IBM Plex Mono', sans-serif;
+}
+
+.talking-cloud-message {
+  max-width: 250px;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.animation-delay {
+  animation-name: delay;
+  animation-fill-mode: forwards;
+  animation-duration: .5s;
+  animation-delay: 3s;
+  -webkit-animation: delay .5s forwards;
+  -webkit-animation-delay: 3s;
+  width: 100%;
+}
+
+.animation-reverseDelay {
+  animation: reverseDelay forwards .5s;
+  -webkit-animation: reverseDelay .5s forwards;
+}
+
+.animation-normalFadeIn {
+  animation: normalFadeIn forwards .5s;
+  -webkit-animation: normalFadeIn forwards .5s;
+  opacity: 0;
+}
+
+.animation-quickFadeOutThenIn {
+  animation: quickFadeOutThenIn forwards 1s;
+  -webkit-animation: quickFadeOutThenIn forwards 1s;
+}
+
+@keyframes delay {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
+
+@-webkit-keyframes delay {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
+
+@keyframes reverseDelay {
+  0% {
+    opacity: 100;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes reverseDelay {
+  0% {
+    opacity: 100;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes normalFadeIn {
+  0% {
+    opacity: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
+  100% {
+    opacity: 100;
+    bottom: 10px;
+    left: 85px;
+    text-align: left;
+  }
+}
+
+@-webkit-keyframes normalFadeIn {
+  0% {
+    opacity: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
+  100% {
+    opacity: 100;
+    bottom: 10px;
+    left: 85px;
+    text-align: left;
+  }
+}
+
+@keyframes quickFadeOutThenIn {
+  0% {
+    opacity: 100;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
+
+@-webkit-keyframes quickFadeOutThenIn {
+  0% {
+    opacity: 100;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
+
+@media screen and (min-width: 680px) {
+  .animation-normalFadeIn {
+    max-width: 420px;
+  }
+}
+
+@media screen and (min-width: 1023px) {
+  .animation-normalFadeIn {
+    max-width: 720px;
+  }
+}
+
+/* White Circle */
+
+.WhiteCircle {
+  border-radius: 50%;
+  width: 0;
+  height: auto;
+  background-color: white;
+}
+
+.smallOne {
+  animation-name: appearSmall;
+  animation-duration: 2s;
+  animation-delay: 5s;
+  animation-fill-mode: forwards;
+  -webkit-animation-name: appearSmall;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-delay: 5s;
+  -webkit-animation-fill-mode: forwards;
+}
+
+.mediumOne {
+  animation: appearMedium 2s forwards;
+  -webkit-animation: appearMedium 2s forwards;
+}
+
+@keyframes appearSmall {
+  0% {
+    width: 0;
+    height: 0;
+  }
+  100% {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@-webkit-keyframes appearSmall {
+  0% {
+    width: 0;
+    height: 0;
+  }
+  100% {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@keyframes appearMedium {
+  0% {
+    width: 50px;
+    height: 50px;
+  }
+  100% {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+@-webkit-keyframes appearMedium {
+  0% {
+    width: 50px;
+    height: 50px;
+  }
+  100% {
+    width: 200px;
+    height: 200px;
+  }
+}

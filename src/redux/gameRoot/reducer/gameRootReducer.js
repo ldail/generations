@@ -1,4 +1,4 @@
-import { SET_CURRENT_CHARACTER, START_GAME_TIMER, INCREMENT_GAME_MONTH, SET_CURRENT_PAGE, SET_CURRENT_VIEW } from "../types/gameRootTypes"
+import { SET_CURRENT_CHARACTER, START_GAME_TIMER, INCREMENT_GAME_MONTH, SET_CURRENT_PAGE, SET_CURRENT_VIEW, DEV_ONLY_SET_GAME_SEEDED_INFO } from "../types/gameRootTypes"
 import { INCREMENT_GAME_TIME_AMOUNT } from "../../../assets/constants";
 import { pages, VIEW } from "../../../assets/pages";
 
@@ -34,6 +34,8 @@ const gameRootReducer = (state=INITIAL_STATE,action) => {
           ...state,
           currentView: action.payload
         }
+      case DEV_ONLY_SET_GAME_SEEDED_INFO:
+        return {...action.payload}
     default:
       return state;
   }

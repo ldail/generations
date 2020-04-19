@@ -5,78 +5,46 @@ import Intro from '../pages/Intro/Intro';
 import FamilySetup from '../pages/FamilySetup/FamilySetup';
 import City from '../pages/City/City';
 import { connect } from 'react-redux';
-import { startGameTimer, incrementGameTime, setCurrentPage } from '../redux/gameRoot/actions/gameRootActions';
+import { startGameTimer, incrementGameTime, setCurrentPage, devOnlySetSeededGameInfo } from '../redux/gameRoot/actions/gameRootActions';
 import { pages, VIEW } from '../assets/pages';
 import Map from '../views/Map/Map';
 import Tree from '../views/Tree/Tree';
 import CharacterDetails from '../views/CharacterDetails/CharacterDetails';
+import {devOnlySetSeededFamilyInfo} from '../redux/familyRoot/actions/familyRootActions';
+import {devOnlySetSeededPetInfo} from '../redux/petRoot/actions/petRootActions';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentPage: 0,
-      currentMessageIndex: 0,
-      waitingForKey: false
+      devMode: false
     }
     this.gameTimer = null;
+    this.devStartButton = React.createRef();
   }
 
   componentDidMount() {
-    document.querySelector('.intro-title').classList.add('animation-expand')
-    document.querySelector('.ContinueMessage').classList.add('animation-delay')
     setTimeout(() => {
-      window.addEventListener('keydown', this.handleKeyDown);
-      window.addEventListener('touchstart', this.handleKeyDown);
-      this.setState({...this.state, waitingForKey: true})
-    }, 3200);
+      this.devStartButton.current.style.display = 'none';
+    },10000);
+  }
+
+  startDevMode = async () => {
+    if (!this.state.devMode) {
+      const {devOnlySetSeededFamilyInfo, devOnlySetSeededGameInfo, devOnlySetSeededPetInfo} = this.props;
+      await devOnlySetSeededPetInfo();
+      await devOnlySetSeededFamilyInfo();
+      await devOnlySetSeededGameInfo();
+      this.setState({devMode: true})
+    }
   }
 
   startGameTimer = () => {
     this.props.startGameTimerDispatch();
     this.gameTimer = setInterval(() => {
       this.props.incrementGameTimerDispatch();
-    },60000)
-  }
-
-  handleKeyDown = () => {
-    let {waitingForKey, currentMessageIndex} = this.state;
-    if (waitingForKey) {
-      this.setState({...this.state, waitingForKey: false});
-      let nextIndex = currentMessageIndex + 1;
-      if (nextIndex === 1) {
-        document.querySelector('.intro-title').classList.add('animation-reverseExpand');
-        document.querySelector('.ContinueMessage').classList.add('animation-reverseDelay');
-        document.querySelector('.WhiteCircle').classList.add('smallOne');
-        document.querySelector('.cloud').classList.add('animation-cloudToPosition');
-        setTimeout(() => {
-          document.querySelector('.ContinueMessage').classList.add('animation-normalFadeIn');
-          document.querySelector('.ContinueMessage').classList.add('talking-cloud-message');
-          document.querySelector('.cloud').classList.add('animation-slowBob');
-          this.setState({...this.state, currentMessageIndex: currentMessageIndex + 1, waitingForKey: true});
-        },1000);
-      }
-      else if (nextIndex === 2 || nextIndex === 3 || nextIndex === 4) {
-        // document.querySelector('.ContinueMessage').classList.add('animation-quickFadeOutThenIn');
-        // setTimeout(() => {
-        //   document.querySelector('.ContinueMessage').classList.remove('animation-quickFadeOutThenIn')
-        //   this.setState({...this.state, waitingForKey: true})
-        // }, 1000)
-        this.setState({...this.state, currentMessageIndex: currentMessageIndex + 1, waitingForKey: true});
-      }
-      else if (nextIndex === 5) {
-        document.querySelector('.WhiteCircle').classList.add('mediumOne');
-        document.querySelector('.WhiteCircle').classList.remove('smallOne');
-        document.querySelector('.boy').classList.add('animation-zeroToHundredOpacity');
-        this.setState({...this.state, currentMessageIndex: currentMessageIndex + 1, waitingForKey: true});
-      }
-      else if (nextIndex >= 6 && nextIndex < 12) {
-        this.setState({...this.state, currentMessageIndex: currentMessageIndex + 1, waitingForKey: true});
-      }
-      else if (nextIndex === 12) {
-        this.props.setCurrentPageDispatch(pages.PAGE_FAMILY_SETUP)
-      }
-    }
+    },60000);
   }
 
   showPage = () => {
@@ -108,6 +76,7 @@ class App extends React.Component {
   render() {
     return (
       <div id="App">
+        <button style={{position: 'fixed', top: 0, left: 0, zIndex: 3}} ref={this.devStartButton} onClick={() => this.startDevMode()}>Start test mode</button>
         {this.showPage()}
       </div>
     );
@@ -123,7 +92,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch) => ({
   startGameTimerDispatch: () => dispatch(startGameTimer()),
   incrementGameTimerDispatch: () => dispatch(incrementGameTime()),
-  setCurrentPageDispatch: (newPageId) => dispatch(setCurrentPage(newPageId))
+  setCurrentPageDispatch: (newPageId) => dispatch(setCurrentPage(newPageId)),
+  devOnlySetSeededFamilyInfo: () => dispatch(devOnlySetSeededFamilyInfo()),
+  devOnlySetSeededGameInfo: () => dispatch(devOnlySetSeededGameInfo()),
+  devOnlySetSeededPetInfo: () => dispatch(devOnlySetSeededPetInfo())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
