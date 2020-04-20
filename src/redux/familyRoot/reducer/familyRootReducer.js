@@ -31,6 +31,11 @@ const familyRootReducer = (state=INITIAL_STATE, action) => {
         ...state,
         characters: action.payload
       }
+    case familyRootTypes.SET_FAMILY_TREE:
+      return {
+        ...state,
+        familyTree: action.payload
+      }
     case familyRootTypes.DEV_ONLY_SET_FAMILY_SEEDED_INFO:
       return {...action.payload}
     default:
@@ -46,6 +51,7 @@ export default familyRootReducer;
 
 familyName: 'xxx',
 attribute: 0,
+familyTree: [],
 characters: [{
   name: 'john', 
   gender: appConstants.m, 

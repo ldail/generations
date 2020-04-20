@@ -51,6 +51,20 @@ export const setLastMapPosition = (mapPosition) => {
   }
 };
 
+export const setFamilyTree = () => {
+  let newFamilyTree = '';
+  return {
+    type: familyRootTypes.SET_FAMILY_TREE,
+    payload: newFamilyTree
+  }
+}
+
+
+
+
+
+
+
 
 
 //To be used only for development

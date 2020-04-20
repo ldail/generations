@@ -76,7 +76,7 @@ class App extends React.Component {
   render() {
     return (
       <div id="App">
-        <button style={{position: 'fixed', top: 0, left: 0, zIndex: 3}} ref={this.devStartButton} onClick={() => this.startDevMode()}>Start test mode</button>
+        <button style={{position: 'fixed', top: 0, left: 0, zIndex: 3, display: this.state.devMode ? 'none' : 'block'}} disabled={this.state.deveMode} ref={this.devStartButton} onClick={() => this.startDevMode()}>Start test mode</button>
         {this.showPage()}
       </div>
     );

@@ -3,8 +3,12 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 50px;
+  height: 80px;
   background-color: gray;
   border-bottom: 1px solid black;
   z-index: 10;
+}
+
+#PersonInfoHeader .personInfo:nth-child(2) {
+  border-top: 1px black dashed;
 }

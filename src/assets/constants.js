@@ -175,7 +175,7 @@ export const seedCharacterData = [
     name: 'Gessica',
     gender: gender.female,
     parentId: null,
-    partnerId: 1,
+    partnerId: 6,
     partnerLeader: false,
     petId: 9,
     id: 9,
@@ -231,8 +231,8 @@ export const seedCharacterData = [
     parentId: 8,
     partnerId: 15,
     partnerLeader: true,
-    petId: 15,
-    id: 15,
+    petId: 14,
+    id: 14,
     age: 32,
     lastMapPosition: {x: 5600, y: 1830, location: pages.PAGE_CITY_ONE},
     color: characterColors.YELLOW
@@ -297,7 +297,7 @@ export const seedCharacterData = [
     name: 'Undula',
     gender: gender.female,
     parentId: 14,
-    partnerId: 22,
+    partnerId: 21,
     partnerLeader: true,
     petId: 19,
     id: 19,
@@ -308,11 +308,11 @@ export const seedCharacterData = [
   {
     name: 'Vega',
     gender: gender.male,
-    parentId: 14,
+    parentId: null,
     partnerId: 19,
     partnerLeader: false,
-    petId: 22,
-    id: 22,
+    petId: 21,
+    id: 21,
     age: 17,
   },
 ];
@@ -351,32 +351,32 @@ export const seededPetData = [
   {
     name: 'Fella',
     type: 5,
-    ownerId: 5,
-    id: 5
-  },
-  {
-    name: 'Grady',
-    type: 0,
     ownerId: 6,
     id: 6
   },
   {
+    name: 'Grady',
+    type: 0,
+    ownerId: 9,
+    id: 9
+  },
+  {
     name: 'Himmy',
     type: 1,
-    ownerId: 7,
-    id: 7
+    ownerId: 5,
+    id: 5
   },
   {
     name: 'Icky',
     type: 2,
-    ownerId: 8,
-    id: 8
+    ownerId: 7,
+    id: 7
   },
   {
     name: 'Jilly',
     type: 3,
-    ownerId: 9,
-    id: 9
+    ownerId: 8,
+    id: 8
   },
   {
     name: 'Kooky',
@@ -435,19 +435,19 @@ export const seededPetData = [
   {
     name: 'Teddy',
     type: 5,
-    ownerId: 19,
-    id: 19
+    ownerId: 20,
+    id: 20
   },
   {
     name: 'Ummm',
     type: 0,
-    ownerId: 20,
-    id: 20
+    ownerId: 19,
+    id: 19
   },
   {
     name: 'Viggy',
     type: 1,
     ownerId: 21,
-    id: 22
+    id: 21
   }
 ]
