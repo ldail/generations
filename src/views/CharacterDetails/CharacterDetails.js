@@ -24,7 +24,7 @@ const CharacterDetails = ({currentCharacterForDetailView, currentCharacters,char
     }
   },[]);
 
-  const [viewCharacter, setViewCharacter] = useState(characters.find(character => character.id === (currentCharacterForDetailView ? currentCharacterForDetailView : currentCharacters[0])));
+  const [viewCharacter, setViewCharacter] = useState(characters.find(character => character.id === (currentCharacterForDetailView >= 0 ? currentCharacterForDetailView : currentCharacters[0])));
 
   const currentPetInfo = pets.find(pet => pet.id === viewCharacter.petId);
   let currentPetSprite = null;
