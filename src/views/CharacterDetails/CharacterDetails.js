@@ -4,12 +4,27 @@ import NavInfoFooter from '../../components/View/NavInfoFooter/NavInfoFooter';
 import './CharacterDetails.css';
 import { connect } from 'react-redux';
 import animalStats from '../../assets/animalStats';
-import { setCurrentCharacter, setCurrentView } from '../../redux/gameRoot/actions/gameRootActions';
+import { setCurrentCharacter, setCurrentView, setCurrentCharacterForDetailView } from '../../redux/gameRoot/actions/gameRootActions';
 import { VIEW } from '../../assets/pages';
+import styled from 'styled-components';
 
-const CharacterDetails = ({currentCharacters,characters, pets, switchToCharacter, setCurrentView}) => {
+const StyledCircle = styled.div`
+  display: block;
+  border-radius: 50%;
+  width: ${({circleSize}) => circleSize};
+  height: ${({circleSize}) => circleSize};
+  background-color: ${({hexCode}) => hexCode};
+`;
 
-  const [viewCharacter, setViewCharacter] = useState(characters.find(character => character.id === currentCharacters[0]));
+const CharacterDetails = ({currentCharacterForDetailView, currentCharacters,characters, pets, switchToCharacter, setCurrentView, setCurrentCharacterForDetailView}) => {
+
+  useEffect(() => {
+    return () => {
+      setCurrentCharacterForDetailView(null);
+    }
+  },[]);
+
+  const [viewCharacter, setViewCharacter] = useState(characters.find(character => character.id === (currentCharacterForDetailView ? currentCharacterForDetailView : currentCharacters[0])));
 
   const currentPetInfo = pets.find(pet => pet.id === viewCharacter.petId);
   let currentPetSprite = null;
@@ -49,7 +64,11 @@ const CharacterDetails = ({currentCharacters,characters, pets, switchToCharacter
         ? <div className="parentBar" onClick={() => setViewCharacter(characters.find(character => character.id === parentCharacterInfo.id))}>
             <ul>
               <li>
-                <span className="parentColor">{parentCharacterInfo.color}</span>
+                <StyledCircle 
+                  className="parentColor"
+                  circleSize={'25px'}
+                  hexCode={parentCharacterInfo.color.hexCode}
+                />
               </li>
               <li>
                 <span className="parentName">{parentCharacterInfo.name}</span>
@@ -71,9 +90,11 @@ const CharacterDetails = ({currentCharacters,characters, pets, switchToCharacter
       <div className="currentCharacterInfo">
         <div className="currentCharacter">
           <div className="icons">
-              <div className="characterColor">
-                {viewCharacter.color}
-              </div>
+              <StyledCircle 
+                className="characterColor"
+                circleSize={'50px'}
+                hexCode={viewCharacter.color.hexCode}
+              />
               <div className="smallDivider">
                 -----
               </div>
@@ -152,9 +173,11 @@ const CharacterDetails = ({currentCharacters,characters, pets, switchToCharacter
               <span className="childName">
                 {childInfo.name}
               </span>
-              <span className="childColor">
-                {childInfo.color}
-              </span>
+              <StyledCircle 
+                className="childColor"
+                circleSize={'25px'}
+                hexCode={childInfo.color.hexCode}
+              />
               <span className="seeChildArrows">
                 »
               </span>
@@ -176,11 +199,13 @@ const CharacterDetails = ({currentCharacters,characters, pets, switchToCharacter
 const mapStateToProps = state => ({
   currentCharacters: state.game.currentCharacters,
   characters: state.family.characters,
-  pets: state.pet.pets
+  pets: state.pet.pets,
+  currentCharacterForDetailView: state.game.currentCharacterForDetailView
 })
 
 const mapDispatchToProps = dispatch => ({
   switchToCharacter: (characterId) => dispatch(setCurrentCharacter(characterId)),
-  setCurrentView: (newView) => dispatch(setCurrentView(newView))
+  setCurrentView: (newView) => dispatch(setCurrentView(newView)),
+  setCurrentCharacterForDetailView: (characterId) => dispatch(setCurrentCharacterForDetailView(characterId))
 })
 export default connect(mapStateToProps,mapDispatchToProps)(CharacterDetails);

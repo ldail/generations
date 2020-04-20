@@ -50,12 +50,12 @@ export const gender = {
 }
 
 export const characterColors = {
-  RED: 'Red',
-  ORANGE: 'Orange',
-  YELLOW: 'Yellow',
-  GREEN: 'Green',
-  BLUE: 'Blue',
-  PURPLE: 'Purple'
+  RED: {displayText: 'Red', hexCode: '#cc2512'},
+  ORANGE: {displayText: 'Orange', hexCode: '#ebc017'},
+  YELLOW: {displayText: 'Yellow', hexCode: '#d7e605'},
+  GREEN: {displayText: 'Green', hexCode: '#0dbd45'},
+  BLUE: {displayText: 'Blue', hexCode: '#0e22b5'},
+  PURPLE: {displayText: 'Purple', hexCode: '#850db5'},
 }
 
 
@@ -184,7 +184,7 @@ export const seedCharacterData = [
   {
     name: 'Kelly',
     gender: gender.female,
-    parentId: 2,
+    parentId: null,
     partnerId: 8,
     partnerLeader: false,
     petId: 10,

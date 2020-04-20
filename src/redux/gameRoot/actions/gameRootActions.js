@@ -1,4 +1,4 @@
-import { SET_CURRENT_CHARACTER, START_GAME_TIMER, INCREMENT_GAME_MONTH, SET_CURRENT_PAGE, SET_CURRENT_VIEW, DEV_ONLY_SET_GAME_SEEDED_INFO } from "../types/gameRootTypes";
+import { SET_CURRENT_CHARACTER, START_GAME_TIMER, INCREMENT_GAME_MONTH, SET_CURRENT_PAGE, SET_CURRENT_VIEW, DEV_ONLY_SET_GAME_SEEDED_INFO, SET_CURRENT_CHARACTER_FOR_DETAIL_VIEW } from "../types/gameRootTypes";
 import { getAllFamilyData } from "../../helpers/helpers";
 import { INITIAL_GAME_TIME } from "../../../assets/constants";
 import { pages, VIEW } from "../../../assets/pages";
@@ -34,6 +34,11 @@ export const setCurrentPage = (pageId) => ({
 export const setCurrentView = (view) => ({
   type: SET_CURRENT_VIEW,
   payload: view
+})
+
+export const setCurrentCharacterForDetailView = (characterId) => ({
+  type: SET_CURRENT_CHARACTER_FOR_DETAIL_VIEW,
+  payload: characterId
 })
 
 

@@ -36,6 +36,7 @@ class App extends React.Component {
       await devOnlySetSeededPetInfo();
       await devOnlySetSeededFamilyInfo();
       await devOnlySetSeededGameInfo();
+      this.startGameTimer();
       this.setState({devMode: true})
     }
   }

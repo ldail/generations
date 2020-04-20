@@ -6,7 +6,7 @@ import './PersonInfoHeader.css';
 
 const PersonInfoHeader = ({familyCharacters, pets, currentCharacters}) => {
 
-  const renderPersonInfo = characterId => {
+  const renderPersonInfo = (characterId, displayColorBool) => {
     const characterInfo = familyCharacters.find(character => character.id === characterId)
     const characterName = characterInfo.name;
     const characterAge = characterInfo.age;
@@ -27,13 +27,14 @@ const PersonInfoHeader = ({familyCharacters, pets, currentCharacters}) => {
         characterAge={characterAge}
         characterPetName={characterPetName}
         characterPetTypeIcon={characterPetTypeIcon}
+        characterColor={displayColorBool ? characterInfo.color : null}
       />
     );
   }
 
   return (
     <ul id="PersonInfoHeader">
-      {renderPersonInfo(currentCharacters[0])}
+      {renderPersonInfo(currentCharacters[0], true)}
       {currentCharacters[1]
         ? renderPersonInfo(currentCharacters[1])
         : null
