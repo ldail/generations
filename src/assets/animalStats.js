@@ -23,7 +23,7 @@ const animalStats = {
   growthRateStats: {
     H: {abbreviation: 'H', name: 'high', initialValue: 22},
     M: {abbreviation: 'M', name: 'medium', initialValue: 16},
-    L: {abbreviation: 'L', name: 'low', initialValue: 16}
+    L: {abbreviation: 'L', name: 'low', initialValue: 10}
   },
   get growthRates() {
     return {
