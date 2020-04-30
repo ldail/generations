@@ -20,7 +20,6 @@ const Tree = ({setCurrentCharacterForDetailView, setCurrentView, characters}) =>
     for (let i=0;i<charactersSortedById.length - 1;i++) {
       let currentCharacter = charactersSortedById[i];
       if (currentCharacter.partnerLeader && currentCharacter.parentId === 'ROOT') {
-        console.log(currentCharacter);
           familyTree.push({characterId: i, name: currentCharacter.name, children: findCharacterChildren(i, charactersSortedById), nodeSvgShape: {shape: 'circle', shapeProps: { r: 10, fill: currentCharacter.color.hexCode}}})
       }
     }

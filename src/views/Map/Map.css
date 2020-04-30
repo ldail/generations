@@ -1,0 +1,10 @@
+.Map {
+  background-color: lightskyblue;
+}
+
+.controls {
+  position: fixed;
+  z-index: 8;
+  bottom: 100px;
+  right: 100px;
+}

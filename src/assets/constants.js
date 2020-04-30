@@ -61,6 +61,8 @@ export const characterColors = {
 
 export const INITIAL_GAME_TIME = 0; //Year 5000, January 1 12:00AM
 export const INCREMENT_GAME_TIME_AMOUNT = 1 //One month
+export const MAP_MOVEMENT_DISTANCE = 5; // distance on the SVG map the characters moves per time.
+export const MAP_MOVEMENT_TIME_PER_MOVE = 5000; // 5000 milliseconds and the movement updates
 
 
 
@@ -78,7 +80,8 @@ export const seedCharacterData = [
     petId: 0,
     id: 0,
     age: 87,
-    lastMapPosition: {x: 3300, y: 4200, location: pages.PAGE_CITY_ONE},
+    lastCityPosition: {x: 3300, y: 4200, location: pages.PAGE_CITY_ONE},
+    lastMapPosition: {x: -18, y: 120, nextLocation: {x: 150, y: 0}},
     color: characterColors.RED
   },
   {
@@ -100,7 +103,8 @@ export const seedCharacterData = [
     petId: 2,
     id: 2,
     age: 66,
-    lastMapPosition: {x: 2200, y: 1000, location: pages.PAGE_CITY_ONE},
+    lastCityPosition: {x: 2200, y: 1000, location: pages.PAGE_CITY_ONE},
+    lastMapPosition: {x: 25, y: 25, nextLocation: {x: 25, y: 35}},
     color: characterColors.ORANGE
   },
   {
@@ -122,7 +126,8 @@ export const seedCharacterData = [
     petId: 2,
     id: 4,
     age: 66,
-    lastMapPosition: {x: 1000, y: 3000, location: pages.PAGE_CITY_ONE},
+    lastCityPosition: {x: 1000, y: 3000, location: pages.PAGE_CITY_ONE},
+    lastMapPosition: {x: 100, y: 100},
     color: characterColors.YELLOW
   },
   {
@@ -134,7 +139,8 @@ export const seedCharacterData = [
     petId: 5,
     id: 5,
     age: 47,
-    lastMapPosition: {x: 1300, y: 3200, location: pages.PAGE_CITY_ONE},
+    lastCityPosition: {x: 1300, y: 3200, location: pages.PAGE_CITY_ONE},
+    lastMapPosition: {x: 89, y: -40, nextLocation: {x: 120, y: 120}},
     color: characterColors.GREEN
   },
   {
@@ -146,7 +152,8 @@ export const seedCharacterData = [
     petId: 6,
     id: 6,
     age: 62,
-    lastMapPosition: {x: 2300, y: 2200, location: pages.PAGE_CITY_ONE},
+    lastCityPosition: {x: 2300, y: 2200, location: pages.PAGE_CITY_ONE},
+    lastMapPosition: {x: 100, y: -88, nextLocation: {x: 28, y: -88}},
     color: characterColors.BLUE
   },
   {
@@ -168,7 +175,8 @@ export const seedCharacterData = [
     petId: 8,
     id: 8,
     age: 49,
-    lastMapPosition: {x: 5300, y: 3208, location: pages.PAGE_CITY_ONE},
+    lastCityPosition: {x: 5300, y: 3208, location: pages.PAGE_CITY_ONE},
+    lastMapPosition: {x: 12, y: 55},
     color: characterColors.PURPLE
   },
   {
@@ -200,7 +208,8 @@ export const seedCharacterData = [
     petId: 11,
     id: 11,
     age: 47,
-    lastMapPosition: {x: 4300, y: 1200, location: pages.PAGE_CITY_ONE},
+    lastCityPosition: {x: 4300, y: 1200, location: pages.PAGE_CITY_ONE},
+    lastMapPosition: {x: 90, y: -70},
     color: characterColors.RED
   },
   {
@@ -222,7 +231,8 @@ export const seedCharacterData = [
     petId: 13,
     id: 13,
     age: 38,
-    lastMapPosition: {x: 5000, y: 1100, location: pages.PAGE_CITY_ONE},
+    lastCityPosition: {x: 5000, y: 1100, location: pages.PAGE_CITY_ONE},
+    lastMapPosition: {x: -90, y: 90, nextLocation: {x: 90, y: -90}},
     color: characterColors.ORANGE
   },
   {
@@ -234,7 +244,8 @@ export const seedCharacterData = [
     petId: 14,
     id: 14,
     age: 32,
-    lastMapPosition: {x: 5600, y: 1830, location: pages.PAGE_CITY_ONE},
+    lastCityPosition: {x: 5600, y: 1830, location: pages.PAGE_CITY_ONE},
+    lastMapPosition: {x: 133, y: -52, nextLocation: {x: 122, y: -130}},
     color: characterColors.YELLOW
   },
   {
@@ -256,7 +267,8 @@ export const seedCharacterData = [
     petId: 16,
     id: 16,
     age: 32,
-    lastMapPosition: {x: 2700, y: 1833, location: pages.PAGE_CITY_ONE},
+    lastCityPosition: {x: 2700, y: 1833, location: pages.PAGE_CITY_ONE},
+    lastMapPosition: {x: 15, y: 22, nextLocation: {x: 78, y: -55}},
     color: characterColors.GREEN
   },
   {
@@ -268,7 +280,8 @@ export const seedCharacterData = [
     petId: 17,
     id: 17,
     age: 16,
-    lastMapPosition: {x: 3700, y: 2833, location: pages.PAGE_CITY_ONE},
+    lastCityPosition: {x: 3700, y: 2833, location: pages.PAGE_CITY_ONE},
+    lastMapPosition: {x: 250, y: 250},
     color: characterColors.BLUE
   },
   {
@@ -280,7 +293,8 @@ export const seedCharacterData = [
     petId: 18,
     id: 18,
     age: 19,
-    lastMapPosition: {x: 1700, y: 1839, location: pages.PAGE_CITY_ONE},
+    lastCityPosition: {x: 1700, y: 1839, location: pages.PAGE_CITY_ONE},
+    lastMapPosition: {x: 96, y: 34, nextLocation: {x: 65, y: 21}},
     color: characterColors.BLUE
   },
   {
@@ -302,7 +316,8 @@ export const seedCharacterData = [
     petId: 19,
     id: 19,
     age: 22,
-    lastMapPosition: {x: 3700, y: 2839, location: pages.PAGE_CITY_ONE},
+    lastCityPosition: {x: 3700, y: 2839, location: pages.PAGE_CITY_ONE},
+    lastMapPosition: {x: -140, y: -140, nextLocation: {x: -150, y: 160}},
     color: characterColors.PURPLE
   },
   {

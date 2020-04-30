@@ -1,6 +1,6 @@
 import familyRootTypes from "../types/familyRootTypes";
 import { getAllFamilyData } from "../../helpers/helpers";
-import {seedCharacterData } from "../../../assets/constants";
+import {seedCharacterData, MAP_MOVEMENT_DISTANCE } from "../../../assets/constants";
 import store from '../../store';
 
 
@@ -38,18 +38,57 @@ export const setCharacterProperty = (characterId, newPropertyName, newPropertyVa
   }
 }
 
-export const setLastMapPosition = (mapPosition) => {
+export const setlastCityPosition = (mapPosition) => {
   const currentCharacter = store.getState().game.currentCharacters[0];
   const {characters} = getAllFamilyData();
   const currentCharacterInfo = characters.find(character => character.id === currentCharacter);
   const currentCharacterIndex = characters.indexOf(character => character.id === currentCharacter);
-  currentCharacterInfo.lastMapPosition = mapPosition;
+  currentCharacterInfo.lastCityPosition = mapPosition;
   characters[currentCharacterIndex] = currentCharacterInfo;
   return {
-    type: familyRootTypes.SET_LAST_MAP_POSITION,
+    type: familyRootTypes.SET_LAST_CITY_POSITION,
     payload: characters
   }
 };
+
+export const setLastMapPosition = () => {
+  const newCharacters = [];
+  const characters = store.getState().family.characters;
+  characters.forEach(character => {
+    if (character.partnerLeader) {
+      let newCharacter = character;
+      if (character.lastMapPosition.nextLocation) {
+        const currentPosition = {x: character.lastMapPosition.x, y: character.lastMapPosition.y};
+        const {nextLocation} = character.lastMapPosition;
+        const upcomingPosition = {x: currentPosition.x, y: currentPosition.y};
+        if (currentPosition.x < nextLocation.x) {
+          upcomingPosition.x = currentPosition.x + MAP_MOVEMENT_DISTANCE >= nextLocation.x ? nextLocation.x : currentPosition.x + MAP_MOVEMENT_DISTANCE;
+        }
+        else if (currentPosition.x > nextLocation.x) {
+          upcomingPosition.x = currentPosition.x - MAP_MOVEMENT_DISTANCE <= nextLocation.x ? nextLocation.x : currentPosition.x - MAP_MOVEMENT_DISTANCE;
+        }
+        if (currentPosition.y < nextLocation.y) {
+          upcomingPosition.y = currentPosition.y + MAP_MOVEMENT_DISTANCE >= nextLocation.y ? nextLocation.y : currentPosition.y + MAP_MOVEMENT_DISTANCE;
+        }
+        else if (currentPosition.x > nextLocation.x) {
+          upcomingPosition.x = currentPosition.y - MAP_MOVEMENT_DISTANCE <= nextLocation.y ? nextLocation.y : currentPosition.y - MAP_MOVEMENT_DISTANCE;
+        }
+        newCharacter = {...character, lastMapPosition: {...character.lastMapPosition, ...upcomingPosition}};
+        if (currentPosition.x === upcomingPosition.x && currentPosition.y === upcomingPosition.y && character.lastMapPosition.nextLocation) {
+          delete newCharacter.lastMapPosition.nextLocation;
+        }
+      }
+      newCharacters.push(newCharacter);
+    }
+    else {
+      newCharacters.push(character)
+    }
+  });
+  return {
+    type: familyRootTypes.SET_LAST_MAP_POSITION,
+    payload: newCharacters
+  }
+}
 
 export const setFamilyTree = () => {
   let newFamilyTree = '';

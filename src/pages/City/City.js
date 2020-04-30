@@ -4,7 +4,7 @@ import {pages, pageInfo} from '../../assets/pages';
 import PersonInfoHeader from '../../components/View/PersonInfoHeader/PersonInfoHeader';
 import NavInfoFooter from '../../components/View/NavInfoFooter/NavInfoFooter';
 import { connect } from 'react-redux';
-import { setLastMapPosition } from '../../redux/familyRoot/actions/familyRootActions';
+import { setlastCityPosition } from '../../redux/familyRoot/actions/familyRootActions';
 
 class City extends Component {
   constructor(props) {
@@ -70,8 +70,6 @@ class City extends Component {
     const currentY = parseInt(this.city.current.style['top'].slice(0,this.city.current.style['top'].length - 1));
     const leftmostXPx = window.screen.width / 2;
     const topmostYPx = window.screen.height / 2;
-    console.log(leftmostXPx - currentX);
-    console.log(topmostYPx - currentY);
     return {x: leftmostXPx - currentX, y: topmostYPx - currentY}
 
   }
@@ -250,9 +248,9 @@ class City extends Component {
     let startingPointX = 0;
     let startingPointY = 0;
     const currentCharacterInfo = characters.find(character => character.id === currentCharacters[0]);
-    if (currentCharacterInfo.lastMapPosition && currentCharacterInfo.lastMapPosition.location === currentMap) {
-      startingPointX = currentCharacterInfo.lastMapPosition.x;
-      startingPointY = currentCharacterInfo.lastMapPosition.y;
+    if (currentCharacterInfo.lastCityPosition && currentCharacterInfo.lastCityPosition.location === currentMap) {
+      startingPointX = currentCharacterInfo.lastCityPosition.x;
+      startingPointY = currentCharacterInfo.lastCityPosition.y;
     }
     else {
       startingPointX = pageInfo[currentMap].startingPoint.x;
@@ -275,16 +273,16 @@ class City extends Component {
     this.outsideCity.current.style['width'] = `${mapWidth + window.screen.width}px`;
     this.outsideCity.current.style['height'] = `${mapHeight + window.screen.height}px`;
 
-    this.props.setLastMapPosition({x: startingPointX, y: startingPointY, location: currentMap});
+    this.props.setlastCityPosition({x: startingPointX, y: startingPointY, location: currentMap});
     this.mapPositionInterval = setInterval(() => {
-      this.props.setLastMapPosition({...this.findActualXandYValueOfMap(), location: currentMap})
+      this.props.setlastCityPosition({...this.findActualXandYValueOfMap(), location: currentMap})
     },30000)
   }
 
   componentWillUnmount() {
     clearInterval(this.mapPositionInterval);
     const currentMap = pages[this.props.currentPage];
-    this.props.setLastMapPosition({...this.findActualXandYValueOfMap(), location: currentMap});
+    this.props.setlastCityPosition({...this.findActualXandYValueOfMap(), location: currentMap});
   }
 
 
@@ -308,7 +306,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  setLastMapPosition: (mapPosition) => dispatch(setLastMapPosition(mapPosition))
+  setlastCityPosition: (mapPosition) => dispatch(setlastCityPosition(mapPosition))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(City);

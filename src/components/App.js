@@ -10,8 +10,9 @@ import { pages, VIEW } from '../assets/pages';
 import Map from '../views/Map/Map';
 import Tree from '../views/Tree/Tree';
 import CharacterDetails from '../views/CharacterDetails/CharacterDetails';
-import {devOnlySetSeededFamilyInfo} from '../redux/familyRoot/actions/familyRootActions';
+import {devOnlySetSeededFamilyInfo, setLastMapPosition} from '../redux/familyRoot/actions/familyRootActions';
 import {devOnlySetSeededPetInfo} from '../redux/petRoot/actions/petRootActions';
+import { MAP_MOVEMENT_TIME_PER_MOVE } from '../assets/constants';
 
 class App extends React.Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class App extends React.Component {
       devMode: false
     }
     this.gameTimer = null;
+    this.characterMovement = null;
     this.devStartButton = React.createRef();
   }
 
@@ -37,8 +39,15 @@ class App extends React.Component {
       await devOnlySetSeededFamilyInfo();
       await devOnlySetSeededGameInfo();
       this.startGameTimer();
+      this.startCharacterActions();
       this.setState({devMode: true})
     }
+  }
+
+  startCharacterActions = () => {
+    this.characterMovement = setInterval(() => {
+      this.props.setLastMapPosition();
+    }, MAP_MOVEMENT_TIME_PER_MOVE)
   }
 
   startGameTimer = () => {
@@ -46,6 +55,7 @@ class App extends React.Component {
     this.gameTimer = setInterval(() => {
       this.props.incrementGameTimerDispatch();
     },60000);
+
   }
 
   showPage = () => {
@@ -87,13 +97,15 @@ class App extends React.Component {
 const mapStateToProps = state => ({
   gameTime: state.game.gameTime,
   currentPage: state.game.currentPage,
-  currentView: state.game.currentView
+  currentView: state.game.currentView,
+  characters: state.family.characters
 })
 
 const mapDispatchToProps = (dispatch) => ({
   startGameTimerDispatch: () => dispatch(startGameTimer()),
   incrementGameTimerDispatch: () => dispatch(incrementGameTime()),
   setCurrentPageDispatch: (newPageId) => dispatch(setCurrentPage(newPageId)),
+  setLastMapPosition: () => dispatch(setLastMapPosition()),
   devOnlySetSeededFamilyInfo: () => dispatch(devOnlySetSeededFamilyInfo()),
   devOnlySetSeededGameInfo: () => dispatch(devOnlySetSeededGameInfo()),
   devOnlySetSeededPetInfo: () => dispatch(devOnlySetSeededPetInfo())

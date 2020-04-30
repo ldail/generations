@@ -26,6 +26,7 @@ const familyRootReducer = (state=INITIAL_STATE, action) => {
         ...state,
         characters: action.payload
       }
+    case familyRootTypes.SET_LAST_CITY_POSITION:
     case familyRootTypes.SET_LAST_MAP_POSITION:
       return {
         ...state,
@@ -60,7 +61,8 @@ characters: [{
   petId: 0, 
   id: 0, 
   age: 0, 
-  lastMapPosition: {x, y, location}, 
+  lastCityPosition: {x, y, location}, 
+  lastCityPosition: {x, y, nextLocation, action},
   partnerLeader: true, 
   color: constnats.RED, 
 }]
