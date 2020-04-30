@@ -4,7 +4,7 @@ import NavInfoFooter from '../../components/View/NavInfoFooter/NavInfoFooter';
 import './CharacterDetails.css';
 import { connect } from 'react-redux';
 import animalStats from '../../assets/animalStats';
-import { setCurrentCharacter, setCurrentView, setCurrentCharacterForDetailView } from '../../redux/gameRoot/actions/gameRootActions';
+import { setCurrentCharacter, setCurrentView, setCurrentCharacterForDetailView, viewCharacterOnMap } from '../../redux/gameRoot/actions/gameRootActions';
 import { VIEW } from '../../assets/pages';
 import styled from 'styled-components';
 
@@ -16,7 +16,7 @@ const StyledCircle = styled.div`
   background-color: ${({hexCode}) => hexCode};
 `;
 
-const CharacterDetails = ({currentCharacterForDetailView, currentCharacters,characters, pets, switchToCharacter, setCurrentView, setCurrentCharacterForDetailView}) => {
+const CharacterDetails = ({currentCharacterForDetailView, currentCharacters,characters, pets, switchToCharacter, setCurrentView, setCurrentCharacterForDetailView, viewCharacterOnMap}) => {
 
   useEffect(() => {
     return () => {
@@ -98,7 +98,7 @@ const CharacterDetails = ({currentCharacterForDetailView, currentCharacters,char
               <div className="smallDivider">
                 -----
               </div>
-              <div className="seeCharOnMap">
+              <div className="seeCharOnMap" onClick={() => viewCharacterOnMap(viewCharacter.id)}>
                 {`{seeOnMap}`}
               </div>
               <div className="switchToChar" onClick={() => switchToCharacter(viewCharacter.id)}>
@@ -206,6 +206,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   switchToCharacter: (characterId) => dispatch(setCurrentCharacter(characterId)),
   setCurrentView: (newView) => dispatch(setCurrentView(newView)),
-  setCurrentCharacterForDetailView: (characterId) => dispatch(setCurrentCharacterForDetailView(characterId))
+  setCurrentCharacterForDetailView: (characterId) => dispatch(setCurrentCharacterForDetailView(characterId)),
+  viewCharacterOnMap: (characterId) => dispatch(viewCharacterOnMap(characterId))
 })
 export default connect(mapStateToProps,mapDispatchToProps)(CharacterDetails);

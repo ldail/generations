@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PersonInfoHeader from '../../components/View/PersonInfoHeader/PersonInfoHeader';
 import NavInfoFooter from '../../components/View/NavInfoFooter/NavInfoFooter';
 import './Tree.css';
@@ -8,6 +8,8 @@ import { setCurrentCharacterForDetailView, setCurrentView } from '../../redux/ga
 import { VIEW } from '../../assets/pages';
 
 const Tree = ({setCurrentCharacterForDetailView, setCurrentView, characters}) => {
+
+  const [treeData, setTreeData] = useState({});
 
   const generateTreeData = () => {
     const charactersSortedById = characters.sort((a,b) => {
@@ -37,11 +39,16 @@ const Tree = ({setCurrentCharacterForDetailView, setCurrentView, characters}) =>
     return children;
   }
 
+  useEffect(() => {
+    setTreeData(generateTreeData())
+
+  },[])
+
   return (
     <div className="tree">
       <PersonInfoHeader />
       <TreeGraph 
-        data={generateTreeData()} 
+        data={treeData} 
         onClick={(nodeData) => {
           setCurrentCharacterForDetailView(nodeData.characterId);
           setCurrentView(VIEW.CHARACTER_INFO);

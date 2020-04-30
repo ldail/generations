@@ -5,6 +5,7 @@ import { ComposableMap, Geographies, Geography, ZoomableGroup, Marker } from "re
 import './Map.css';
 import ReactTooltip from "react-tooltip";
 import { connect } from 'react-redux';
+import { setMapPositionToView } from '../../redux/gameRoot/actions/gameRootActions';
 
 const geoUrl =
   "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
@@ -19,7 +20,7 @@ const rounded = num => {
   }
 };
 
-const Map = ({characters}) => {
+const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToView}) => {
   const [content, setContent] = useState("");
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
   let characterTooltipTimeout = null;
@@ -41,6 +42,29 @@ const Map = ({characters}) => {
   const clearContent = () => {
     setContent('');
   }
+
+  useEffect(() => {
+    const newPosition = {zoom: 1, coordinates: [0,0]}
+    if (mapPositionToView && mapPositionToView.zoom) {
+        newPosition.zoom = mapPositionToView.zoom;
+    }
+    else {
+      newPosition.zoom = 3;
+    }
+    if (mapPositionToView && mapPositionToView.coordinates) {
+        newPosition.coordinates = mapPositionToView.coordinates
+    }
+    else {
+      const lastMapPosition = characters.find(character => character.id === currentCharacters[0]).lastMapPosition
+      newPosition.coordinates = [lastMapPosition.x, lastMapPosition.y]
+    }
+    setPosition(newPosition);
+
+    return () => {
+      console.log('trying to clean up');
+      setMapPositionToView({})
+    };
+  },[])
 
 
   return (
@@ -156,7 +180,13 @@ const Map = ({characters}) => {
 };
 
 export const mapStateToProps = state => ({
-  characters: state.family.characters
+  characters: state.family.characters,
+  mapPositionToView: state.game.mapPositionToView,
+  currentCharacters: state.game.currentCharacters,
 })
 
-export default connect(mapStateToProps,null)(Map);
+export const mapDispatchToProps = dispatch => ({
+  setMapPositionToView: (newPosition) => dispatch(setMapPositionToView(newPosition))
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Map);

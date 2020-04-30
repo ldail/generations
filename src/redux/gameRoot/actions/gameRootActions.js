@@ -1,7 +1,8 @@
-import { SET_CURRENT_CHARACTER, START_GAME_TIMER, INCREMENT_GAME_MONTH, SET_CURRENT_PAGE, SET_CURRENT_VIEW, DEV_ONLY_SET_GAME_SEEDED_INFO, SET_CURRENT_CHARACTER_FOR_DETAIL_VIEW } from "../types/gameRootTypes";
+import { SET_CURRENT_CHARACTER, START_GAME_TIMER, INCREMENT_GAME_MONTH, SET_CURRENT_PAGE, SET_CURRENT_VIEW, DEV_ONLY_SET_GAME_SEEDED_INFO, SET_CURRENT_CHARACTER_FOR_DETAIL_VIEW, VIEW_CHARACTER_ON_MAP, SET_MAP_POSITION } from "../types/gameRootTypes";
 import { getAllFamilyData } from "../../helpers/helpers";
 import { INITIAL_GAME_TIME } from "../../../assets/constants";
 import { pages, VIEW } from "../../../assets/pages";
+import store from "../../store";
 
 export const setCurrentCharacter = characterId => {
   const characters = getAllFamilyData().characters;
@@ -40,6 +41,19 @@ export const setCurrentCharacterForDetailView = (characterId) => ({
   type: SET_CURRENT_CHARACTER_FOR_DETAIL_VIEW,
   payload: characterId
 })
+
+export const setMapPositionToView = (mapPosition) => ({
+  type: SET_MAP_POSITION,
+  payload: mapPosition
+});
+
+export const viewCharacterOnMap = (characterId) => {
+  const {lastMapPosition} = store.getState().family.characters.find(character => character.id === characterId)
+  return ({
+    type: VIEW_CHARACTER_ON_MAP,
+    payload: {coordinates: [lastMapPosition.x, lastMapPosition.y], zoom: 3}
+  })
+}
 
 
 
