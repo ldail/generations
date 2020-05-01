@@ -13,7 +13,8 @@ const gameRootReducer = (state=INITIAL_STATE,action) => {
     case SET_CURRENT_CHARACTER:
       return {
         ...state,
-        currentCharacters: action.payload
+        currentCharacters: action.payload.currentCharacters,
+        currentView: action.payload.currentView
       }
       case START_GAME_TIMER:
         return {

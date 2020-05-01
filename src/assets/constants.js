@@ -2,7 +2,7 @@ import heartyAttributeIcon from './hearty-attribute-icon.png';
 import thoughtfulAttributeIcon from './brain-attribute-icon.png';
 import attractiveAttributeIcon from './attractive-attribute-icon.png';
 import agileAttributeIcon from './agile-attribute-icon.png';
-import { pages } from './pages';
+import { pages, VIEW } from './pages';
 
 
 export const promptMessages = {
@@ -65,8 +65,6 @@ export const MAP_MOVEMENT_DISTANCE = 5; // distance on the SVG map the character
 export const MAP_MOVEMENT_TIME_PER_MOVE = 5000; // 5000 milliseconds and the movement updates
 
 
-
-
 /* DEV ONLY BELOW */
 
 
@@ -82,6 +80,7 @@ export const seedCharacterData = [
     age: 87,
     lastCityPosition: {x: 3300, y: 4200, location: pages.PAGE_CITY_ONE},
     lastMapPosition: {x: -18, y: 120, nextLocation: {x: 150, y: 0}},
+    currentView: VIEW.MAP,
     color: characterColors.RED
   },
   {
@@ -105,6 +104,7 @@ export const seedCharacterData = [
     age: 66,
     lastCityPosition: {x: 2200, y: 1000, location: pages.PAGE_CITY_ONE},
     lastMapPosition: {x: 25, y: 25, nextLocation: {x: 25, y: 35}},
+    currentView: VIEW.MAP,
     color: characterColors.ORANGE
   },
   {
@@ -128,6 +128,7 @@ export const seedCharacterData = [
     age: 66,
     lastCityPosition: {x: 1000, y: 3000, location: pages.PAGE_CITY_ONE},
     lastMapPosition: {x: 100, y: 100},
+    currentView: VIEW.HOME,
     color: characterColors.YELLOW
   },
   {
@@ -141,6 +142,7 @@ export const seedCharacterData = [
     age: 47,
     lastCityPosition: {x: 1300, y: 3200, location: pages.PAGE_CITY_ONE},
     lastMapPosition: {x: 89, y: -40, nextLocation: {x: 120, y: 120}},
+    currentView: VIEW.HOME,
     color: characterColors.GREEN
   },
   {
@@ -154,6 +156,7 @@ export const seedCharacterData = [
     age: 62,
     lastCityPosition: {x: 2300, y: 2200, location: pages.PAGE_CITY_ONE},
     lastMapPosition: {x: 100, y: -88, nextLocation: {x: 28, y: -88}},
+    currentView: VIEW.MAP,
     color: characterColors.BLUE
   },
   {
@@ -177,6 +180,7 @@ export const seedCharacterData = [
     age: 49,
     lastCityPosition: {x: 5300, y: 3208, location: pages.PAGE_CITY_ONE},
     lastMapPosition: {x: 12, y: 55},
+    currentView: VIEW.HOME,
     color: characterColors.PURPLE
   },
   {
@@ -210,6 +214,7 @@ export const seedCharacterData = [
     age: 47,
     lastCityPosition: {x: 4300, y: 1200, location: pages.PAGE_CITY_ONE},
     lastMapPosition: {x: 90, y: -70},
+    currentView: VIEW.MAP,
     color: characterColors.RED
   },
   {
@@ -233,6 +238,7 @@ export const seedCharacterData = [
     age: 38,
     lastCityPosition: {x: 5000, y: 1100, location: pages.PAGE_CITY_ONE},
     lastMapPosition: {x: -90, y: 90, nextLocation: {x: 90, y: -90}},
+    currentView: VIEW.MAP,
     color: characterColors.ORANGE
   },
   {
@@ -246,6 +252,7 @@ export const seedCharacterData = [
     age: 32,
     lastCityPosition: {x: 5600, y: 1830, location: pages.PAGE_CITY_ONE},
     lastMapPosition: {x: 133, y: -52, nextLocation: {x: 122, y: -130}},
+    currentView: VIEW.MAP,
     color: characterColors.YELLOW
   },
   {
@@ -269,6 +276,7 @@ export const seedCharacterData = [
     age: 32,
     lastCityPosition: {x: 2700, y: 1833, location: pages.PAGE_CITY_ONE},
     lastMapPosition: {x: 15, y: 22, nextLocation: {x: 78, y: -55}},
+    currentView: VIEW.MAP,
     color: characterColors.GREEN
   },
   {
@@ -282,6 +290,7 @@ export const seedCharacterData = [
     age: 16,
     lastCityPosition: {x: 3700, y: 2833, location: pages.PAGE_CITY_ONE},
     lastMapPosition: {x: 250, y: 250},
+    currentView: VIEW.HOME,
     color: characterColors.BLUE
   },
   {
@@ -295,6 +304,7 @@ export const seedCharacterData = [
     age: 19,
     lastCityPosition: {x: 1700, y: 1839, location: pages.PAGE_CITY_ONE},
     lastMapPosition: {x: 96, y: 34, nextLocation: {x: 65, y: 21}},
+    currentView: VIEW.HOME,
     color: characterColors.BLUE
   },
   {
@@ -318,6 +328,7 @@ export const seedCharacterData = [
     age: 22,
     lastCityPosition: {x: 3700, y: 2839, location: pages.PAGE_CITY_ONE},
     lastMapPosition: {x: -140, y: -140, nextLocation: {x: -150, y: 160}},
+    currentView: VIEW.HOME,
     color: characterColors.PURPLE
   },
   {

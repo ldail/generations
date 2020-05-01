@@ -2,6 +2,8 @@ import familyRootTypes from "../types/familyRootTypes";
 import { getAllFamilyData } from "../../helpers/helpers";
 import {seedCharacterData, MAP_MOVEMENT_DISTANCE } from "../../../assets/constants";
 import store from '../../store';
+import { setCurrentView } from "../../gameRoot/actions/gameRootActions";
+import { VIEW } from "../../../assets/pages";
 
 
 export const setFamilyName = (familyName) => ({
@@ -98,6 +100,18 @@ export const setFamilyTree = () => {
   }
 }
 
+export const setCharacterCurrentView = (view) => {
+    store.dispatch(setCurrentView(VIEW.MAP));
+    const currentCharacterId = store.getState().game.currentCharacters[0];
+    const newCharacters = store.getState().family.characters.slice();
+    const currentCharacterIndex = newCharacters.indexOf(newCharacters.find(character => character.id === currentCharacterId));
+    newCharacters[currentCharacterIndex].currentView = view;
+
+  return({
+      type: familyRootTypes.SET_CHARACTER_CURRENT_VIEW,
+      payload: newCharacters
+    })
+}
 
 
 

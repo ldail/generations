@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import './City.css';
-import {pages, pageInfo} from '../../assets/pages';
+import {pages, pageInfo, VIEW} from '../../assets/pages';
 import PersonInfoHeader from '../../components/View/PersonInfoHeader/PersonInfoHeader';
 import NavInfoFooter from '../../components/View/NavInfoFooter/NavInfoFooter';
 import { connect } from 'react-redux';
-import { setlastCityPosition } from '../../redux/familyRoot/actions/familyRootActions';
+import { setlastCityPosition, setCharacterCurrentView } from '../../redux/familyRoot/actions/familyRootActions';
 
 class City extends Component {
   constructor(props) {
@@ -12,7 +12,8 @@ class City extends Component {
     this.state = {
       cityTop: 0,
       cityLeft: 0,
-      pressing: false
+      pressing: false,
+      availableToExit: false
     }
     this.outsideCity = React.createRef();
     this.character = React.createRef();
@@ -86,6 +87,20 @@ class City extends Component {
             }
     })
     return !!isBlocked;
+  }
+
+  checkIfExit = (pointSet) => {
+    const convertedSet = this.convertMapPixelToScreenPixelPosition(pointSet)
+    const {x,y} = convertedSet;
+    const currentMap = pages[this.props.currentPage];
+    const exits = pageInfo[currentMap].exitPoints;
+    const isExit = exits.find(set => {
+      if (x > set[0].x && x < set[1].x
+        && y > set[0].y && y < set[1].y) {
+          return true;
+        }
+    })
+    return !!isExit;
   }
 
   clearPressInterval = () => {
@@ -224,6 +239,18 @@ class City extends Component {
       }
     }
 
+    const inExitArea = this.checkIfExit({x: newCityPosition.left, y: newCityPosition.top});
+    if (!this.state.availableToExit) {
+      if (!inExitArea) {
+        this.setState({availableToExit: true});
+      }
+    }
+    else {
+      if (inExitArea) {
+        this.props.setCharacterCurrentView(VIEW.MAP)
+      }
+    }
+
     this.city.current.style['top'] = `${newCityPosition['top']}px`;
     this.city.current.style['left'] = `${newCityPosition['left']}px`;
     this.setState({cityTop: newCityPosition['top'], cityLeft: newCityPosition['left']});
@@ -306,7 +333,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  setlastCityPosition: (mapPosition) => dispatch(setlastCityPosition(mapPosition))
+  setlastCityPosition: (mapPosition) => dispatch(setlastCityPosition(mapPosition)),
+  setCharacterCurrentView: (view) => dispatch(setCharacterCurrentView(view))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(City);

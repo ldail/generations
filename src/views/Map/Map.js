@@ -26,7 +26,7 @@ const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToV
   let characterTooltipTimeout = null;
 
   function handleZoomIn() {
-    if (position.zoom >= 4) return;
+    if (position.zoom >= 100) return;
     setPosition(pos => ({ ...pos, zoom: pos.zoom * 2 }));
   }
 
@@ -61,7 +61,6 @@ const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToV
     setPosition(newPosition);
 
     return () => {
-      console.log('trying to clean up');
       setMapPositionToView({})
     };
   },[])
@@ -81,7 +80,8 @@ const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToV
                     onMoveEnd={handleMoveEnd}
                     >
           <Geographies geography={geoUrl}>
-            {({ geographies }) =>
+            {({ geographies }) =>  {
+              return (
               geographies.map(geo => (
                 <Geography
                   key={geo.rsmKey}
@@ -89,7 +89,6 @@ const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToV
                   onMouseEnter={() => {
                     const { NAME, POP_EST } = geo.properties;
                     setContent(`${NAME} — ${rounded(POP_EST)}`);
-                    characterTooltipTimeout = setTimeout(() => clearContent(),3000)
                   }}
                   onTouchStart={() => {
                     const { NAME, POP_EST } = geo.properties;
@@ -104,7 +103,7 @@ const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToV
                   }}
                   style={{
                     default: {
-                      fill: "#D6D6DA",
+                      fill: geo.properties.ABBREV === "S.Af." ? '#FF0000' : "#D6D6DA",
                       outline: "none"
                     },
                     hover: {
@@ -117,15 +116,14 @@ const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToV
                     }
                   }}
                 />
-              ))
-            }
+              )))
+            }}
           </Geographies>
           {characters.map(character => {
             if (character.partnerLeader) {
               return (<Marker 
                         onMouseEnter={() => {
                           setContent(character.name);
-                          characterTooltipTimeout = setTimeout(() => clearContent(),3000)
                         }}
                         onTouchStart={() => {
                           setContent(character.name);

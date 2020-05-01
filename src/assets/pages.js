@@ -11,11 +11,14 @@ export const VIEW = {
   CHARACTER_INFO: 'CHARACTER_INFO'
 }
 
+
 export const pageInfo = {
   PAGE_CITY_ONE: {
     mapHeight: 4500,
     mapWidth: 6000,
+    cityLocationOnMap: [15,100],
     startingPoint: {x: 2300, y: 4440},
+    exitPoints: [[{x: 2100, y: 4300}, {x: 2500, y: 4500}]],
     blockedOffPixels: {
       assignments: {
         plants: {

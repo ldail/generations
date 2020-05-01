@@ -37,6 +37,11 @@ const familyRootReducer = (state=INITIAL_STATE, action) => {
         ...state,
         familyTree: action.payload
       }
+    case familyRootTypes.SET_CHARACTER_CURRENT_VIEW:
+      return {
+        ...state,
+        characters: action.payload
+      }
     case familyRootTypes.DEV_ONLY_SET_FAMILY_SEEDED_INFO:
       return {...action.payload}
     default:
@@ -62,7 +67,8 @@ characters: [{
   id: 0, 
   age: 0, 
   lastCityPosition: {x, y, location}, 
-  lastCityPosition: {x, y, nextLocation, action},
+  lastMapPosition: {x, y, nextLocation, action},
+  currentView: VIEW.MAP
   partnerLeader: true, 
   color: constnats.RED, 
 }]

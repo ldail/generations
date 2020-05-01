@@ -8,9 +8,9 @@ export const setCurrentCharacter = characterId => {
   const characters = getAllFamilyData().characters;
   const characterInfo = characters.find(character => character.id === characterId);
   const partnerId = characterInfo.partnerId;
-  const payload = [characterId];
+  const payload = {currentCharacters: [characterId], currentView: characterInfo.currentView};
   if (partnerId >= 0) {
-    payload.push(partnerId)
+    payload.currentCharacters.push(partnerId)
   }
   return ({
     type: SET_CURRENT_CHARACTER,
