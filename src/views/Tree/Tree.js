@@ -58,7 +58,7 @@ const Tree = ({setCurrentCharacterForDetailView, setCurrentView, characters}) =>
         }}
         collapsible={false}
         orientation={'vertical'}
-        translate={{x: window.screen.width / 2, y: window.screen.height / 6 > 120 ? window.screen.height / 6 : 120}}
+        translate={{x: window.innerWidth / 2, y: window.innerHeight / 6 > 120 ? window.innerHeight / 6 : 120}}
         pathFunc={'elbow'}
       />
       <NavInfoFooter />

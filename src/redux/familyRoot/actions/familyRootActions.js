@@ -106,6 +106,7 @@ export const setCharacterCurrentView = (view) => {
     const newCharacters = store.getState().family.characters.slice();
     const currentCharacterIndex = newCharacters.indexOf(newCharacters.find(character => character.id === currentCharacterId));
     newCharacters[currentCharacterIndex].currentView = view;
+    delete newCharacters[currentCharacterIndex].lastCityPosition;
 
   return({
       type: familyRootTypes.SET_CHARACTER_CURRENT_VIEW,

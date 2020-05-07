@@ -61,6 +61,7 @@ export const characterColors = {
 
 export const INITIAL_GAME_TIME = 0; //Year 5000, January 1 12:00AM
 export const INCREMENT_GAME_TIME_AMOUNT = 1 //One month
+export const MAX_TIME_BEFORE_IDLE_HALT = 1 // One month
 export const MAP_MOVEMENT_DISTANCE = 5; // distance on the SVG map the characters moves per time.
 export const MAP_MOVEMENT_TIME_PER_MOVE = 5000; // 5000 milliseconds and the movement updates
 

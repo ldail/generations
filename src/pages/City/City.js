@@ -1,10 +1,47 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import './City.css';
 import {pages, pageInfo, VIEW} from '../../assets/pages';
 import PersonInfoHeader from '../../components/View/PersonInfoHeader/PersonInfoHeader';
 import NavInfoFooter from '../../components/View/NavInfoFooter/NavInfoFooter';
 import { connect } from 'react-redux';
 import { setlastCityPosition, setCharacterCurrentView } from '../../redux/familyRoot/actions/familyRootActions';
+import {ReactComponent as Spinner} from '../../assets/loading.svg';
+import styled from 'styled-components';
+
+const StyledSpinner = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: white;
+
+  svg {
+    animation: spinAnimation 3s;
+    -webkit-animation: spinAnimation 3s;
+    color: blue;
+  }
+
+  @keyframes spinAnimation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @-webkit-keyframes spinAnimation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
 
 class City extends Component {
   constructor(props) {
@@ -60,8 +97,8 @@ class City extends Component {
     else if (direction === 'none' || direction === 'down' || direction === 'right') {
       characterVariable = 0;
     }
-    const leftmostXPx = 0 - characterVariable + (window.screen.width / 2);
-    const topmostYPx = 0 - characterVariable + (window.screen.height / 2);
+    const leftmostXPx = 0 - characterVariable + (window.innerWidth / 2);
+    const topmostYPx = 0 - characterVariable + (window.innerHeight / 2);
 
     return {x: leftmostXPx - x, y: topmostYPx - y};
   }
@@ -69,8 +106,8 @@ class City extends Component {
   findActualXandYValueOfMap = () => {
     const currentX = parseInt(this.city.current.style['left'].slice(0,this.city.current.style['left'].length - 1));
     const currentY = parseInt(this.city.current.style['top'].slice(0,this.city.current.style['top'].length - 1));
-    const leftmostXPx = window.screen.width / 2;
-    const topmostYPx = window.screen.height / 2;
+    const leftmostXPx = window.innerWidth / 2;
+    const topmostYPx = window.innerHeight / 2;
     return {x: leftmostXPx - currentX, y: topmostYPx - currentY}
 
   }
@@ -124,8 +161,8 @@ class City extends Component {
   checkDirectionUserTouched = (clickEvent) => {
     const verticalTouchPoint = clickEvent.touches[0].pageY;
     const horizontalTouchPoint = clickEvent.touches[0].pageX;
-    const screenHeight = window.screen.height;
-    const screenWidth = window.screen.width;
+    const screenHeight = window.innerHeight;
+    const screenWidth = window.innerWidth;
     const middlePortion = [(screenHeight / 3), (screenHeight / 3) * 2];
     if (verticalTouchPoint < middlePortion[0]) {
       return 38;
@@ -173,10 +210,10 @@ class City extends Component {
     const mapHeight = parseInt(this.city.current.style['height'].slice(0,this.city.current.style['height'].length - 1));
     const mapWidth = parseInt(this.city.current.style['width'].slice(0, this.city.current.style['width'].length - 1));
 
-    const leftmostXPx = (0 - characterWidth) + (window.screen.width / 2);
-    const rightmostXPx = -1 * (mapWidth - (window.screen.width / 2));
-    const topmostYPx = 0 - characterHeight + (window.screen.height / 2);
-    const bottommostYPx = -1 * (mapHeight - (window.screen.height / 2));
+    const leftmostXPx = (0 - characterWidth) + (window.innerWidth / 2);
+    const rightmostXPx = -1 * (mapWidth - (window.innerWidth / 2));
+    const topmostYPx = 0 - characterHeight + (window.innerHeight / 2);
+    const bottommostYPx = -1 * (mapHeight - (window.innerHeight / 2));
 
     const newCityPosition = {top: cityPosition.top, left: cityPosition.left};
     const newOutsideCityPosition = {top: outsideCityPosition.top, left: outsideCityPosition.left};
@@ -247,7 +284,9 @@ class City extends Component {
     }
     else {
       if (inExitArea) {
-        this.props.setCharacterCurrentView(VIEW.MAP)
+        this.setState({isExiting: true}, () => 
+          this.props.setCharacterCurrentView(VIEW.MAP)
+        );
       }
     }
 
@@ -266,8 +305,8 @@ class City extends Component {
     this.character.current.style['backgroundPositionY'] = '0px';
     this.character.current.style['width'] = '60px';
     this.character.current.style['height'] = '89px';
-    this.character.current.style['top'] = `${(window.screen.height / 2) - ( 89 / 2)}px`
-    this.character.current.style['left'] = `${(window.screen.width / 2) - ( 60 / 2)}px`
+    this.character.current.style['top'] = `${(window.innerHeight / 2) - ( 89 / 2)}px`
+    this.character.current.style['left'] = `${(window.innerWidth / 2) - ( 60 / 2)}px`
 
 
     //Map
@@ -295,10 +334,10 @@ class City extends Component {
     this.city.current.style['height'] = `${mapHeight}px`;
     this.city.current.style['top'] = `${cityCurrentTop}px`;
     this.city.current.style['left'] = `${cityCurrentLeft}px`;
-    this.outsideCity.current.style['top'] = `${cityCurrentTop - (window.screen.height / 2)}px`;
-    this.outsideCity.current.style['left'] = `${cityCurrentLeft - (window.screen.width / 2)}px`;
-    this.outsideCity.current.style['width'] = `${mapWidth + window.screen.width}px`;
-    this.outsideCity.current.style['height'] = `${mapHeight + window.screen.height}px`;
+    this.outsideCity.current.style['top'] = `${cityCurrentTop - (window.innerHeight / 2)}px`;
+    this.outsideCity.current.style['left'] = `${cityCurrentLeft - (window.innerWidth / 2)}px`;
+    this.outsideCity.current.style['width'] = `${mapWidth + window.innerWidth}px`;
+    this.outsideCity.current.style['height'] = `${mapHeight + window.innerHeight}px`;
 
     this.props.setlastCityPosition({x: startingPointX, y: startingPointY, location: currentMap});
     this.mapPositionInterval = setInterval(() => {
@@ -309,19 +348,31 @@ class City extends Component {
   componentWillUnmount() {
     clearInterval(this.mapPositionInterval);
     const currentMap = pages[this.props.currentPage];
-    this.props.setlastCityPosition({...this.findActualXandYValueOfMap(), location: currentMap});
+    if (!this.state.isExiting) {
+      this.props.setlastCityPosition({...this.findActualXandYValueOfMap(), location: currentMap});
+    }
+  }
+
+  spinner = () => {
+    return (
+      <StyledSpinner className="spinner">
+        <Spinner />
+      </StyledSpinner>
+    )
   }
 
 
   render() {
     return (
-      <div id="OutsideCity" ref={this.outsideCity} onKeyDown={(e) => this.checkDirectionUserPressedWithArrow(e)} tabIndex="0" onTouchStart={(e) => this.checkTouch(e)} onTouchEnd={() => this.clearPressInterval()} onTouchMove={(e) => this.checkTouchMove(e)}>
-        <PersonInfoHeader />
-        <div id="City" ref={this.city}>
-          <div className="character" ref={this.character} tabIndex="0"/>
+      <Suspense fallback={this.spinner()}>
+        <div id="OutsideCity" ref={this.outsideCity} onKeyDown={(e) => this.checkDirectionUserPressedWithArrow(e)} tabIndex="0" onTouchStart={(e) => this.checkTouch(e)} onTouchEnd={() => this.clearPressInterval()} onTouchMove={(e) => this.checkTouchMove(e)}>
+          <PersonInfoHeader />
+          <div id="City" ref={this.city}>
+            <div className="character" ref={this.character} tabIndex="0"/>
+          </div>
+          <NavInfoFooter />
         </div>
-        <NavInfoFooter />
-      </div>
+      </Suspense>
     );
   }
 }

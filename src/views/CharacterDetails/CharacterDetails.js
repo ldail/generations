@@ -19,12 +19,17 @@ const StyledCircle = styled.div`
 const CharacterDetails = ({currentCharacterForDetailView, currentCharacters,characters, pets, switchToCharacter, setCurrentView, setCurrentCharacterForDetailView, viewCharacterOnMap}) => {
 
   useEffect(() => {
+    const findCharacter = characters.find(character => character.id === currentCharacterForDetailView);
+    if (findCharacter) {
+      setViewCharacter(findCharacter);
+    }
+
     return () => {
       setCurrentCharacterForDetailView(null);
     }
   },[]);
 
-  const [viewCharacter, setViewCharacter] = useState(characters.find(character => character.id === (currentCharacterForDetailView >= 0 ? currentCharacterForDetailView : currentCharacters[0])));
+  const [viewCharacter, setViewCharacter] = useState(characters.find(character => character.id === currentCharacters[0]));
 
   const currentPetInfo = pets.find(pet => pet.id === viewCharacter.petId);
   let currentPetSprite = null;

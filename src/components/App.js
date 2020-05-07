@@ -19,11 +19,16 @@ class App extends React.Component {
     super(props);
     this.state = {
       currentPage: 0,
-      devMode: false
+      gameSecondsCount: 0,
+      devMode: false,
+      isIdle: false
     }
     this.gameTimer = null;
     this.characterMovement = null;
     this.devStartButton = React.createRef();
+    this.idleTimer = null;
+    this.gameCounterSeconds = null;
+    this.timeUntilStartingGameTimerTimeout = null;
   }
 
   componentDidMount() {
@@ -32,13 +37,28 @@ class App extends React.Component {
     },10000);
   }
 
+  debounce = (func, wait, immediate) => {
+    var timeout;
+    return function() {
+      var context = this, args = arguments;
+      var later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  };
+
   startDevMode = async () => {
     if (!this.state.devMode) {
       const {devOnlySetSeededFamilyInfo, devOnlySetSeededGameInfo, devOnlySetSeededPetInfo} = this.props;
       await devOnlySetSeededPetInfo();
       await devOnlySetSeededFamilyInfo();
       await devOnlySetSeededGameInfo();
-      this.startGameTimer();
+      this.beginGameTimers();
       this.startCharacterActions();
       this.setState({devMode: true})
     }
@@ -50,12 +70,79 @@ class App extends React.Component {
     }, MAP_MOVEMENT_TIME_PER_MOVE)
   }
 
-  startGameTimer = () => {
+  beginGameTimers = () => {
+    //Running game timer
     this.props.startGameTimerDispatch();
+    this.startGameTimer();
+
+    //Running idle timer. 
+    //After 60 seconds, it catches. Until then, keep increasing the count.
+    this.startIdleTimer();
+    this.setState({gameSecondsCount: 0});
+  }
+
+  //Keeps track of every minute that passes and then dispatches a time increase (interval)
+  startGameTimer = () => {
+    if (this.gameTimer) {
+      clearInterval(this.gameTimer);
+    }
+    this.setState({gameSecondsCount: 0})
     this.gameTimer = setInterval(() => {
       this.props.incrementGameTimerDispatch();
     },60000);
+    this.startGameCounter();
+  }
 
+  //Times out at one minute of inactivity.
+  startIdleTimer = () => {
+    if (this.idleTimer) {
+      clearTimeout(this.idleTimer);
+    }
+    this.idleTimer = setTimeout(() => {
+      this.idleTimerReachedEnd();
+    }, 60000);
+  }
+
+  //Keeps track of how many seconds the game timer has been running after its last dispatch.
+  startGameCounter = () => {
+    if (this.gameCounterSeconds) {
+      clearInterval(this.gameCounterSeconds);
+    }
+    this.gameCounterSeconds = setInterval(() => {
+      this.setState((prevState) => ({gameSecondsCount: prevState.gameSecondsCount + 1}));
+    }, 1000)
+  }
+
+  idleTimerReachedEnd = () => {
+    //Clear current timers.
+    //this.idleTimer has already cleared.
+    clearInterval(this.gameTimer);
+    clearInterval(this.gameCounterSeconds);
+
+    //Reset them all to null.
+    this.gameTimer = null;
+    this.gameCounterSeconds = null;
+    this.idleTimer = null;
+    this.setState({isIdle: true})
+  }
+
+  nonIdleEvent = () => {
+    //If the user has reached idle state.    
+    if (this.state.isIdle) {
+      //Restart the idle timer
+      this.startIdleTimer();
+      //Restart the game timer and increment month in  60 - previous seconds
+      this.timeUntilStartingGameTimerTimeout = setTimeout(() => {
+        this.startGameTimer();
+        this.props.incrementGameTimerDispatch();
+      }, 60000 - (this.state.gameSecondsCount * 1000 >= 60000 ? 60000 : this.state.gameSecondsCount * 1000));
+      this.setState({isIdle: false});
+    }
+    else {
+      clearTimeout(this.idleTimer);
+      this.setState({gameSecondsCount: 0});
+      this.startIdleTimer();
+    }
   }
 
   showPage = () => {
@@ -86,7 +173,19 @@ class App extends React.Component {
 
   render() {
     return (
-      <div id="App">
+      <div 
+        id="App"
+        onClick={() => this.nonIdleEvent()}
+        onMouseMove={() => this.nonIdleEvent()}
+        onTouchStart={() => this.nonIdleEvent()}
+        onTouchMove={() => this.nonIdleEvent()}
+        onWheel={() => this.nonIdleEvent()}
+        onKeyPress={() => this.nonIdleEvent()}
+        onKeyDown={() => this.nonIdleEvent()}
+        onScroll={() => this.nonIdleEvent()}
+        onPointerDown={() => this.nonIdleEvent()}
+        onPointerMove={() => this.nonIdleEvent()}
+      >
         <button style={{position: 'fixed', top: 0, left: 0, zIndex: 3, display: this.state.devMode ? 'none' : 'block'}} disabled={this.state.deveMode} ref={this.devStartButton} onClick={() => this.startDevMode()}>Start test mode</button>
         {this.showPage()}
       </div>
