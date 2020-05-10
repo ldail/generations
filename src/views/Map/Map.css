@@ -8,6 +8,27 @@
 .controls {
   position: fixed;
   z-index: 8;
-  bottom: 100px;
-  right: 100px;
+  bottom: 50px;
+  right: 30px;
+}
+
+.controls button, .verticalControls button {
+  width: 30px;
+  height: 30px;
+  background: rgba(255 255, 255, 0.3);
+  border: 1px solid black;
+}
+
+.controls button:hover, .verticalControls button:hover {
+  cursor: pointer;
+  background: rgba(155, 155, 155, 0.8);
+}
+
+.verticalControls {
+  position: fixed;
+  z-index: 8;
+  bottom: 90px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
 }

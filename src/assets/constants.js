@@ -47,7 +47,7 @@ export const gender = {
   male: 'male',
   female: 'female',
   other: 'other'
-}
+};
 
 export const characterColors = {
   RED: {displayText: 'Red', hexCode: '#cc2512'},
@@ -56,7 +56,17 @@ export const characterColors = {
   GREEN: {displayText: 'Green', hexCode: '#0dbd45'},
   BLUE: {displayText: 'Blue', hexCode: '#0e22b5'},
   PURPLE: {displayText: 'Purple', hexCode: '#850db5'},
-}
+};
+
+export const characterStates = {
+  MOVING: 'Moving',
+  IN_CITY: 'In city',
+  DERADIATING: 'Deradiating',
+  PLANTING: 'Planting',
+  HARVESTING: 'Harvesting',
+  IDLING: 'Idling'
+};
+
 
 
 export const INITIAL_GAME_TIME = 0; //Year 5000, January 1 12:00AM

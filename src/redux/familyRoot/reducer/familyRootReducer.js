@@ -70,7 +70,8 @@ characters: [{
   lastMapPosition: {x, y, nextLocation, action},
   currentView: VIEW.MAP
   partnerLeader: true, 
-  color: constnats.RED, 
+  color: constants.RED, 
+  currentAction: characterActions.HARVESTING
 }]
 
 */

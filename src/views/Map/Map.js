@@ -9,6 +9,13 @@ import { setMapPositionToView } from '../../redux/gameRoot/actions/gameRootActio
 import {ReactComponent as Spinner} from '../../assets/loading.svg';
 import styled from 'styled-components';
 
+//Icons
+import {ReactComponent as LocationIcon} from '../../assets/location-icon.svg';
+import {ReactComponent as EyeIcon} from '../../assets/eye-icon.svg';
+import {ReactComponent as SearchIcon} from '../../assets/search-icon.svg';
+import {ReactComponent as RadiationIcon} from '../../assets/radiation-icon.svg';
+import {ReactComponent as RadiationPetIcon} from '../../assets/radiation-pet-icon.svg';
+
 const StyledSpinner = styled.div`
   position: fixed;
   top: 0;
@@ -43,6 +50,10 @@ const StyledSpinner = styled.div`
   }
 `;
 
+const StyledToggleButton = styled.button`
+  background-color: ${({toggleOn}) => toggleOn ? 'gray' : 'white'};
+`;
+
 const geoUrl =
   "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
 
@@ -59,19 +70,27 @@ const rounded = num => {
 const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToView}) => {
   const [content, setContent] = useState("");
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
+  const [showCharactersList, setShowCharactersList] = useState(characters);
+  const [radiationButtonToggle, setRadiationButtonToggle] = useState(true);
+  const [viewAllCharactersButtonToggle, setViewAllCharactersButtonToggle] = useState(true);
+  const [lockCharacterLocationButtonToggle, setLockCharacterLocationButtonToggle] = useState(true);
   let characterTooltipTimeout = null;
+  let charLevelZoom = 4;
 
   function handleZoomIn() {
+    setLockCharacterLocationButtonToggle(false);
     if (position.zoom >= 100) return;
     setPosition(pos => ({ ...pos, zoom: pos.zoom * 2 }));
   }
 
   function handleZoomOut() {
+    setLockCharacterLocationButtonToggle(false);
     if (position.zoom <= 0.75) return;
     setPosition(pos => ({ ...pos, zoom: pos.zoom / 2 }));
   }
 
   function handleMoveEnd(position) {
+    setLockCharacterLocationButtonToggle(false);
     setPosition(position);
   }
 
@@ -85,7 +104,7 @@ const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToV
         newPosition.zoom = mapPositionToView.zoom;
     }
     else {
-      newPosition.zoom = 3;
+      newPosition.zoom = charLevelZoom;
     }
     if (mapPositionToView && mapPositionToView.coordinates) {
         newPosition.coordinates = mapPositionToView.coordinates
@@ -99,7 +118,21 @@ const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToV
     return () => {
       setMapPositionToView({})
     };
-  },[])
+  },[]);
+
+  useEffect(() => {
+    if (viewAllCharactersButtonToggle) {
+      setShowCharactersList(characters);
+    }
+  },[characters, viewAllCharactersButtonToggle]);
+
+  useEffect(() => {
+    if (lockCharacterLocationButtonToggle) {
+      const lastMapPosition = characters.find(character => character.id === currentCharacters[0]).lastMapPosition;
+      const mapPosition = [lastMapPosition.x, lastMapPosition.y]
+      setPosition({coordinates: mapPosition, zoom: charLevelZoom});
+    }
+  },[lockCharacterLocationButtonToggle, characters]);
 
 
 const spinner = () => {
@@ -109,6 +142,52 @@ const spinner = () => {
     </StyledSpinner>
   )
 }
+
+const handleRadiationButtonClick = () => {
+  return;
+}
+
+const handleSearchForCharacterButtonClick = (id) => {
+    //Bring up tree for finding character id
+    //That prompt will call showSingleCharacter(id);
+    setViewAllCharactersButtonToggle(false);
+
+}
+
+const showSingleCharacter = (id) => {
+  const singleCharacter = characters.find(character => character.id === id);
+  setShowCharactersList(singleCharacter);
+  const singleCharacterCoordinates = [singleCharacter.lastMapPosition.x, singleCharacter.lastMapPosition.y];
+  setPosition({coordinates: singleCharacterCoordinates, zoom: charLevelZoom});
+}
+
+const handleViewCharactersToggleButtonClick = () => {
+  if (!viewAllCharactersButtonToggle) {
+    setShowCharactersList(characters);
+    setViewAllCharactersButtonToggle(true);
+  }
+  else {
+    setShowCharactersList([]);
+    setViewAllCharactersButtonToggle(false);
+  }
+  return;
+}
+
+const handleReturnToCurrentLocationButtonClick = () => {
+  if (lockCharacterLocationButtonToggle) {
+    setLockCharacterLocationButtonToggle(false);
+  }
+  else {
+    const lastMapPosition = characters.find(character => character.id === currentCharacters[0]).lastMapPosition;
+    const mapPosition = [lastMapPosition.x, lastMapPosition.y];
+    if (mapPosition[0] === position.coordinates[0] && mapPosition[1] === position.coordinates[1]) {
+      setLockCharacterLocationButtonToggle(true);
+    }
+    setPosition({coordinates: mapPosition, zoom: charLevelZoom})
+  }
+}
+
+
 
 
   return (
@@ -165,7 +244,7 @@ const spinner = () => {
                 )))
               }}
             </Geographies>
-            {characters.map(character => {
+            {showCharactersList.map(character => {
               if (character.partnerLeader) {
                 return (<Marker 
                           onMouseEnter={() => {
@@ -217,6 +296,20 @@ const spinner = () => {
               <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
           </button>
+        </div>
+        <div className="verticalControls">
+          <StyledToggleButton toggleOn={radiationButtonToggle} onClick={() => handleRadiationButtonClick()}>
+            <RadiationIcon />
+          </StyledToggleButton>
+          <StyledToggleButton onClick={() => handleSearchForCharacterButtonClick()}>
+            <SearchIcon />
+          </StyledToggleButton>
+          <StyledToggleButton toggleOn={viewAllCharactersButtonToggle} onClick={() => handleViewCharactersToggleButtonClick()}>
+            <EyeIcon />
+          </StyledToggleButton>
+          <StyledToggleButton toggleOn={lockCharacterLocationButtonToggle} onClick={() => handleReturnToCurrentLocationButtonClick()}>
+            <LocationIcon />
+          </StyledToggleButton>
         </div>
         <NavInfoFooter />
       </div>
