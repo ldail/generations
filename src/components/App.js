@@ -21,7 +21,8 @@ class App extends React.Component {
       currentPage: 0,
       gameSecondsCount: 0,
       devMode: false,
-      isIdle: false
+      isIdle: false,
+      isDebouncedCurrently: false
     }
     this.gameTimer = null;
     this.characterMovement = null;
@@ -29,6 +30,7 @@ class App extends React.Component {
     this.idleTimer = null;
     this.gameCounterSeconds = null;
     this.timeUntilStartingGameTimerTimeout = null;
+    this.debounceTimer = null;
   }
 
   componentDidMount() {
@@ -36,21 +38,6 @@ class App extends React.Component {
       this.devStartButton.current.style.display = 'none';
     },10000);
   }
-
-  debounce = (func, wait, immediate) => {
-    var timeout;
-    return function() {
-      var context = this, args = arguments;
-      var later = function() {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-      var callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    };
-  };
 
   startDevMode = async () => {
     if (!this.state.devMode) {
@@ -126,7 +113,9 @@ class App extends React.Component {
     this.setState({isIdle: true})
   }
 
-  nonIdleEvent = () => {
+  nonIdleEvent = () => { 
+    console.log('being called');
+    if (!this.state.isDebouncedCurrently) {
     //If the user has reached idle state.    
     if (this.state.isIdle) {
       //Restart the idle timer
@@ -140,9 +129,14 @@ class App extends React.Component {
     }
     else {
       clearTimeout(this.idleTimer);
-      this.setState({gameSecondsCount: 0});
+      this.setState({gameSecondsCount: 0, isDebouncedCurrently: true});
+      this.debounceTimer = setTimeout(() => {
+        this.setState({isDebouncedCurrently: false})
+        this.debounceTimer = null;
+      }, 1000)
       this.startIdleTimer();
     }
+  }
   }
 
   showPage = () => {
@@ -171,8 +165,18 @@ class App extends React.Component {
     }
   }
 
-  render() {
-    return (
+  decideDebounceRender = () => {
+    const {isDebouncedCurrently} = this.state;
+    if (isDebouncedCurrently) {
+      return (
+        <div id="App">
+          <button style={{position: 'fixed', top: 0, left: 0, zIndex: 3, display: this.state.devMode ? 'none' : 'block'}} disabled={this.state.deveMode} ref={this.devStartButton} onClick={() => this.startDevMode()}>Start test mode</button>
+          {this.showPage()}
+        </div>
+      )
+    }
+    else {
+      return (
       <div 
         id="App"
         onClick={() => this.nonIdleEvent()}
@@ -184,12 +188,16 @@ class App extends React.Component {
         onKeyDown={() => this.nonIdleEvent()}
         onScroll={() => this.nonIdleEvent()}
         onPointerDown={() => this.nonIdleEvent()}
-        onPointerMove={() => this.nonIdleEvent()}
-      >
-        <button style={{position: 'fixed', top: 0, left: 0, zIndex: 3, display: this.state.devMode ? 'none' : 'block'}} disabled={this.state.deveMode} ref={this.devStartButton} onClick={() => this.startDevMode()}>Start test mode</button>
-        {this.showPage()}
-      </div>
-    );
+        onPointerMove={() => this.nonIdleEvent()}>
+          <button style={{position: 'fixed', top: 0, left: 0, zIndex: 3, display: this.state.devMode ? 'none' : 'block'}} disabled={this.state.deveMode} ref={this.devStartButton} onClick={() => this.startDevMode()}>Start test mode</button>
+          {this.showPage()}
+        </div>
+      );
+    }
+  }
+
+  render() {
+    return this.decideDebounceRender();
     }
 };
 
