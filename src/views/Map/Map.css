@@ -5,11 +5,70 @@
   flex: 1;
 }
 
-.controls {
+.currently-active-info {
   position: fixed;
+  z-index: 1;
+  top: 80px;
+  border-width: 0px 1px 1px 1px;
+  border-radius: 0px 0px 5px 5px;
+  border-color: black;
+  border-style: solid;
+  display: flex;
+  width: 80%;
+  left: 10vw;
+  justify-content: space-evenly;
+  padding: 10px;
+  background-color: rgba(207,207,207,0.6);
+}
+
+.currently-active-info p {
+  flex: 1;
+}
+
+.currently-active-info svg {
+  width: 30px;
+  height: 30px;
+}
+
+.vertical-divider {
+  width: 1px;
+  margin: 0px 20px;
+  background-color: gray;
+}
+
+.map-info-bar {
+  display: flex;
+  flex-direction: space-evenly;
+  position: fixed;
+  width: 100%;
   z-index: 8;
   bottom: 50px;
-  right: 30px;
+  left: 0;
+  padding: 0px 30px;
+  pointer-events: none;
+}
+
+.map-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}
+
+.map-info p {
+  font-size: 13px;
+}
+
+.control-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: all;
+}
+
+.zoom-controls {
+  display: flex;
 }
 
 .controls button, .verticalControls button {
@@ -25,10 +84,6 @@
 }
 
 .verticalControls {
-  position: fixed;
-  z-index: 8;
-  bottom: 90px;
-  right: 30px;
   display: flex;
   flex-direction: column;
 }

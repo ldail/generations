@@ -7,6 +7,9 @@ import animalStats from '../../assets/animalStats';
 import { setCurrentCharacter, setCurrentView, setCurrentCharacterForDetailView, viewCharacterOnMap } from '../../redux/gameRoot/actions/gameRootActions';
 import { VIEW } from '../../assets/pages';
 import styled from 'styled-components';
+import {ReactComponent as EyeIcon} from '../../assets/eye-icon.svg';
+import {ReactComponent as SwitchIcon} from '../../assets/switch-icon.svg';
+import {ReactComponent as PetStatsIcon} from '../../assets/stats-list-icon.svg';
 
 const StyledCircle = styled.div`
   display: block;
@@ -103,11 +106,11 @@ const CharacterDetails = ({currentCharacterForDetailView, currentCharacters,char
               <div className="smallDivider">
                 -----
               </div>
-              <div className="seeCharOnMap" onClick={() => viewCharacterOnMap(viewCharacter.id)}>
-                {`{seeOnMap}`}
+              <div className="seeCharOnMap hoverIcon" onClick={() => viewCharacterOnMap(viewCharacter.id)}>
+                <EyeIcon />
               </div>
-              <div className="switchToChar" onClick={() => switchToCharacter(viewCharacter.id)}>
-                {`{switchToChar}`}
+              <div className="switchToChar hoverIcon" onClick={() => switchToCharacter(viewCharacter.id)}>
+                <SwitchIcon />
               </div>
           </div>
           <div className="characterDetails">
@@ -137,8 +140,8 @@ const CharacterDetails = ({currentCharacterForDetailView, currentCharacters,char
             <div className="petSprite">
               <img src={currentPetSprite} alt="pet" />
             </div>
-            <div className="petStats">
-              {`{stats}`}
+            <div className="petStats hoverIcon">
+              <PetStatsIcon />
             </div>
             <div className="petDetails">
               <span className="PetName">
@@ -154,8 +157,8 @@ const CharacterDetails = ({currentCharacterForDetailView, currentCharacters,char
               <div className="petSprite">
                 <img src={spousePetSprite} alt="pet" />
               </div>
-              <div className="petStats">
-                {`{stats}`}
+              <div className="petStats hoverIcon">
+                <PetStatsIcon />
               </div>
               <div className="petDetails">
                 <span className="PetName">

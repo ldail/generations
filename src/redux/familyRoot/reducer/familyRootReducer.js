@@ -66,6 +66,7 @@ characters: [{
   petId: 0, 
   id: 0, 
   age: 0, 
+  birthdayMonth: 8,
   lastCityPosition: {x, y, location}, 
   lastMapPosition: {x, y, nextLocation, action},
   currentView: VIEW.MAP
