@@ -15,6 +15,7 @@ import {ReactComponent as EyeIcon} from '../../assets/eye-icon.svg';
 import {ReactComponent as SearchIcon} from '../../assets/search-icon.svg';
 import {ReactComponent as RadiationIcon} from '../../assets/radiation-icon.svg';
 import {ReactComponent as RadiationPetIcon} from '../../assets/radiation-pet-icon.svg';
+import animalStats from '../../assets/animalStats';
 
 
 //Styled Components
@@ -62,10 +63,11 @@ const geoUrl =
   "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
 
 
-const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToView}) => {
+const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToView, pets}) => {
 
   let characterTooltipTimeout = null;
-  let charLevelZoom = 4;
+  const charLevelZoom = 4;
+  let sortedGeographies = null;
 
   //State
   const [content, setContent] = useState(""); //Tooltip
@@ -207,6 +209,78 @@ const handleCharacterSelect = (character) => {
     setContent('');
   }
 
+  const hoverBoxInfo = (characterId) => {
+    const characterInfo = characters.find(character => character.id === characterId);
+    const currentAction = characterInfo.currentState;
+    const name = characterInfo.name;
+    const age = characterInfo.age;
+    const petType = pets.find(pet => pet.id === characterInfo.petId).type;
+    let partnerName = null;
+    let partnerPetType = null;
+    let petTypeIconImage = '';
+    let partnerPetTypeIconImage = '';
+    for (let type in
+       animalStats.types) {
+      if (petType === animalStats.types[type].id) {
+        petTypeIconImage = animalStats.types[type].icon;
+      }
+    }
+    if (characterInfo.partnerId >= 0) {
+      const partnerInfo = characters.find(character => characterInfo.partnerId === character.id);
+      partnerName = partnerInfo.name;
+      partnerPetType = pets.find(pet => pet.id === partnerInfo.petId).type;
+      for (let type in
+         animalStats.types) {
+        if (partnerPetType === animalStats.types[type].id) {
+          partnerPetTypeIconImage = animalStats.types[type].icon;
+        }
+      }
+    }
+    return (
+      <div className="charInfoModal">
+        {name} {partnerName ? `& ${partnerName}` : null}
+        Age: {age}
+        Pet{partnerPetType >= 0 ? 's' : null}: <img src={petTypeIconImage} className="small-pet-icon" alt="pet" /> {partnerPetType >= 0 ? <img src={partnerPetTypeIconImage} className="small-pet-icon" alt="pet" /> : null}
+        Currently: {currentAction}
+      </div>
+    );
+
+  }
+
+  const oneTimeSortedMapCoordinates = (geography) => {
+    let sortedMapForXValueCoordinates = {};
+    geography.forEach((geo,index) => {
+      let coordinates = geo.geometry.coordinates[0].slice();
+      coordinates.sort((a,b) => {
+        a = a[0];
+        b = b[0];
+        return a-b;
+      });
+      sortedMapForXValueCoordinates = {...geography, coordinates}
+      sortedMapForXValueCoordinates[index].minXValue = geo.geometry.coordinates[0][0][0];
+      sortedMapForXValueCoordinates[index].maxXValue = geo.geometry.coordinates[0][geo.geometry.coordinates[0].length - 1][0];
+    });
+    let sortedMapForYValueCoordinates = geography.slice();
+    geography.forEach((geo,index) => {
+      let coordinates = geo.geometry.coordinates[0].slice();
+      coordinates.sort((a,b) => {
+        a = a[1];
+        b = b[1];
+        return a-b;
+      });
+      sortedMapForYValueCoordinates = {...sortedMapForYValueCoordinates, geometry: {...sortedMapForYValueCoordinates.geometry, coordinates: [coordinates]}}
+      sortedMapForYValueCoordinates[index].minYValue = geo.geometry.coordinates[0][0][1];
+      sortedMapForYValueCoordinates[index].maxYValue = geo.geometry.coordinates[0][geo.geometry.coordinates[0].length - 1][1];
+    });
+    const sortedMapWithMinAndMaxValues = {
+      geography,
+      sortedMapForXValueCoordinates,
+      sortedMapForYValueCoordinates
+    };
+    sortedGeographies = sortedMapWithMinAndMaxValues;
+    return;
+  };
+
 
   //Loading spinner
   const spinner = () => {
@@ -223,9 +297,6 @@ const showSingleCharacter = (id) => {
   const singleCharacterCoordinates = [singleCharacter.lastMapPosition.x, singleCharacter.lastMapPosition.y];
   setPosition({coordinates: singleCharacterCoordinates, zoom: charLevelZoom});
 }
-
-
-
 
   return (
     <Suspense fallback={spinner()}>
@@ -250,6 +321,7 @@ const showSingleCharacter = (id) => {
                       >
             <Geographies geography={geoUrl}>
               {({ geographies }) =>  {
+                if (!sortedGeographies) { oneTimeSortedMapCoordinates(geographies)}
                 return (
                 geographies.map(geo => (
                   <Geography
@@ -260,13 +332,14 @@ const showSingleCharacter = (id) => {
                       setCurrentMapAreaFocus(NAME);
                     }}
                     onTouchStart={() => {
+                      setContent('');
                       const { NAME} = geo.properties;
                       setCurrentMapAreaFocus(NAME);
-                      characterTooltipTimeout = setTimeout(() => clearContent(),3000)
                     }}
                     onMouseLeave={() => {
                       setCurrentMapAreaFocus(null);
                     }}
+                    onClick={() => setContent('')}
                     style={{
                       default: {
                         fill: geo.properties.ABBREV === "S.Af." ? '#FF0000' : "#D6D6DA",
@@ -289,21 +362,18 @@ const showSingleCharacter = (id) => {
               if ((showCharactersList && showCharactersList.includes(character.id)) || (!showCharactersList && viewAllCharactersButtonToggle === true)) {
                 if (character.partnerLeader) {
                   return (<Marker 
-                            onMouseEnter={() => {
-                              setContent(character.name);
+                            onClick={(marker) => {
+                              setContent(hoverBoxInfo(character.id));
+                              handleCharacterSelect(character);
                             }}
-                            onTouchStart={() => {
-                              setContent(character.name);
-                              characterTooltipTimeout = setTimeout(() => clearContent(),3000)
+                            onMouseEnter={() => {
+                              setContent(hoverBoxInfo(character.id));
+                            }}
+                            onTouchStart={(e) => {
+                              setContent(hoverBoxInfo(character.id));
                             }}
                             onMouseLeave={() => {
-                              if (characterTooltipTimeout) {
-                                clearTimeout(characterTooltipTimeout);
-                              }
                               setContent('');
-                            }}
-                            onClick={() => {
-                              handleCharacterSelect(character);
                             }}
                             coordinates={[character.lastMapPosition.x,character.lastMapPosition.y]}>
                             <circle r={3} fill={character.color.hexCode} />
@@ -382,6 +452,7 @@ const showSingleCharacter = (id) => {
 
 export const mapStateToProps = state => ({
   characters: state.family.characters,
+  pets: state.pet.pets,
   mapPositionToView: state.game.mapPositionToView,
   currentCharacters: state.game.currentCharacters,
 })
