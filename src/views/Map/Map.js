@@ -130,6 +130,9 @@ const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToV
     setLockCharacterLocationButtonToggle(false);
     if (position.zoom <= 0.75) return;
     setPosition(pos => ({ ...pos, zoom: pos.zoom / 2 }));
+    if (currentMap !== worldMap) {
+      setCurrentMap(worldMap);
+    }
   }
 
   function handleMoveEnd(newPosition) {
