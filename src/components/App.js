@@ -37,6 +37,9 @@ class App extends React.Component {
     setTimeout(() => {
       this.devStartButton.current.style.display = 'none';
     },10000);
+    window.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+    }, {passive: false});
   }
 
   startDevMode = async () => {

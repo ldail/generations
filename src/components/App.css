@@ -13,6 +13,7 @@ body {
   align-items: center;
   background-color: black;
   font-family: 'Roboto', sans-serif;
+  overscroll-behavior: none;
 }
 
 li {

@@ -58,16 +58,14 @@ const StyledToggleButton = styled.button`
 `;
 
 
-//Map Data
-const geoUrl =
-  "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
-
-
 const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToView, pets}) => {
 
   let characterTooltipTimeout = null;
   const charLevelZoom = 4;
   let sortedGeographies = null;
+  const worldMap = 'https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json';
+  const usaMap = 'https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json';
+  let minMaxValuesGeoObject = {};
 
   //State
   const [content, setContent] = useState(""); //Tooltip
@@ -76,6 +74,7 @@ const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToV
   const [currentCharacterIdViewing, setCurrentCharacterIdViewing] = useState(currentCharacters[0]); //Currently focused character for location lock.
   const [currentMapAreaFocus, setCurrentMapAreaFocus] = useState(null); //The area to display radiation info
   const [showCharactersList, setShowCharactersList] = useState([currentCharacters[0]]); //The full list of characters to show markers for.
+  const [currentMap, setCurrentMap] = useState(worldMap);
 
   //Buttons State - toggle on or off
   const [showRadiationInfo, setShowRadiationInfo] = useState(true);
@@ -133,8 +132,11 @@ const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToV
     setPosition(pos => ({ ...pos, zoom: pos.zoom / 2 }));
   }
 
-  function handleMoveEnd(position) {
-    setPosition(position);
+  function handleMoveEnd(newPosition) {
+    if (position.zoom > newPosition.zoom && currentMap !== worldMap) {
+      setCurrentMap(worldMap);
+    }
+    setPosition(newPosition);
   }
 
   function handleMoveStart() {
@@ -298,9 +300,41 @@ const showSingleCharacter = (id) => {
   setPosition({coordinates: singleCharacterCoordinates, zoom: charLevelZoom});
 }
 
+const minAndMaxValuesOfGeos = (coordinates, minX = null, minY = null, maxX = null, maxY = null) => {
+
+  coordinates.forEach(coordinatesArr => {
+    if (Array.isArray(coordinatesArr[0])) {
+      let arrayResults = minAndMaxValuesOfGeos(coordinatesArr);
+      minX = arrayResults.minX;
+      minY = arrayResults.minY;
+      maxX = arrayResults.maxX;
+      maxY = arrayResults.maxY;
+    }
+    else {
+      if (coordinatesArr[0] < minX || minX === null) {
+        minX = coordinatesArr[0];
+      }
+      if (coordinatesArr[0] > maxX || maxX === null) {
+        maxX = coordinatesArr[0];
+      }
+      if (coordinatesArr[1] < minY || minY === null) {
+        minY = coordinatesArr[1];
+      }
+      if (coordinatesArr[1] > maxY || maxY === null) {
+        maxY = coordinatesArr[1];
+      }
+    }
+  })
+
+  return {minX, minY, maxX, maxY};
+}
+
   return (
     <Suspense fallback={spinner()}>
-      <div className="Map">
+      <div className="Map" onTouchMove={() => {
+        if (content) {
+          setContent('')}
+        }}>
         <PersonInfoHeader />
         <div className="currently-active-info">
           <p>Currently: {characters.find(character => character.id === currentCharacters[0]).currentState}</p>
@@ -318,12 +352,20 @@ const showSingleCharacter = (id) => {
                       center={position.coordinates}
                       onMoveStart={handleMoveStart}
                       onMoveEnd={handleMoveEnd}
+
+                      onZoomEnd={(newzoom) => {
+                        console.log(newzoom);
+                      }}
                       >
-            <Geographies geography={geoUrl}>
+            <Geographies geography={currentMap}>
               {({ geographies }) =>  {
-                if (!sortedGeographies) { oneTimeSortedMapCoordinates(geographies)}
+                // if (!sortedGeographies) { oneTimeSortedMapCoordinates(geographies)}
                 return (
-                geographies.map(geo => (
+                geographies.map(geo => {
+                  if (!minMaxValuesGeoObject[geo.properties.NAME]) {
+                    minMaxValuesGeoObject[geo.properties.NAME] = minAndMaxValuesOfGeos(geo.geometry.coordinates)
+                  }
+                  return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
@@ -331,15 +373,26 @@ const showSingleCharacter = (id) => {
                       const { NAME} = geo.properties;
                       setCurrentMapAreaFocus(NAME);
                     }}
-                    onTouchStart={() => {
-                      setContent('');
+                    onTouchEnd={() => {
                       const { NAME} = geo.properties;
+                      if (NAME === 'United States of America') {
+                        setCurrentMap(usaMap);
+                      }
+                      setContent('')
                       setCurrentMapAreaFocus(NAME);
                     }}
+                    onTouchMove={() => setContent('')}
                     onMouseLeave={() => {
                       setCurrentMapAreaFocus(null);
                     }}
-                    onClick={() => setContent('')}
+                    onClick={() => {
+                      const { NAME} = geo.properties;
+                      if (NAME === 'United States of America') {
+                        setCurrentMap(usaMap);
+                      }
+                      setContent('')
+                      setCurrentMapAreaFocus(NAME);
+                    }}
                     style={{
                       default: {
                         fill: geo.properties.ABBREV === "S.Af." ? '#FF0000' : "#D6D6DA",
@@ -355,9 +408,10 @@ const showSingleCharacter = (id) => {
                       }
                     }}
                   />
-                )))
+                )}))
               }}
             </Geographies>
+            
             {characters.map(character => {
               if ((showCharactersList && showCharactersList.includes(character.id)) || (!showCharactersList && viewAllCharactersButtonToggle === true)) {
                 if (character.partnerLeader) {
@@ -371,6 +425,9 @@ const showSingleCharacter = (id) => {
                             }}
                             onTouchStart={(e) => {
                               setContent(hoverBoxInfo(character.id));
+                            }}
+                            onTouchMove={() => {
+                              setContent('');
                             }}
                             onMouseLeave={() => {
                               setContent('');
