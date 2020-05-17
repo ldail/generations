@@ -19,6 +19,14 @@ import animalStats from '../../assets/animalStats';
 
 
 //Styled Components
+
+const ColorBox = styled.span`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: ${({color}) => color.hexCode};
+  display: block;
+`;
 const StyledSpinner = styled.div`
   position: fixed;
   top: 0;
@@ -78,6 +86,7 @@ const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToV
 
   //Buttons State - toggle on or off
   const [showRadiationInfo, setShowRadiationInfo] = useState(true);
+  const [showFindCharactersModalBox, setShowFindCharactersModalBox] = useState(false);
   const [viewAllCharactersButtonToggle, setViewAllCharactersButtonToggle] = useState(false);
   const [lockCharacterLocationButtonToggle, setLockCharacterLocationButtonToggle] = useState(true);
 
@@ -169,7 +178,10 @@ const handleCharacterSelect = (character) => {
   const handleSearchForCharacterButtonClick = (id) => {
       //Bring up tree for finding character id
       //That prompt will call showSingleCharacter(id);
-      setViewAllCharactersButtonToggle(false);
+      setLockCharacterLocationButtonToggle(false)
+      setViewAllCharactersButtonToggle(true);
+      setShowFindCharactersModalBox(true);
+
   }
 
   /**
@@ -177,8 +189,8 @@ const handleCharacterSelect = (character) => {
    * ON: All character icons appear
    * OFF: Only the current character icon appears
    */
-  const handleViewCharactersToggleButtonClick = () => {
-    if (!viewAllCharactersButtonToggle) {
+  const handleViewCharactersToggleButtonClick = (value) => {
+    if (value || !viewAllCharactersButtonToggle) {
       setShowCharactersList();
       setViewAllCharactersButtonToggle(true);
     }
@@ -214,8 +226,45 @@ const handleCharacterSelect = (character) => {
     setContent('');
   }
 
+  const findCharacterModalBox = () => {
+
+    return (
+      <div className="findModalBox">
+        <h4>Which character do you want to find?</h4>
+        <ul className="findBox">
+          {characters.map(character => {
+            if (!character.partnerLeader) { return false; }
+            const {color, name, partnerId, age } = character;
+            const partnerInfo = partnerId !== null ? characters.find(character => character.id === partnerId) : null;
+            return (
+              <li 
+              className="characterBox"
+              onClick={() => {
+                handleCharacterSelect(character);
+                handleViewCharactersToggleButtonClick(true);
+                setShowFindCharactersModalBox(false);}}>
+                <p>
+                  <ColorBox color={color}/>
+                  <span>{name}</span>
+                  <span>Age {age}</span>
+                </p>
+                {partnerInfo !== null
+                ? <p>
+                  <span>{`& ${partnerInfo.name}`}</span>
+                  <span></span>
+                </p>
+                : null }
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    )
+  }
+
   const hoverBoxInfo = (characterId) => {
     const characterInfo = characters.find(character => character.id === characterId);
+    console.log(characterInfo);
     const currentAction = characterInfo.currentState;
     const name = characterInfo.name;
     const age = characterInfo.age;
@@ -230,7 +279,7 @@ const handleCharacterSelect = (character) => {
         petTypeIconImage = animalStats.types[type].icon;
       }
     }
-    if (characterInfo.partnerId >= 0) {
+    if (characterInfo.partnerId !== null) {
       const partnerInfo = characters.find(character => characterInfo.partnerId === character.id);
       partnerName = partnerInfo.name;
       partnerPetType = pets.find(pet => pet.id === partnerInfo.petId).type;
@@ -338,6 +387,9 @@ const minAndMaxValuesOfGeos = (coordinates, minX = null, minY = null, maxX = nul
         if (content) {
           setContent('')}
         }}>
+                        {showFindCharactersModalBox
+              ? findCharacterModalBox()
+            : null}
         <PersonInfoHeader />
         <div className="currently-active-info">
           <p>Currently: {characters.find(character => character.id === currentCharacters[0]).currentState}</p>

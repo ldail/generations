@@ -17,7 +17,8 @@ const NavInfoFooter = ({characters, currentCharacters, gameTime, familyName, set
       </span>
       <ul>
         <li onClick={() => setCurrentView(VIEW.TREE)}>(Tree)</li>
-        <li onClick={() => setCurrentView(currentCharacterInfo.currentView)}>(Map)</li>
+        <li onClick={() => setCurrentView(VIEW.MAP)}>(Map)</li>
+        {currentCharacterInfo.currentView === VIEW.HOME ? <li onClick={() => setCurrentView(currentCharacterInfo.currentView)}>(City)</li> : null}
       </ul>
     </div>
   );
