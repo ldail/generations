@@ -60,6 +60,8 @@ const Tree = ({setCurrentCharacterForDetailView, setCurrentView, characters}) =>
         orientation={'vertical'}
         translate={{x: window.innerWidth / 2, y: window.innerHeight / 6 > 120 ? window.innerHeight / 6 : 120}}
         pathFunc={'elbow'}
+        zoom={window.innerWidth > 450 ? 0.8 : 0.5}
+        scaleExtent={{min: 0.1, max: 1}}
       />
       <NavInfoFooter />
     </div>
