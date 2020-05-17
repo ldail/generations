@@ -152,6 +152,7 @@ const Map = ({characters,mapPositionToView, currentCharacters, setMapPositionToV
   }
 
   function handleMoveStart() {
+    setShowFindCharactersModalBox(false);
     setLockCharacterLocationButtonToggle(false);
   }
 
@@ -387,7 +388,7 @@ const minAndMaxValuesOfGeos = (coordinates, minX = null, minY = null, maxX = nul
         if (content) {
           setContent('')}
         }}>
-                        {showFindCharactersModalBox
+                                                          {showFindCharactersModalBox
               ? findCharacterModalBox()
             : null}
         <PersonInfoHeader />
@@ -404,6 +405,7 @@ const minAndMaxValuesOfGeos = (coordinates, minX = null, minY = null, maxX = nul
           width={window.innerWidth}>
           <ZoomableGroup
                       zoom={position.zoom}
+                      className="zoomMap"
                       center={position.coordinates}
                       onMoveStart={handleMoveStart}
                       onMoveEnd={handleMoveEnd}

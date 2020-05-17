@@ -93,13 +93,20 @@
 }
 
 .findModalBox {
-  width: 500px;
+  min-width: 375px;
+  width: 50vw;
+  max-width: 700px;
+  min-height: 200px;
+  height: 50vh;
+  max-height: 500px;
   height: 300px;
   display: flex;
-  align-self: center;
+  align-self: center center;
   overflow: hidden;
   flex-direction: column;
   background: rgba(255,255,255,0.3);
+  z-index: 7;
+  position: fixed;
 }
 
 .findBox {
